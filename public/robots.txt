@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://gzzone.vercel.app/sitemap.xml

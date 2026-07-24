@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   title: "Treatments & Prices",
   description:
     "Explore our range of mobile massage treatments in Porto. Deep tissue, sports massage, cupping therapy and more.",
+  alternates: {
+    canonical: "https://gzzone.vercel.app/treatments",
+  },
+  openGraph: {
+    title: "Mobile Massage Treatments & Prices | GZ'ZONE Porto",
+    description:
+      "Explore our range of mobile massage treatments in Porto. Deep tissue, sports massage, cupping therapy, and reflexology delivered to your door.",
+    url: "https://gzzone.vercel.app/treatments",
+  },
 };
 
 export default function TreatmentsPage() {
@@ -16,9 +25,49 @@ export default function TreatmentsPage() {
 
   const categories = Object.entries(CATEGORY_LABELS) as [string, string][];
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://gzzone.vercel.app",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Treatments",
+        item: "https://gzzone.vercel.app/treatments",
+      },
+    ],
+  };
+
+  const itemListLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Mobile Massage Treatments in Porto",
+    itemListElement: TREATMENTS.map((t, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: t.name,
+      url: `https://gzzone.vercel.app/treatments/${t.slug}`,
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+      />
       <Header />
+
       <main className="flex-1">
         <section className="py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">

@@ -4,6 +4,10 @@ import { Footer } from "@/components/public/footer";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
+  description: "Terms of service and booking terms for GZ'ZONE Mobile Massage in Porto.",
+  alternates: {
+    canonical: "https://gzzone.vercel.app/terms",
+  },
 };
 
 export default function TermsPage() {

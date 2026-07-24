@@ -4,6 +4,10 @@ import { Footer } from "@/components/public/footer";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  description: "Privacy policy and data protection guidelines for GZ'ZONE Mobile Massage in Porto.",
+  alternates: {
+    canonical: "https://gzzone.vercel.app/privacy-policy",
+  },
 };
 
 export default function PrivacyPolicyPage() {
