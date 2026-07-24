@@ -9,6 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gzzone.vercel.app"),
   title: {
     default: "Mobile Massage in Porto | Professional Massage at Your Location | GZ'ZONE",
     template: "%s | GZ'ZONE — Mobile Massage Porto",
