@@ -79,10 +79,10 @@ export function Hero({ content }: { content?: HeroContent }) {
             </p>
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
-              <WhatsAppButton size="lg" className="w-full sm:w-auto px-8 py-6 text-base" />
+              <WhatsAppButton size="lg" className="hidden sm:inline-flex px-8 py-6 text-base" />
               <Link
                 href="/treatments"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto")}
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto px-8 py-6 text-base")}
               >
                 Explore Treatments
               </Link>
