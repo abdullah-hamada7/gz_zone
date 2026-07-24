@@ -4,7 +4,6 @@ import { TrustBar } from "@/components/public/trust-bar";
 import { WhyMobileMassage } from "@/components/public/why-mobile-massage";
 import { HowItWorks } from "@/components/public/how-it-works";
 import { FinalCTA } from "@/components/public/final-cta";
-import { MobileStickyCTA } from "@/components/public/mobile-sticky-cta";
 import { Footer } from "@/components/public/footer";
 import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
@@ -53,7 +52,6 @@ export default function HomePage() {
         <FinalCTA />
       </main>
       <Footer />
-      <MobileStickyCTA />
     </>
   );
 }

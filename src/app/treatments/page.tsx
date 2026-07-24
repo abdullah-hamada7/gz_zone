@@ -1,6 +1,5 @@
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
-import { MobileStickyCTA } from "@/components/public/mobile-sticky-cta";
 import { TreatmentCard } from "@/components/public/treatment-card";
 import { TREATMENTS, CATEGORY_LABELS, getTreatmentPrices } from "@/data";
 import type { Metadata } from "next";
@@ -109,7 +108,6 @@ export default function TreatmentsPage() {
         </section>
       </main>
       <Footer />
-      <MobileStickyCTA />
     </>
   );
 }

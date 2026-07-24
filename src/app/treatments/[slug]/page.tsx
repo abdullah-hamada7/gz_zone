@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
-import { MobileStickyCTA } from "@/components/public/mobile-sticky-cta";
 import { HoursSection } from "@/components/public/hours-section";
 import { TreatmentBooking } from "./booking";
 import { TREATMENTS, CATEGORY_LABELS, getDurationsForTreatment } from "@/data";
@@ -199,7 +198,6 @@ export default async function TreatmentPage({ params }: Props) {
         <HoursSection />
       </main>
       <Footer />
-      <MobileStickyCTA />
     </>
   );
 }

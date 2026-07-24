@@ -2,10 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { WhatsAppButton } from "./cta-button";
-import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { buttonVariants, Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { TREATMENTS } from "@/data";
 import { cn } from "@/lib/utils";
 
 interface HeroContent {
@@ -52,6 +60,7 @@ const HERO_IMAGES = [
 
 export function Hero({ content }: { content?: HeroContent }) {
   const [index, setIndex] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setIndex((i) => (i + 1) % HERO_IMAGES.length), 4000);
@@ -78,8 +87,61 @@ export function Hero({ content }: { content?: HeroContent }) {
                 "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you."}
             </p>
 
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
-              <WhatsAppButton size="lg" className="hidden sm:inline-flex px-8 py-6 text-base" />
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-col lg:items-start">
+              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogTrigger
+                  render={
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer"
+                    >
+                      <MessageCircle className="size-5 shrink-0" />
+                      <span>Book via WhatsApp</span>
+                    </Button>
+                  }
+                />
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366]">
+                      <MessageCircle className="size-6" />
+                    </div>
+                    <DialogTitle className="text-center text-xl font-bold">
+                      Please Select Your Treatment First
+                    </DialogTitle>
+                    <DialogDescription className="text-center text-sm">
+                      Choose your required treatment below to view duration, pricing, and book your personalized session directly via WhatsApp.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="my-2 space-y-2 max-h-[260px] overflow-y-auto pr-1">
+                    {TREATMENTS.slice(0, 6).map((t) => (
+                      <Link
+                        key={t.id}
+                        href={`/treatments/${t.slug}`}
+                        onClick={() => setDialogOpen(false)}
+                        className="flex items-center justify-between rounded-lg border bg-muted/30 p-3 text-left transition-colors hover:bg-muted/70 hover:border-primary/50"
+                      >
+                        <div>
+                          <p className="font-semibold text-foreground text-sm">{t.name}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1">{t.short_description}</p>
+                        </div>
+                        <ArrowRight className="size-4 shrink-0 text-muted-foreground ml-2" />
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="mt-2 flex flex-col gap-2">
+                    <Link
+                      href="/treatments"
+                      onClick={() => setDialogOpen(false)}
+                      className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full text-center")}
+                    >
+                      Browse All Treatments & Prices →
+                    </Link>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
               <Link
                 href="/treatments"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto px-8 py-6 text-base")}

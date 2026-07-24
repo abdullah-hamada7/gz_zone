@@ -38,7 +38,6 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <WhatsAppButton size="default" />
         </nav>
 
         <button
@@ -63,7 +62,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <WhatsAppButton size="default" className="mt-2" />
           </nav>
         </div>
       )}
