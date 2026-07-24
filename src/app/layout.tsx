@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     images: ["/images/all-you-need-is-a-portable.jpg"],
   },
   verification: {
-    google: "xSKupBgNXZubwUyNFpZJS6Ulq4MZ-fkjNSliGlUitdw",
+    google: ["mh9BZNKNnpUNvTsc4S6i9NMXRvi8zPpyE0upyljJex8", "xSKupBgNXZubwUyNFpZJS6Ulq4MZ-fkjNSliGlUitdw"],
   },
 };
 
