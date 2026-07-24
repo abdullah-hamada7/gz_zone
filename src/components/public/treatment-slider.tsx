@@ -65,7 +65,7 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
         className="flex gap-6 overflow-x-auto scroll-smooth pb-2 scrollbar-none"
       >
         {treatments.map((t) => (
-          <div key={t.id} className="w-[350px] shrink-0 snap-start">
+          <div key={t.id} className="w-[280px] sm:w-[350px] max-w-[82vw] shrink-0 snap-start">
             <TreatmentCard
               name={t.name}
               slug={t.slug}

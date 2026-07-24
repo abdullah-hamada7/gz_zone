@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "GZ’ZONE - Massage & Cupping Therapy",
     images: [
       {
-        url: "/images/all-you-need-is-a-portable.jpg",
+        url: "/images/gz-zone-a-zone-without.jpg",
         width: 1200,
         height: 630,
         alt: "GZ’ZONE Mobile Massage & Cupping Setup in Porto",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "GZ’ZONE - Massage & Cupping Therapy",
     description:
       "Professional mobile massage & cupping therapy services in Porto. Delivered directly to your home or hotel.",
-    images: ["/images/all-you-need-is-a-portable.jpg"],
+    images: ["/images/gz-zone-a-zone-without.jpg"],
   },
   verification: {
     google: ["mh9BZNKNnpUNvTsc4S6i9NMXRvi8zPpyE0upyljJex8", "xSKupBgNXZubwUyNFpZJS6Ulq4MZ-fkjNSliGlUitdw"],
@@ -66,10 +66,9 @@ const jsonLd = {
   name: "GZ’ZONE - Massage & Cupping Therapy",
   url: "https://gzzone.vercel.app",
   logo: "https://gzzone.vercel.app/images/logo.jpg",
-  image: "https://gzzone.vercel.app/images/all-you-need-is-a-portable.jpg",
+  image: "https://gzzone.vercel.app/images/gz-zone-a-zone-without.jpg",
   description:
     "Professional mobile massage & cupping therapy in Porto. High quality massage treatments delivered directly to your home, hotel, or apartment.",
-
   priceRange: "€€",
   address: {
     "@type": "PostalAddress",
@@ -116,7 +115,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans" suppressHydrationWarning>
+      <body className="flex min-h-full flex-col font-sans overflow-x-hidden" suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

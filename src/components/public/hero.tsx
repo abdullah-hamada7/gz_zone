@@ -15,7 +15,7 @@ interface HeroContent {
 }
 
 const HERO_IMAGES = [
-  { src: "/images/all-you-need-is-a-portable.jpg", alt: "Portable massage setup delivered to your location" },
+  { src: "/images/gz-zone-a-zone-without.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" },
   { src: "/images/aromatherapy-massage.jpg", alt: "Aromatherapy massage treatment" },
   { src: "/images/caption.jpg", alt: "Gz Zone massage session" },
   { src: "/images/cupping-therapy-hijama.jpg", alt: "Cupping therapy session" },
@@ -26,7 +26,6 @@ const HERO_IMAGES = [
   { src: "/images/essential-oils.jpg", alt: "Essential oils for massage" },
   { src: "/images/essential-oils (1).jpg", alt: "Aromatherapy essential oils" },
   { src: "/images/essential-oils (2).jpg", alt: "Therapeutic essential oils" },
-  { src: "/images/gz-zone-a-zone-without.jpg", alt: "Gz Zone massage treatment" },
   { src: "/images/gz-zone-massage-cupping.jpg", alt: "Massage and cupping combination therapy" },
   { src: "/images/gz-zone-massage-cupping (1).jpg", alt: "Massage cupping therapy session" },
   { src: "/images/gz-zone-massage-cupping (2).jpg", alt: "Therapeutic cupping massage" },
@@ -60,42 +59,42 @@ export function Hero({ content }: { content?: HeroContent }) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
+    <section className="relative overflow-hidden w-full">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-24">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left w-full">
             {content?.subtitle && (
-              <p className="mb-4 text-sm font-semibold tracking-[0.2em] text-muted-foreground uppercase">
+              <p className="mb-3 text-xs sm:text-sm font-semibold tracking-wider text-muted-foreground uppercase break-words">
                 {content.subtitle}
               </p>
             )}
 
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl break-words">
               {content?.title || "Professional Massage. Delivered to You."}
             </h1>
 
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground">
               {content?.description ||
                 "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you."}
             </p>
 
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
-              <WhatsAppButton size="lg" className="px-8 py-6 text-base" />
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+              <WhatsAppButton size="lg" className="w-full sm:w-auto px-8 py-6 text-base" />
               <Link
                 href="/treatments"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto")}
               >
                 Explore Treatments
               </Link>
             </div>
 
             <p className="mt-6 flex items-center justify-center gap-1.5 text-sm text-muted-foreground lg:justify-start">
-              <MapPin className="size-4" />
-              Serving Porto and surrounding areas
+              <MapPin className="size-4 shrink-0" />
+              <span>Serving Porto and surrounding areas</span>
             </p>
           </div>
 
-          <div className="relative">
+          <div className="relative w-full max-w-md mx-auto lg:max-w-none">
             <div className="relative aspect-square overflow-hidden rounded-2xl">
               {HERO_IMAGES.map((img, i) => (
                 <Image
@@ -109,7 +108,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                 />
               ))}
             </div>
-            <div className="mt-3 flex justify-center gap-2">
+            <div className="mt-3 flex justify-center gap-1.5 flex-wrap px-2">
               {HERO_IMAGES.map((_, i) => (
                 <button
                   key={i}
