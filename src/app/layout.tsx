@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     description:
       "Professional mobile massage services in Porto. I bring the massage table to you.",
   },
+  verification: {
+    google: "xSKupBgNXZubwUyNFpZJS6Ulq4MZ-fkjNSliGlUitdw",
+  },
 };
 
 export default function RootLayout({
