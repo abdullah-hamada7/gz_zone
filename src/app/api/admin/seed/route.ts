@@ -11,7 +11,7 @@ import {
 } from "@/data";
 
 export async function POST() {
-  const supabase = await createServiceClient();
+  const supabase = createServiceClient();
   const results: Record<string, unknown> = {};
 
   const treatmentIdMap: Record<string, string> = {};

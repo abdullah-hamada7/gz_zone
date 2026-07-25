@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
-  const supabase = await createServiceClient();
+  const supabase = createServiceClient();
   const formData = await request.formData();
   const file = formData.get("file") as File;
 

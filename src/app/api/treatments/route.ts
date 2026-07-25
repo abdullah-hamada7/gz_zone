@@ -3,7 +3,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 
 export async function GET() {
   try {
-    const supabase = await createServiceClient();
+    const supabase = createServiceClient();
     const { data, error } = await supabase
       .from("treatments")
       .select("id, name, slug, short_description, category")
