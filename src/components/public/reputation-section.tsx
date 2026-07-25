@@ -46,9 +46,10 @@ export function ReputationSection({
                   href={r.profile_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-sm font-medium text-primary underline-offset-2 hover:underline"
+                  aria-label={`Read reviews on ${r.platform}`}
+                  className="mt-3 inline-flex min-h-[44px] items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-primary underline-offset-2 hover:bg-muted/80 hover:underline border border-primary/20"
                 >
-                  Read Reviews →
+                  Read Reviews on {r.platform} →
                 </a>
               )}
             </div>

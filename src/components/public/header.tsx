@@ -41,7 +41,7 @@ export function Header() {
         </nav>
 
         <button
-          className="md:hidden"
+          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -51,12 +51,12 @@ export function Header() {
 
       {open && (
         <div className="border-t md:hidden">
-          <nav className="flex flex-col gap-4 px-4 py-6">
+          <nav className="flex flex-col gap-2 px-4 py-4">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground"
+                className="flex min-h-[44px] items-center text-base font-medium text-muted-foreground hover:text-foreground"
                 onClick={() => setOpen(false)}
               >
                 {link.label}

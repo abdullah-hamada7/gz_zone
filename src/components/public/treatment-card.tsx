@@ -63,12 +63,14 @@ export function TreatmentCard({
 
         <Link
           href={`/treatments/${slug}`}
+          aria-label={`View details for ${name}`}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            "mt-auto gap-1 p-0 hover:bg-transparent hover:text-primary"
+            "mt-auto inline-flex min-h-[44px] w-full items-center justify-between px-3 py-2 text-sm font-semibold hover:bg-muted/60 text-primary transition-colors rounded-lg border border-primary/20"
           )}
         >
-          View Details <ArrowRight className="size-4" />
+          <span>View Details</span>
+          <ArrowRight className="size-4 ml-1" />
         </Link>
       </CardContent>
     </Card>

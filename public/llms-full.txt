@@ -1,0 +1,66 @@
+# GZ’ZONE - Mobile Massage & Cupping Therapy Porto (Full Specification)
+
+> Complete reference for AI agents, search engines, and automated assistants regarding GZ’ZONE mobile bodywork & massage services in Porto.
+
+## Business Overview
+- **Business Name:** GZ’ZONE - Massage & Cupping Therapy
+- **Practitioner:** Omar Elgazzar (ISSA-CFT Certified Bodywork & Massage Therapist)
+- **Service Type:** Mobile / In-Room Massage Therapy & Cupping Therapy
+- **Primary Service Areas:** Porto, Vila Nova de Gaia, Matosinhos, and surrounding Porto Metropolitan Area.
+- **Service Locations:** Private homes, hotel rooms, vacation apartments, Airbnb rentals.
+- **Booking Method:** Direct via WhatsApp (+351 913 675 810).
+- **Official Website:** https://gzzone.vercel.app
+
+## Treatments & Pricing Catalog
+
+1. **Massage Therapy**
+   - Duration / Price: 60 min (€55) | 90 min (€75) | 120 min (€95)
+   - Description: Full-body relaxation massage to ease tension, promote deep relaxation, and restore overall wellbeing.
+
+2. **Deep Tissue Massage**
+   - Duration / Price: 60 min (€40) | 90 min (€60) | 120 min (€80)
+   - Description: Focused deep muscle work targeting chronic tightness, trigger points, and muscle adhesions.
+
+3. **Facial Massage — Face, Neck & Head**
+   - Duration / Price: 45 min (€40) | 60 min (€55)
+   - Description: Soothing facial massage releasing jaw clenching, tension headaches, and facial stiffness.
+
+4. **Hands, Feet & Ears Massage (Reflexology)**
+   - Duration / Price: 60 min (€55) | 90 min (€75)
+   - Description: Targeted reflexology pressure point stimulation across hands, feet, and ears.
+
+5. **Back, Neck, Shoulders & Head Massage**
+   - Duration / Price: 60 min (€55) | 90 min (€75)
+   - Description: Focused upper body tension relief for office workers, frequent travelers, and posture stress.
+
+6. **Sports Massage**
+   - Duration / Price: 60 min (€55) | 90 min (€75) | 120 min (€95)
+   - Description: Performance-focused bodywork combining deep tissue techniques, trigger point therapy, and assisted stretching.
+
+7. **Cellulite Treatment**
+   - Duration / Price: 60 min (€75) | 90 min (€100)
+   - Description: Specialized aesthetics treatment designed to smooth skin texture and stimulate deep circulation.
+
+8. **Anti-Cellulite Cupping Treatment**
+   - Duration / Price: 60 min (€55) | 90 min (€75)
+   - Description: Synergistic anti-cellulite massage combined with dry and moving cupping therapy.
+
+9. **Anti-Cellulite Massage**
+   - Duration / Price: 60 min (€55) | 90 min (€75)
+   - Description: Lymphatic drainage-focused massage technique designed to reduce fluid retention.
+
+10. **Dry Cupping Therapy**
+    - Duration / Price: 45 min (€40) | 60 min (€55)
+    - Description: Traditional cupping using suction cups to release tight fascia, boost micro-circulation, and relieve localized pain.
+
+11. **Reflexology**
+    - Duration / Price: 60 min (€40) | 90 min (€60)
+    - Description: Holistic foot and hand reflexology targeting internal energy paths and organ health.
+
+## Logistics & Client Requirements
+- **Space Needed:** Approximately 2.5m x 1.5m floor space to set up the portable massage table.
+- **Equipment Provided:** Professional portable massage table, fresh sterile linens, therapeutic essential oils, and cupping gear.
+- **Payment Accepted:** Cash, Bank Transfer, or MB Way upon treatment completion.
+
+## Verified Credentials & Social Proof
+- 5.0 Star average rating across 200+ verified client reviews on Google Maps, WhatClinic, Tripadvisor, and Wanderlog.

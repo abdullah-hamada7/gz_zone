@@ -17,19 +17,19 @@ export function Footer() {
 
           <div>
             <h3 className="mb-3 text-sm font-semibold">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-1 text-sm text-muted-foreground">
               <li>
-                <Link href="/treatments" className="hover:text-foreground">
+                <Link href="/treatments" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                   Treatments & Prices
                 </Link>
               </li>
               <li>
-                <a href="/#about" className="hover:text-foreground">
+                <a href="/#about" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                   About
                 </a>
               </li>
               <li>
-                <a href="/#faq" className="hover:text-foreground">
+                <a href="/#faq" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                   FAQ
                 </a>
               </li>
@@ -38,19 +38,21 @@ export function Footer() {
 
           <div>
             <h3 className="mb-3 text-sm font-semibold">Contact</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-1 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
-                <MessageCircle className="size-4" />
+                <MessageCircle className="size-4 shrink-0" />
                 <a
                   href="https://wa.me/351913675810"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Contact GZ ZONE via WhatsApp at +351 913 675 810"
+                  className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground"
                 >
                   +351 913 675 810
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <Globe className="size-4" />
+              <li className="flex items-center gap-2 py-2 min-h-[44px]">
+                <Globe className="size-4 shrink-0" />
                 <span>Porto, Portugal</span>
               </li>
               <li className="flex items-center gap-2">
@@ -71,6 +73,8 @@ export function Footer() {
                   href="https://www.instagram.com/gz.zone/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Follow GZ ZONE on Instagram @gz.zone"
+                  className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground"
                 >
                   @gz.zone
                 </a>
@@ -84,11 +88,16 @@ export function Footer() {
           <div className="flex gap-4">
             <Link
               href="/privacy-policy"
-              className="hover:text-foreground"
+              className="inline-flex min-h-[44px] items-center px-2 py-2 hover:text-foreground"
+              aria-label="Read Privacy Policy"
             >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-foreground">
+            <Link
+              href="/terms"
+              className="inline-flex min-h-[44px] items-center px-2 py-2 hover:text-foreground"
+              aria-label="Read Terms of Service"
+            >
               Terms
             </Link>
           </div>

@@ -45,7 +45,7 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
       {canScrollLeft && (
         <button
           onClick={() => scroll("left")}
-          className="absolute -left-4 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border bg-background p-2 shadow-md transition-colors hover:bg-muted sm:flex"
+          className="absolute -left-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
           aria-label="Previous treatments"
         >
           <ChevronLeft className="size-5" />
@@ -54,7 +54,7 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
       {canScrollRight && (
         <button
           onClick={() => scroll("right")}
-          className="absolute -right-4 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border bg-background p-2 shadow-md transition-colors hover:bg-muted sm:flex"
+          className="absolute -right-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
           aria-label="Next treatments"
         >
           <ChevronRight className="size-5" />

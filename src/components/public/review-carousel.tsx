@@ -42,29 +42,33 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
 
       <button
         onClick={prev}
-        className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full border bg-background p-1.5 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+        className="absolute top-1/2 left-0 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
         aria-label="Previous review"
       >
         <ChevronLeft className="size-5" />
       </button>
       <button
         onClick={next}
-        className="absolute top-1/2 right-0 -translate-y-1/2 rounded-full border bg-background p-1.5 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+        className="absolute top-1/2 right-0 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
         aria-label="Next review"
       >
         <ChevronRight className="size-5" />
       </button>
 
-      <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-6 flex flex-wrap justify-center gap-1">
         {reviews.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`size-2 rounded-full transition-colors ${
-              i === current ? "bg-foreground" : "bg-muted-foreground/30"
-            }`}
+            className="flex min-h-[36px] min-w-[36px] items-center justify-center p-2 cursor-pointer"
             aria-label={`Go to review ${i + 1}`}
-          />
+          >
+            <span
+              className={`size-2.5 rounded-full transition-colors ${
+                i === current ? "bg-foreground" : "bg-muted-foreground/30"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </div>

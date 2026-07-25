@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { MapPin, MessageCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { buttonVariants, Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -63,9 +63,11 @@ export function Hero({ content }: { content?: HeroContent }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => (i + 1) % HERO_IMAGES.length), 4000);
+    const timer = setInterval(() => setIndex((i) => (i + 1) % HERO_IMAGES.length), 4500);
     return () => clearInterval(timer);
   }, []);
+
+  const currentImage = HERO_IMAGES[index];
 
   return (
     <section className="relative overflow-hidden w-full">
@@ -93,7 +95,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                   render={
                     <Button
                       size="lg"
-                      className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer"
+                      className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer min-h-[48px]"
                     >
                       <MessageCircle className="size-5 shrink-0" />
                       <span>Book via WhatsApp</span>
@@ -119,7 +121,8 @@ export function Hero({ content }: { content?: HeroContent }) {
                         key={t.id}
                         href={`/treatments/${t.slug}`}
                         onClick={() => setDialogOpen(false)}
-                        className="flex items-center justify-between rounded-lg border bg-muted/30 p-3 text-left transition-colors hover:bg-muted/70 hover:border-primary/50"
+                        aria-label={`Select treatment ${t.name}`}
+                        className="flex items-center justify-between rounded-lg border bg-muted/30 p-3 text-left transition-colors hover:bg-muted/70 hover:border-primary/50 min-h-[44px]"
                       >
                         <div>
                           <p className="font-semibold text-foreground text-sm">{t.name}</p>
@@ -134,7 +137,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                     <Link
                       href="/treatments"
                       onClick={() => setDialogOpen(false)}
-                      className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full text-center")}
+                      className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full text-center min-h-[44px]")}
                     >
                       Browse All Treatments & Prices →
                     </Link>
@@ -144,7 +147,7 @@ export function Hero({ content }: { content?: HeroContent }) {
 
               <Link
                 href="/treatments"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto px-8 py-6 text-base")}
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto px-8 py-6 text-base min-h-[48px]")}
               >
                 Explore Treatments
               </Link>
@@ -157,28 +160,37 @@ export function Hero({ content }: { content?: HeroContent }) {
           </div>
 
           <div className="relative w-full max-w-md mx-auto lg:max-w-none">
-            <div className="relative aspect-square overflow-hidden rounded-2xl">
-              {HERO_IMAGES.map((img, i) => (
-                <Image
-                  key={img.src}
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className={`object-cover transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0"}`}
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={i === 0}
-                />
-              ))}
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/20">
+              <Image
+                key={currentImage.src}
+                src={currentImage.src}
+                alt={currentImage.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority={index === 0}
+              />
             </div>
-            <div className="mt-3 flex justify-center gap-1.5 flex-wrap px-2">
-              {HERO_IMAGES.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  className={`size-2 rounded-full transition-colors ${i === index ? "bg-foreground" : "bg-muted-foreground/30"}`}
-                  aria-label={`Go to image ${i + 1}`}
-                />
-              ))}
+            <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
+              <button
+                onClick={() => setIndex((i) => (i - 1 + HERO_IMAGES.length) % HERO_IMAGES.length)}
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+
+              <span className="text-xs font-semibold text-muted-foreground">
+                {index + 1} / {HERO_IMAGES.length}
+              </span>
+
+              <button
+                onClick={() => setIndex((i) => (i + 1) % HERO_IMAGES.length)}
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                aria-label="Next image"
+              >
+                <ChevronRight className="size-5" />
+              </button>
             </div>
           </div>
         </div>
