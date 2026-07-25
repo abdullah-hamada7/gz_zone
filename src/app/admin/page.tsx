@@ -1,7 +1,7 @@
-import { createServiceClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
-  const supabase = await createServiceClient();
+  const supabase = createAdminClient();
 
   const tables = [
     "treatments",
