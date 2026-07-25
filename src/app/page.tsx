@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { Header } from "@/components/public/header";
 import { Hero } from "@/components/public/hero";
 import { TrustBar } from "@/components/public/trust-bar";
@@ -8,8 +9,11 @@ import { Footer } from "@/components/public/footer";
 import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
-import { FAQSection } from "@/components/public/faq-section";
 import { HERO, TREATMENTS, FAQS, PLATFORM_RATINGS, CLIENT_REVIEWS, getTreatmentPrices } from "@/data";
+
+const FAQSection = dynamic(() => import("@/components/public/faq-section").then((m) => m.FAQSection), {
+  ssr: true,
+});
 
 export default function HomePage() {
   const treatmentPrices = getTreatmentPrices();
