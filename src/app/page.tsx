@@ -9,6 +9,7 @@ import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
 import { FinalCTA } from "@/components/public/final-cta";
+import { TestimonialsSection } from "@/components/public/testimonials-section";
 import {
   getTreatments,
   getFAQs,
@@ -55,9 +56,9 @@ export default async function HomePage() {
         <ReputationSection
           ratings={ratings}
           reviews={reviews}
-          testimonials={testimonials}
           content={siteContent.reputation_section}
         />
+        <TestimonialsSection testimonials={testimonials} />
 
         <section id="treatments" className="py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">

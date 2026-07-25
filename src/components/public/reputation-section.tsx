@@ -1,6 +1,5 @@
 import { Star } from "lucide-react";
 import { ReviewCarousel } from "./review-carousel";
-import type { Testimonial } from "@/types";
 
 interface PlatformRating {
   platform: string;
@@ -19,26 +18,15 @@ interface Review {
 export function ReputationSection({
   ratings,
   reviews,
-  testimonials = [],
   content,
 }: {
   ratings: PlatformRating[];
   reviews: Review[];
-  testimonials?: Testimonial[];
   content?: Record<string, unknown>;
 }) {
   const heading = (content?.heading as string) ?? "Trusted by Our Clients";
   const subheading = (content?.subheading as string) ?? "What Our Clients Say";
   const reviewLabel = (content?.reviewLabel as string) ?? "Read Reviews on";
-
-  const formattedTestimonials: Review[] = testimonials.map((t) => ({
-    customer_name: t.location ? `${t.customer_name} (${t.location})` : t.customer_name,
-    content: t.content,
-    rating: 5,
-    platform: "Featured Client",
-  }));
-
-  const allReviews = [...formattedTestimonials, ...reviews];
 
   return (
     <section className="border-y bg-muted/30 py-16">
@@ -73,12 +61,12 @@ export function ReputationSection({
           ))}
         </div>
 
-        {allReviews.length > 0 && (
+        {reviews.length > 0 && (
           <div className="mt-12 border-t pt-12">
             <p className="mb-8 text-sm font-semibold tracking-wider text-muted-foreground uppercase">
               {subheading}
             </p>
-            <ReviewCarousel reviews={allReviews} />
+            <ReviewCarousel reviews={reviews} />
           </div>
         )}
       </div>
