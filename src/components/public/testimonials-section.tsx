@@ -2,7 +2,17 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import Image from "next/image";
 import type { Testimonial } from "@/types";
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
 
 export function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
   const [current, setCurrent] = useState(0);
@@ -39,6 +49,23 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
           </div>
 
           <div className="min-h-[200px] rounded-xl border bg-card p-8 pt-12 text-center shadow-sm">
+            {t.customer_photo_url ? (
+              <div className="-mt-16 mb-4 flex justify-center">
+                <Image
+                  src={t.customer_photo_url}
+                  alt={t.customer_name}
+                  width={64}
+                  height={64}
+                  className="size-16 rounded-full border-4 border-background object-cover"
+                />
+              </div>
+            ) : (
+              <div className="-mt-16 mb-4 flex justify-center">
+                <div className="flex size-16 items-center justify-center rounded-full border-4 border-background bg-primary/10 text-sm font-bold text-primary">
+                  {getInitials(t.customer_name)}
+                </div>
+              </div>
+            )}
             <div className="mb-4 flex justify-center gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="size-5 fill-[#B45309] text-[#B45309]" />

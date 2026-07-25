@@ -6,6 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -13,7 +14,7 @@ export default function EditTestimonialPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [customerName, setCustomerName] = useState("");
-  const [customerPhotoUrl, setCustomerPhotoUrl] = useState("");
+  const [customerPhotoUrl, setCustomerPhotoUrl] = useState<string | null>(null);
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,7 @@ export default function EditTestimonialPage() {
       .then((res) => res.json())
       .then((data) => {
         setCustomerName(data.customer_name || "");
-        setCustomerPhotoUrl(data.customer_photo_url || "");
+        setCustomerPhotoUrl(data.customer_photo_url || null);
         setContent(data.content || "");
         setLocation(data.location || "");
         setLoading(false);
@@ -70,8 +71,8 @@ export default function EditTestimonialPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="customer_photo_url">Photo URL</Label>
-          <Input id="customer_photo_url" type="url" value={customerPhotoUrl} onChange={(e) => setCustomerPhotoUrl(e.target.value)} />
+          <Label>Photo</Label>
+          <ImageUpload value={customerPhotoUrl} onChange={setCustomerPhotoUrl} />
         </div>
 
         <div className="space-y-2">

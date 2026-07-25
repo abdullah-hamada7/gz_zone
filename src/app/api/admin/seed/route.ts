@@ -4,7 +4,6 @@ import {
   TREATMENTS,
   DURATIONS,
   FAQS,
-  CLIENT_REVIEWS,
   PLATFORM_RATINGS,
   TESTIMONIALS,
   SITE_CONTENT_SEED,
@@ -101,26 +100,6 @@ export async function POST() {
     results.faqs = count;
   } else {
     results.faqs = `skipped (${existingFaqs.length} exist)`;
-  }
-
-  const { data: existingReviews } = await supabase.from("reviews").select("id");
-  if (!existingReviews || existingReviews.length === 0) {
-    let count = 0;
-    for (let i = 0; i < CLIENT_REVIEWS.length; i++) {
-      const r = CLIENT_REVIEWS[i];
-      const { error } = await supabase.from("reviews").insert({
-        customer_name: r.customer_name,
-        content: r.content,
-        rating: r.rating,
-        platform: r.platform,
-        external_url: r.external_url,
-        sort_order: i,
-      });
-      if (!error) count++;
-    }
-    results.reviews = count;
-  } else {
-    results.reviews = `skipped (${existingReviews.length} exist)`;
   }
 
   const { data: existingRatings } = await supabase.from("platform_ratings").select("id");

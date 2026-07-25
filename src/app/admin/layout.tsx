@@ -26,7 +26,7 @@ const navItems = [
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-  { label: "Reviews", href: "/admin/reviews", icon: Star },
+
   { label: "Platform Ratings", href: "/admin/platform-ratings", icon: BarChart3 },
   { label: "Testimonials", href: "/admin/testimonials", icon: Quote },
   { label: "Site Content", href: "/admin/site-content", icon: FileText },

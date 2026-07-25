@@ -8,13 +8,11 @@ import { Footer } from "@/components/public/footer";
 import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
-import { FinalCTA } from "@/components/public/final-cta";
 import { TestimonialsSection } from "@/components/public/testimonials-section";
 import {
   getTreatments,
   getFAQs,
   getPlatformRatings,
-  getReviews,
   getTreatmentPrices,
   getAllSiteContent,
   getGalleryImages,
@@ -29,11 +27,10 @@ const FAQSection = dynamicImport(() => import("@/components/public/faq-section")
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [treatments, faqs, ratings, reviews, prices, siteContent, galleryImages, testimonials] = await Promise.all([
+  const [treatments, faqs, ratings, prices, siteContent, galleryImages, testimonials] = await Promise.all([
     getTreatments(),
     getFAQs(),
     getPlatformRatings(),
-    getReviews(),
     getTreatmentPrices(),
     getAllSiteContent(),
     getGalleryImages(),
@@ -86,7 +83,6 @@ export default async function HomePage() {
         <section id="faq">
           <FAQSection faqs={faqs} content={siteContent.faq_section} />
         </section>
-        <FinalCTA content={siteContent.final_cta} />
       </main>
       <Footer content={siteContent.footer} />
     </>

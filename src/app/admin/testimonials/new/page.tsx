@@ -6,13 +6,14 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import Link from "next/link";
 
 export default function NewTestimonialPage() {
   const router = useRouter();
   const [customerName, setCustomerName] = useState("");
-  const [customerPhotoUrl, setCustomerPhotoUrl] = useState("");
+  const [customerPhotoUrl, setCustomerPhotoUrl] = useState<string | null>(null);
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [saving, setSaving] = useState(false);
@@ -53,8 +54,8 @@ export default function NewTestimonialPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="customer_photo_url">Photo URL (optional)</Label>
-          <Input id="customer_photo_url" type="url" value={customerPhotoUrl} onChange={(e) => setCustomerPhotoUrl(e.target.value)} placeholder="https://" />
+          <Label>Photo</Label>
+          <ImageUpload value={customerPhotoUrl} onChange={setCustomerPhotoUrl} />
         </div>
 
         <div className="space-y-2">

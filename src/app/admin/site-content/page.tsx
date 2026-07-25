@@ -29,9 +29,7 @@ const sections: SectionConfig[] = [
   { key: "key_benefits", label: "Key Benefits", description: "Benefits section on treatment pages", category: "treatments" },
   { key: "what_to_expect", label: "What to Expect", description: "What to expect section on treatment pages", category: "treatments" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
-  { key: "certifications_section", label: "Certifications Section", description: "Certification display (not used yet)", category: "other" },
-  { key: "service_areas_section", label: "Service Areas", description: "Location coverage (not used yet)", category: "other" },
-  { key: "gallery_section", label: "Gallery Section", description: "Gallery heading (not used yet)", category: "other" },
+  { key: "certifications_section", label: "Certifications Section", description: "Certification display on homepage", category: "homepage" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
 ];

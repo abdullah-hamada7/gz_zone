@@ -31,42 +31,6 @@ interface Treatment {
   category: string;
 }
 
-const HERO_IMAGES = [
-  { src: "/images/hero-lcp.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" },
-  { src: "/images/aromatherapy-massage.jpg", alt: "Aromatherapy massage treatment" },
-  { src: "/images/caption.jpg", alt: "Gz Zone massage session" },
-  { src: "/images/cupping-therapy-hijama.jpg", alt: "Cupping therapy session" },
-  { src: "/images/cupping-therapy-hijama (1).jpg", alt: "Cupping therapy treatment" },
-  { src: "/images/cupping-therapy-hijama (2).jpg", alt: "Cupping therapy application" },
-  { src: "/images/cupping-therapy-hijama (3).jpg", alt: "Dry cupping therapy" },
-  { src: "/images/deep-tissue-massage.jpg", alt: "Deep tissue massage therapy" },
-  { src: "/images/essential-oils.jpg", alt: "Essential oils for massage" },
-  { src: "/images/essential-oils (1).jpg", alt: "Aromatherapy essential oils" },
-  { src: "/images/essential-oils (2).jpg", alt: "Therapeutic essential oils" },
-  { src: "/images/gz-zone-massage-cupping.jpg", alt: "Massage and cupping combination therapy" },
-  { src: "/images/gz-zone-massage-cupping (1).jpg", alt: "Massage cupping therapy session" },
-  { src: "/images/gz-zone-massage-cupping (2).jpg", alt: "Therapeutic cupping massage" },
-  { src: "/images/gz-zone-massage-cupping (3).jpg", alt: "Cupping massage treatment" },
-  { src: "/images/gz-zone-massage-cupping (4).jpg", alt: "Massage therapy with cupping" },
-  { src: "/images/gz-zone-massage-cupping (5).jpg", alt: "Professional cupping massage" },
-  { src: "/images/gz-zone-massage-cupping (6).jpg", alt: "Deep tissue cupping therapy" },
-  { src: "/images/gz-zone-massage-cupping (7).jpg", alt: "Full body cupping massage" },
-  { src: "/images/k6qFHE9onOx2dEvKWmPALwN3vZmI2Vu0.jpeg", alt: "Massage treatment session" },
-  { src: "/images/KT90eNJhhFbuPBwtpTdqxM52GeKdkWP7.jpeg", alt: "Professional massage therapy" },
-  { src: "/images/MBPcXB9oIEHuzl78FFmD0JxeEzOeVj5W.jpeg", alt: "Relaxing massage session" },
-  { src: "/images/omar-elgazzar.jpg", alt: "Omar Elgazzar massage therapist" },
-  { src: "/images/swedish-massage.jpg", alt: "Relaxing Swedish massage" },
-  { src: "/images/trigger-points-massage.jpg", alt: "Trigger points massage therapy" },
-  { src: "/images/trigger-points-massage (1).jpg", alt: "Trigger point release therapy" },
-  { src: "/images/certs.jpg", alt: "Professional certifications and credentials" },
-  { src: "/images/chatgpt_image_may_22_2026_at_08_16_19_pm.jpg", alt: "Massage therapy session" },
-  { src: "/images/img_0344.jpg", alt: "Relaxing massage treatment" },
-  { src: "/images/img_8888.jpg", alt: "Massage therapy setup" },
-  { src: "/images/photo20260427212031.jpg", alt: "Professional massage session in Porto" },
-  { src: "/images/untitled_design.jpg", alt: "Gz Zone massage experience" },
-  { src: "/images/what_is_gzzone_1.jpg", alt: "Professional mobile massage setup in Porto" },
-];
-
 export function Hero({
   content,
   galleryImages,
@@ -74,13 +38,12 @@ export function Hero({
   content?: HeroContent;
   galleryImages?: GalleryImage[];
 }) {
-  const images =
-    galleryImages && galleryImages.length > 0
-      ? galleryImages.map((img) => ({
-          src: img.public_url,
-          alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
-        }))
-      : HERO_IMAGES;
+  const images = (galleryImages && galleryImages.length > 0)
+    ? galleryImages.map((img) => ({
+        src: img.public_url,
+        alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
+      }))
+    : [{ src: "/images/hero-lcp.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" }];
 
   const [index, setIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -207,7 +170,7 @@ export function Hero({
             </div>
             <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
               <button
-                onClick={() => setIndex((i) => (i - 1 + HERO_IMAGES.length) % HERO_IMAGES.length)}
+                onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
                 className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
                 aria-label="Previous image"
               >
@@ -215,11 +178,11 @@ export function Hero({
               </button>
 
               <span className="text-xs font-semibold text-muted-foreground">
-                {index + 1} / {HERO_IMAGES.length}
+                {index + 1} / {images.length}
               </span>
 
               <button
-                onClick={() => setIndex((i) => (i + 1) % HERO_IMAGES.length)}
+                onClick={() => setIndex((i) => (i + 1) % images.length)}
                 className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
                 aria-label="Next image"
               >
