@@ -10,17 +10,16 @@ interface GalleryImage {
   title: string | null;
 }
 
-export function GallerySection({ images }: { images: GalleryImage[] }) {
+export function GallerySection({ images, content }: { images: GalleryImage[]; content?: Record<string, unknown> }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const heading = content?.heading as string | undefined;
 
   if (images.length === 0) return null;
 
   return (
     <section className="py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">
-          Experience Gallery
-        </h2>
+        {heading && <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">{heading}</h2>}
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((img, i) => (

@@ -98,6 +98,20 @@ export async function getSiteContent(key: string): Promise<Record<string, unknow
   }
 }
 
+export async function getAllSiteContent(): Promise<Record<string, Record<string, unknown>>> {
+  try {
+    const supabase = await db();
+    const { data } = await supabase.from("site_content").select("section_key, content");
+    const map: Record<string, Record<string, unknown>> = {};
+    for (const row of data || []) {
+      map[row.section_key] = row.content as Record<string, unknown>;
+    }
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 export async function getTreatmentPrices(): Promise<Record<string, number>> {
   try {
     const treatments = await getTreatments();

@@ -10,8 +10,9 @@ interface FAQ {
   category: string | null;
 }
 
-export function FAQSection({ faqs, hideHeading }: { faqs: FAQ[]; hideHeading?: boolean }) {
+export function FAQSection({ faqs, hideHeading, content }: { faqs: FAQ[]; hideHeading?: boolean; content?: Record<string, unknown> }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const heading = content?.heading as string | undefined;
 
   if (faqs.length === 0) return null;
 
@@ -20,10 +21,8 @@ export function FAQSection({ faqs, hideHeading }: { faqs: FAQ[]; hideHeading?: b
   return (
     <section className="py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        {!hideHeading && (
-          <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">
-            Frequently Asked Questions
-          </h2>
+        {!hideHeading && heading && (
+          <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">{heading}</h2>
         )}
 
         {categories.length > 1 && (
@@ -41,14 +40,9 @@ export function FAQSection({ faqs, hideHeading }: { faqs: FAQ[]; hideHeading?: b
 
         <div className="space-y-2">
           {faqs.map((faq, i) => (
-            <div
-              key={i}
-              className="rounded-lg border bg-background"
-            >
+            <div key={i} className="rounded-lg border bg-background">
               <button
-                onClick={() =>
-                  setOpenIndex(openIndex === i ? null : i)
-                }
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="flex w-full items-center justify-between px-5 py-4 text-left font-medium"
               >
                 {faq.question}

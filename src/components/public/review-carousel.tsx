@@ -54,8 +54,6 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
       >
         <ChevronRight className="size-5" />
       </button>
-
-
     </div>
   );
 }

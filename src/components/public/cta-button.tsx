@@ -8,18 +8,22 @@ import { MessageCircle } from "lucide-react";
 interface CTAButtonProps {
   size?: "default" | "sm" | "lg";
   className?: string;
-  children?: React.ReactNode;
+  text?: string;
+  treatment?: string;
 }
 
 export function WhatsAppButton({
   size = "lg",
   className,
-  children,
+  text,
+  treatment,
 }: CTAButtonProps) {
   const { getUrl, trackAndOpen } = useWhatsApp();
 
+  if (!text) return null;
+
   const handleClick = () => {
-    const url = getUrl({ treatment: "General inquiry" });
+    const url = getUrl({ treatment: treatment || "General inquiry" });
     trackAndOpen(url);
   };
 
@@ -33,7 +37,7 @@ export function WhatsAppButton({
       )}
     >
       <MessageCircle className="size-5" />
-      {children || "Book via WhatsApp"}
+      {text}
     </Button>
   );
 }

@@ -7,8 +7,9 @@ import {
   CLIENT_REVIEWS,
   PLATFORM_RATINGS,
   TESTIMONIALS,
-  HERO,
+  SITE_CONTENT_SEED,
 } from "@/data";
+import type { SiteContentKey } from "@/data";
 
 export async function POST() {
   const supabase = createServiceClient();
@@ -158,16 +159,21 @@ export async function POST() {
     results.testimonials = `skipped (${existingTestimonials.length} exist)`;
   }
 
-  const { data: existingSiteContent } = await supabase.from("site_content").select("id");
-  if (!existingSiteContent || existingSiteContent.length === 0) {
-    const { error } = await supabase.from("site_content").upsert({
-      section_key: "hero",
-      content: HERO as unknown as Record<string, unknown>,
-    });
-    results.site_content = error ? error.message : "seeded";
-  } else {
-    results.site_content = "skipped";
+  const { data: existingSiteContent } = await supabase.from("site_content").select("section_key");
+  const seededKeys = new Set((existingSiteContent || []).map((s: { section_key: string }) => s.section_key));
+
+  const entries = Object.entries(SITE_CONTENT_SEED) as [SiteContentKey, Record<string, unknown>][];
+  let seededCount = 0;
+  for (const [key, content] of entries) {
+    if (!seededKeys.has(key)) {
+      const { error } = await supabase.from("site_content").upsert({
+        section_key: key,
+        content,
+      });
+      if (!error) seededCount++;
+    }
   }
+  results.site_content = seededCount > 0 ? `seeded ${seededCount} sections` : `skipped (${seededKeys.size} exist)`;
 
   return NextResponse.json({ message: "Seed complete", results });
 }
