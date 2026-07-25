@@ -47,14 +47,6 @@ export function TreatmentBooking({
     trackAndOpen(url, "treatment_booking");
   };
 
-  const handleGAEvent = (action: string) => {
-    if (typeof window !== "undefined" && (window as any).gtag) {
-      (window as any).gtag("event", action, {
-        treatment: treatmentName,
-      });
-    }
-  };
-
   return (
     <div className="mt-10 rounded-lg border bg-muted/20 p-6">
       <h2 className="mb-6 text-xl font-semibold">Book This Treatment</h2>
@@ -67,7 +59,6 @@ export function TreatmentBooking({
               <button
                 key={d.id}
                 onClick={() => setSelectedDuration(d.minutes)}
-                onFocus={() => handleGAEvent("treatment_duration_select")}
                 className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
                   selectedDuration === d.minutes
                     ? "border-primary bg-primary text-primary-foreground"
@@ -121,7 +112,7 @@ export function TreatmentBooking({
 
       <button
         onClick={handleBook}
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[#20BD5A] sm:w-auto"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A8C4A] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[#167841] sm:w-auto"
       >
         Book via WhatsApp
       </button>

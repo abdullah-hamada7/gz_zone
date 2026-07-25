@@ -29,7 +29,7 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
     const el = scrollRef.current;
     if (!el) return;
     updateScrollState();
-    el.addEventListener("scroll", updateScrollState);
+    el.addEventListener("scroll", updateScrollState, { passive: true });
     return () => el.removeEventListener("scroll", updateScrollState);
   }, [treatments]);
 

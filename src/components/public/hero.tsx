@@ -95,7 +95,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                   render={
                     <Button
                       size="lg"
-                      className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer min-h-[48px]"
+                      className="w-full sm:w-auto bg-[#1A8C4A] hover:bg-[#167841] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer min-h-[48px]"
                     >
                       <MessageCircle className="size-5 shrink-0" />
                       <span>Book via WhatsApp</span>
@@ -104,7 +104,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                 />
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-[#25D366]/15 text-[#075E54]">
+                    <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-[#1A8C4A]/15 text-[#1A8C4A]">
                       <MessageCircle className="size-6" />
                     </div>
                     <DialogTitle className="text-center text-xl font-bold">

@@ -34,10 +34,7 @@ export function useWhatsApp() {
   );
 
   const trackAndOpen = useCallback(
-    (url: string, source?: string) => {
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "whatsapp_click", { source });
-      }
+    (url: string, _source?: string) => {
       window.open(url, "_blank", "noopener,noreferrer");
     },
     []

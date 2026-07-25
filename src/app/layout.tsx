@@ -117,8 +117,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preload" href="/images/hero-lcp.jpg" as="image" type="image/jpeg" fetchPriority="high" />
       </head>
       <body className="flex min-h-full flex-col font-sans overflow-x-hidden" suppressHydrationWarning>

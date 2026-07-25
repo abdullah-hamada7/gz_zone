@@ -30,7 +30,7 @@ export function WhatsAppButton({
       onClick={handleClick}
       size={size}
       className={cn(
-        "gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold",
+        "gap-2 bg-[#1A8C4A] hover:bg-[#167841] text-white font-semibold",
         className
       )}
     >

@@ -1,5 +1,3 @@
-"use client";
-
 import { Home, Heart, Briefcase, Clock } from "lucide-react";
 
 const benefits = [
