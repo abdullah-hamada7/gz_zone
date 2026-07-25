@@ -5,8 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
-import { WhatsAppButton } from "./cta-button";
-import { cn } from "@/lib/utils";
+
 
 export function Header() {
   const [open, setOpen] = useState(false);

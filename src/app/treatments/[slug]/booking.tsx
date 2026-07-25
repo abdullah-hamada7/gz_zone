@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { WhatsAppButton } from "@/components/public/cta-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -44,7 +43,7 @@ export function TreatmentBooking({
       location: location || undefined,
       notes: notes || undefined,
     });
-    trackAndOpen(url, "treatment_booking");
+    trackAndOpen(url);
   };
 
   return (

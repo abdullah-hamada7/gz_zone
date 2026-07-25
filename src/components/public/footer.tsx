@@ -24,14 +24,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/#about" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
+                <Link href="/#about" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                   About
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#faq" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
+                <Link href="/#faq" className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                   FAQ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

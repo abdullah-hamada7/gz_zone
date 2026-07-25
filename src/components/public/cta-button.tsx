@@ -6,14 +6,12 @@ import { cn } from "@/lib/utils";
 import { MessageCircle } from "lucide-react";
 
 interface CTAButtonProps {
-  variant?: "default" | "outline" | "secondary";
   size?: "default" | "sm" | "lg";
   className?: string;
   children?: React.ReactNode;
 }
 
 export function WhatsAppButton({
-  variant = "default",
   size = "lg",
   className,
   children,
@@ -22,7 +20,7 @@ export function WhatsAppButton({
 
   const handleClick = () => {
     const url = getUrl({ treatment: "General inquiry" });
-    trackAndOpen(url, "cta_button");
+    trackAndOpen(url);
   };
 
   return (

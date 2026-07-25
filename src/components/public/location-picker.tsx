@@ -14,8 +14,8 @@ interface LocationPickerProps {
 
 export function LocationPicker({ value, onChange }: LocationPickerProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markerRef = useRef<any>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+  const markerRef = useRef<L.Marker | null>(null);
   const leafletLoaded = useRef(false);
   const [lat, setLat] = useState<number | null>(null);
   const [lng, setLng] = useState<number | null>(null);
@@ -48,7 +48,7 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
         iconAnchor: [14, 28],
       });
 
-      map.on("click", async (e: any) => {
+      map.on("click", async (e: L.LeafletMouseEvent) => {
         const { lat: y, lng: x } = e.latlng;
         setLat(y);
         setLng(x);
@@ -73,7 +73,7 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
     };
 
     initMap();
-  }, []);
+  }, [onChange]);
 
   return (
     <div className="space-y-2">

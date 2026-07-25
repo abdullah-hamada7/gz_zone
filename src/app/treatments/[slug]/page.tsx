@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
@@ -110,9 +111,9 @@ export default async function TreatmentPage({ params }: Props) {
         <section className="py-20">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">
             <nav className="mb-4 text-xs text-muted-foreground flex items-center gap-2">
-              <a href="/" className="hover:underline">Home</a>
+              <Link href="/" className="hover:underline">Home</Link>
               <span>/</span>
-              <a href="/treatments" className="hover:underline">Treatments</a>
+              <Link href="/treatments" className="hover:underline">Treatments</Link>
               <span>/</span>
               <span className="text-foreground font-medium">{treatment.name}</span>
             </nav>

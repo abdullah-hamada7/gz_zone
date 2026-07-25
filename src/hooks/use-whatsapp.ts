@@ -4,10 +4,6 @@ import { useCallback } from "react";
 import { buildWhatsAppUrl, buildGenericWhatsAppUrl } from "@/lib/whatsapp";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 
-interface TrackEvent {
-  (action: string, data?: Record<string, string>): void;
-}
-
 export function useWhatsApp() {
   const getUrl = useCallback(
     (params?: Partial<{
@@ -34,7 +30,7 @@ export function useWhatsApp() {
   );
 
   const trackAndOpen = useCallback(
-    (url: string, _source?: string) => {
+    (url: string) => {
       window.open(url, "_blank", "noopener,noreferrer");
     },
     []
