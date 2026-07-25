@@ -24,7 +24,7 @@ export function Header() {
           />
           <div>
             <span className="text-lg font-bold tracking-tight">GZ&apos;ZONE</span>
-            <p className="text-[10px] leading-tight text-muted-foreground">a zone without boundaries</p>
+            <p className="text-xs leading-tight text-foreground/80 font-medium">a zone without boundaries</p>
           </div>
         </Link>
 

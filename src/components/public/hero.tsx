@@ -23,7 +23,7 @@ interface HeroContent {
 }
 
 const HERO_IMAGES = [
-  { src: "/images/gz-zone-a-zone-without.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" },
+  { src: "/images/hero-lcp.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" },
   { src: "/images/aromatherapy-massage.jpg", alt: "Aromatherapy massage treatment" },
   { src: "/images/caption.jpg", alt: "Gz Zone massage session" },
   { src: "/images/cupping-therapy-hijama.jpg", alt: "Cupping therapy session" },
@@ -104,7 +104,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                 />
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366]">
+                    <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-[#25D366]/15 text-[#075E54]">
                       <MessageCircle className="size-6" />
                     </div>
                     <DialogTitle className="text-center text-xl font-bold">

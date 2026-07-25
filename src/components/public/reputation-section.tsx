@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import { ReviewCarousel } from "./review-carousel";
 
 interface PlatformRating {
@@ -32,12 +33,19 @@ export function ReputationSection({
           {ratings.map((r) => (
             <div key={r.platform} className="text-center">
               <p className="text-2xl font-bold">{r.platform}</p>
-              <p className="mt-1 text-lg text-yellow-500">
-                {"★".repeat(Math.round(r.rating))}
-                <span className="text-muted-foreground">
+              <div className="mt-2 flex items-center justify-center gap-1">
+                <div className="flex items-center gap-0.5" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="size-4 fill-amber-500 text-amber-500"
+                    />
+                  ))}
+                </div>
+                <span className="ml-1 text-sm font-bold text-foreground">
                   {r.rating}/5
                 </span>
-              </p>
+              </div>
               <p className="mt-1 text-sm text-muted-foreground">
                 Based on {r.review_count}+ reviews
               </p>

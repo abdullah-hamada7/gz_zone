@@ -15,9 +15,9 @@ interface TreatmentCardProps {
 }
 
 const categoryColors: Record<string, string> = {
-  "massage-therapy": "bg-blue-50 text-blue-700",
-  "medical-aesthetics": "bg-purple-50 text-purple-700",
-  "holistic-health": "bg-green-50 text-green-700",
+  "massage-therapy": "bg-blue-100/60 text-blue-900 border border-blue-200",
+  "medical-aesthetics": "bg-purple-100/60 text-purple-900 border border-purple-200",
+  "holistic-health": "bg-green-100/60 text-green-900 border border-green-200",
 };
 
 const categoryLabels: Record<string, string> = {
