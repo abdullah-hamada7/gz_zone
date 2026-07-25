@@ -13,13 +13,10 @@ interface Treatment {
   priceFrom?: number;
 }
 
-export function TreatmentSlider({ treatments, content: sliderContent, cardContent }: { treatments: Treatment[]; content?: Record<string, unknown>; cardContent?: Record<string, unknown> }) {
+export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const prevLabel = (sliderContent?.prevLabel as string) ?? "Previous treatments";
-  const nextLabel = (sliderContent?.nextLabel as string) ?? "Next treatments";
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -49,7 +46,7 @@ export function TreatmentSlider({ treatments, content: sliderContent, cardConten
         <button
           onClick={() => scroll("left")}
           className="absolute -left-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
-          aria-label={prevLabel}
+          aria-label="Previous treatments"
         >
           <ChevronLeft className="size-5" />
         </button>
@@ -58,7 +55,7 @@ export function TreatmentSlider({ treatments, content: sliderContent, cardConten
         <button
           onClick={() => scroll("right")}
           className="absolute -right-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
-          aria-label={nextLabel}
+          aria-label="Next treatments"
         >
           <ChevronRight className="size-5" />
         </button>
@@ -75,7 +72,6 @@ export function TreatmentSlider({ treatments, content: sliderContent, cardConten
               shortDescription={t.short_description || ""}
               priceFrom={t.priceFrom}
               category={t.category}
-              content={cardContent}
             />
           </div>
         ))}

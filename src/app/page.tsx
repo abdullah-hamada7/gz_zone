@@ -9,7 +9,6 @@ import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
 import { FinalCTA } from "@/components/public/final-cta";
-import { MobileStickyCTA } from "@/components/public/mobile-sticky-cta";
 import {
   getTreatments,
   getFAQs,
@@ -17,8 +16,10 @@ import {
   getReviews,
   getTreatmentPrices,
   getAllSiteContent,
+  getGalleryImages,
   getTestimonials,
 } from "@/lib/supabase/queries";
+import { CATEGORY_LABELS } from "@/data";
 
 const FAQSection = dynamicImport(() => import("@/components/public/faq-section").then((m) => m.FAQSection), {
   ssr: true,
@@ -27,25 +28,29 @@ const FAQSection = dynamicImport(() => import("@/components/public/faq-section")
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [treatments, faqs, ratings, reviews, prices, siteContent, testimonials] = await Promise.all([
+  const [treatments, faqs, ratings, reviews, prices, siteContent, galleryImages, testimonials] = await Promise.all([
     getTreatments(),
     getFAQs(),
     getPlatformRatings(),
     getReviews(),
     getTreatmentPrices(),
     getAllSiteContent(),
+    getGalleryImages(),
     getTestimonials(),
   ]);
 
-  const tsContent = siteContent.treatments_section;
-  const treatmentsSectionLabel = (tsContent?.sectionLabel ?? "Our Services") as string;
-  const treatmentsHeading = (tsContent?.heading ?? "Treatments & Prices") as string;
-
   return (
     <>
-      <Header content={siteContent.header} />
+      <Header />
       <main className="flex-1">
-        <Hero content={siteContent.hero} />
+        <Hero
+          content={
+            siteContent.hero
+              ? (siteContent.hero as { title?: string; subtitle?: string; description?: string })
+              : undefined
+          }
+          galleryImages={galleryImages}
+        />
         <TrustBar content={siteContent.trust_bar} />
         <ReputationSection
           ratings={ratings}
@@ -57,10 +62,10 @@ export default async function HomePage() {
         <section id="treatments" className="py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <h2 className="mb-2 text-center text-sm font-semibold tracking-wider text-muted-foreground uppercase">
-              {treatmentsSectionLabel}
+              Our Services
             </h2>
             <h3 className="mb-10 text-center text-3xl font-bold tracking-tight">
-              {treatmentsHeading}
+              Treatments & Prices
             </h3>
             <TreatmentSlider
               treatments={treatments.map((t) => ({
@@ -71,8 +76,6 @@ export default async function HomePage() {
                 category: t.category,
                 priceFrom: prices[t.slug],
               }))}
-              content={siteContent.treatment_slider}
-              cardContent={siteContent.treatment_card}
             />
           </div>
         </section>
@@ -86,7 +89,6 @@ export default async function HomePage() {
         <FinalCTA content={siteContent.final_cta} />
       </main>
       <Footer content={siteContent.footer} />
-      <MobileStickyCTA content={siteContent.mobile_sticky_cta} />
     </>
   );
 }

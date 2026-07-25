@@ -57,77 +57,21 @@ export type SiteContentKey =
   | "certifications_section"
   | "hours_section"
   | "service_areas_section"
-  | "gallery_section"
-  | "header"
-  | "treatments_section"
-  | "treatment_slider"
-  | "treatment_card"
-  | "mobile_sticky_cta";
+  | "gallery_section";
 
 export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> = {
-  header: {
-    siteName: "GZ'ZONE",
-    tagline: "A Zone Without Boundaries",
-    logoAriaLabel: "GZ'ZONE",
-    menuToggleLabel: "Toggle menu",
-    navLinks: [
-      { label: "Treatments", href: "/#treatments" },
-      { label: "How It Works", href: "/#how-it-works" },
-      { label: "About", href: "/#about" },
-      { label: "FAQ", href: "/#faq" },
-    ],
-  },
   hero: {
     title: "Professional Massage. Delivered to You.",
-    subtitle: "GZ'ZONE \u2014 A ZONE WITHOUT BOUNDARIES",
+    subtitle: "GZ'ZONE — A ZONE WITHOUT BOUNDARIES",
     description:
       "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you.",
-    ctaText: "Book via WhatsApp",
-    exploreText: "Explore Treatments",
-    locationText: "Serving Porto and surrounding areas",
-    dialogTitle: "Please Select Your Treatment First",
-    dialogDescription:
+    cta_text: "Book via WhatsApp",
+    explore_text: "Explore Treatments",
+    location_text: "Serving Porto and surrounding areas",
+    dialog_title: "Please Select Your Treatment First",
+    dialog_description:
       "Choose your required treatment below to view duration, pricing, and book your personalized session directly via WhatsApp.",
-    dialogLink: "Browse All Treatments & Prices \u2192",
-    dialogLinkHref: "/treatments",
-    ctaButtonText: "Book via WhatsApp",
-    prevLabel: "Previous image",
-    nextLabel: "Next image",
-    slideshowImages: [
-      { src: "/images/hero-lcp.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" },
-      { src: "/images/aromatherapy-massage.jpg", alt: "Aromatherapy massage treatment" },
-      { src: "/images/caption.jpg", alt: "Gz Zone massage session" },
-      { src: "/images/cupping-therapy-hijama.jpg", alt: "Cupping therapy session" },
-      { src: "/images/cupping-therapy-hijama (1).jpg", alt: "Cupping therapy treatment" },
-      { src: "/images/cupping-therapy-hijama (2).jpg", alt: "Cupping therapy application" },
-      { src: "/images/cupping-therapy-hijama (3).jpg", alt: "Dry cupping therapy" },
-      { src: "/images/deep-tissue-massage.jpg", alt: "Deep tissue massage therapy" },
-      { src: "/images/essential-oils.jpg", alt: "Essential oils for massage" },
-      { src: "/images/essential-oils (1).jpg", alt: "Aromatherapy essential oils" },
-      { src: "/images/essential-oils (2).jpg", alt: "Therapeutic essential oils" },
-      { src: "/images/gz-zone-massage-cupping.jpg", alt: "Massage and cupping combination therapy" },
-      { src: "/images/gz-zone-massage-cupping (1).jpg", alt: "Massage cupping therapy session" },
-      { src: "/images/gz-zone-massage-cupping (2).jpg", alt: "Therapeutic cupping massage" },
-      { src: "/images/gz-zone-massage-cupping (3).jpg", alt: "Cupping massage treatment" },
-      { src: "/images/gz-zone-massage-cupping (4).jpg", alt: "Massage therapy with cupping" },
-      { src: "/images/gz-zone-massage-cupping (5).jpg", alt: "Professional cupping massage" },
-      { src: "/images/gz-zone-massage-cupping (6).jpg", alt: "Deep tissue cupping therapy" },
-      { src: "/images/gz-zone-massage-cupping (7).jpg", alt: "Full body cupping massage" },
-      { src: "/images/k6qFHE9onOx2dEvKWmPALwN3vZmI2Vu0.jpeg", alt: "Massage treatment session" },
-      { src: "/images/KT90eNJhhFbuPBwtpTdqxM52GeKdkWP7.jpeg", alt: "Professional massage therapy" },
-      { src: "/images/MBPcXB9oIEHuzl78FFmD0JxeEzOeVj5W.jpeg", alt: "Relaxing massage session" },
-      { src: "/images/omar-elgazzar.jpg", alt: "Omar Elgazzar massage therapist" },
-      { src: "/images/swedish-massage.jpg", alt: "Relaxing Swedish massage" },
-      { src: "/images/trigger-points-massage.jpg", alt: "Trigger points massage therapy" },
-      { src: "/images/trigger-points-massage (1).jpg", alt: "Trigger point release therapy" },
-      { src: "/images/certs.jpg", alt: "Professional certifications and credentials" },
-      { src: "/images/chatgpt_image_may_22_2026_at_08_16_19_pm.jpg", alt: "Massage therapy session" },
-      { src: "/images/img_0344.jpg", alt: "Relaxing massage treatment" },
-      { src: "/images/img_8888.jpg", alt: "Massage therapy setup" },
-      { src: "/images/photo20260427212031.jpg", alt: "Professional massage session in Porto" },
-      { src: "/images/untitled_design.jpg", alt: "Gz Zone massage experience" },
-      { src: "/images/what_is_gzzone_1.jpg", alt: "Professional mobile massage setup in Porto" },
-    ],
+    dialog_link: "Browse All Treatments & Prices \u2192",
   },
   trust_bar: {
     items: [
@@ -136,7 +80,6 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
       { label: "Equipment Provided" },
       { label: "Easy Booking" },
     ],
-    separator: "\u2022",
   },
   why_mobile_massage: {
     heading: "Your Massage. Your Space. Your Comfort.",
@@ -177,7 +120,6 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
         description: "The professional equipment comes to you. You simply relax and enjoy your treatment.",
       },
     ],
-    stepNumberPrefix: "0",
   },
   about_section: {
     heading: "About",
@@ -190,47 +132,36 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     ],
     trustHeading: "Your Comfort Comes First",
     trustPoints: [
-      { title: "Professional Approach", description: "Every treatment is delivered with the highest standards of professionalism and care." },
-      { title: "Respectful Environment", description: "Your comfort, privacy, and personal boundaries are respected throughout the entire experience." },
-      { title: "Personalized Treatment", description: "Each session is tailored to your specific needs and preferences." },
-      { title: "Privacy and Comfort", description: "Your treatment takes place in the privacy of your chosen location." },
+      {
+        title: "Professional Approach",
+        description: "Every treatment is delivered with the highest standards of professionalism and care.",
+      },
+      {
+        title: "Respectful Environment",
+        description: "Your comfort, privacy, and personal boundaries are respected throughout the entire experience.",
+      },
+      {
+        title: "Personalized Treatment",
+        description: "Each session is tailored to your specific needs and preferences.",
+      },
+      {
+        title: "Privacy and Comfort",
+        description: "Your treatment takes place in the privacy of your chosen location.",
+      },
     ],
     certLabel: "Certified & Professional",
     certHeading: "Your Wellbeing Is in Safe Hands",
     certText:
       "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.",
     imageAlt: "Omar Elgazzar \u2014 Mobile Massage Therapist Porto",
-    certImageAlt: "Professional massage certifications",
   },
   reputation_section: {
     heading: "Trusted by Our Clients",
     subheading: "What Our Clients Say",
     reviewLabel: "Read Reviews on",
-    basedOnLabel: "Based on",
-    reviewsSuffix: "+ reviews",
-    featuredClientLabel: "Featured Client",
   },
   faq_section: {
     heading: "Frequently Asked Questions",
-  },
-  treatments_section: {
-    sectionLabel: "Our Services",
-    heading: "Treatments & Prices",
-  },
-  treatment_slider: {
-    prevLabel: "Previous treatments",
-    nextLabel: "Next treatments",
-  },
-  treatment_card: {
-    categoryLabels: [
-      { key: "massage-therapy", label: "Massage Therapy" },
-      { key: "medical-aesthetics", label: "Medical Aesthetics" },
-      { key: "holistic-health", label: "Holistic Health" },
-    ],
-    fromText: "From",
-    currency: "\u20ac",
-    viewDetailsText: "View Details",
-    viewDetailsAriaLabel: "View details for",
   },
   footer: {
     description: "Professional mobile massage services in Porto and surrounding areas.",
@@ -241,29 +172,17 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
       { label: "FAQ", href: "/#faq" },
     ],
     contactHeading: "Contact",
-    contactAriaLabel: "Contact GZ ZONE via WhatsApp at",
     phone: "+351 913 675 810",
     phoneHref: "https://wa.me/351913675810",
     location: "Porto, Portugal",
     instagramHandle: "@gz.zone",
     instagramUrl: "https://www.instagram.com/gz.zone/",
-    instagramAriaLabel: "Follow GZ ZONE on Instagram",
     copyright: "GZ'ZONE. All rights reserved.",
-    privacyLabel: "Privacy Policy",
-    privacyHref: "/privacy-policy",
-    privacyAriaLabel: "Read Privacy Policy",
-    termsLabel: "Terms",
-    termsHref: "/terms",
-    termsAriaLabel: "Read Terms of Service",
   },
   final_cta: {
     heading: "Ready to Book Your Massage?",
     description: "Send a message on WhatsApp and I will help you find the perfect treatment.",
-    buttonText: "Book via WhatsApp",
-  },
-  mobile_sticky_cta: {
-    buttonText: "Book via WhatsApp",
-    defaultTreatment: "General inquiry",
+    button_text: "Book via WhatsApp",
   },
   certifications_section: {
     label: "Certified & Professional",
@@ -271,7 +190,7 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     subheading: "Trained & Certified Therapist",
     description:
       "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.",
-    imageAlt: "Professional massage certifications",
+    image_alt: "Professional massage certifications",
   },
   hours_section: {
     heading: "Opening Hours",
@@ -290,7 +209,7 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     heading: "Mobile Massage Across Porto",
     description:
       "Not sure if your location is covered? Send your location on WhatsApp and I will confirm availability.",
-    buttonText: "Send Location on WhatsApp",
+    button_text: "Send Location on WhatsApp",
   },
   gallery_section: {
     heading: "Experience Gallery",
@@ -507,7 +426,8 @@ export const FAQS: FAQ[] = [
 
 export const PLATFORM_RATINGS: PlatformRating[] = [
   { platform: "Google", rating: 5.0, review_count: 41, profile_url: "https://g.page/r/CeTmnPuZR9q3EBM/review" },
-  { platform: "Tripadvisor", rating: 5.0, review_count: 50, profile_url: "https://www.tripadvisor.com/Attraction_Review-g189180-d34355172-Reviews-Gz_zone_Massage_Cupping_Therpay_Porto-Porto_Porto_District_Northern_Portugal.html" },
+  { platform: "Tripadvisor", rating: 5.0, review_count: 50, profile_url: "https://www.tripadvisor.com/UserReviewEdit-g189180-d34355172-Gz_zone_Massage_Cupping_Therpay_Porto-Porto_Porto_District_Northern_Portugal.html" },
+  { platform: "Wanderlog", rating: 5.0, review_count: 129, profile_url: "https://wanderlog.com/place/details/12672638/gzzone-massage--cupping-therapy-istanbul" },
   { platform: "WhatClinic", rating: 5.0, review_count: 15, profile_url: "https://www.whatclinic.com/consumer/reviewslead.aspx?clinicid=302529" },
 ];
 

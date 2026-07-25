@@ -6,17 +6,18 @@ interface GZZoneBrandLogoProps {
   showTagline?: boolean;
   href?: string;
   className?: string;
-  tagline?: string;
-  logoAriaLabel?: string;
 }
 
+/**
+ * GZZoneBrandLogo
+ * Responsive SVG wordmark for GZ'ZONE + Tagline "A ZONE WITHOUT BOUNDARIES"
+ * Generous tracking, crisp vector scaling at all resolutions.
+ */
 export function GZZoneBrandLogo({
   size = "md",
   showTagline = true,
   href,
   className = "",
-  tagline,
-  logoAriaLabel,
 }: GZZoneBrandLogoProps) {
   const sizeMap = {
     sm: { logo: "h-5 w-auto", tagline: "text-[9px] tracking-[0.18em]" },
@@ -26,10 +27,10 @@ export function GZZoneBrandLogo({
 
   const content = (
     <div className={`inline-flex flex-col items-start gap-1 ${className}`}>
-      <GZZoneLogoText className={`${sizeMap[size].logo} text-foreground transition-colors`} ariaLabel={logoAriaLabel} />
-      {showTagline && tagline && (
+      <GZZoneLogoText className={`${sizeMap[size].logo} text-foreground transition-colors`} />
+      {showTagline && (
         <span className={`${sizeMap[size].tagline} font-sans font-medium uppercase text-muted-foreground/90 whitespace-nowrap`}>
-          {tagline}
+          A Zone Without Boundaries
         </span>
       )}
     </div>

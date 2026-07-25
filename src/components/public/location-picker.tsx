@@ -10,20 +10,15 @@ const PORTO: [number, number] = [41.1579, -8.6291];
 interface LocationPickerProps {
   value: string;
   onChange: (value: string) => void;
-  content?: Record<string, unknown>;
 }
 
-export function LocationPicker({ value, onChange, content }: LocationPickerProps) {
+export function LocationPicker({ value, onChange }: LocationPickerProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
   const leafletLoaded = useRef(false);
   const [lat, setLat] = useState<number | null>(null);
   const [lng, setLng] = useState<number | null>(null);
-
-  const label = (content?.label as string) ?? "Location";
-  const placeholder = (content?.placeholder as string) ?? "e.g. Porto, Hotel name, Address";
-  const pinInstruction = (content?.pinInstruction as string) ?? "Click the map to pin your location";
 
   useEffect(() => {
     if (leafletLoaded.current) return;
@@ -82,10 +77,10 @@ export function LocationPicker({ value, onChange, content }: LocationPickerProps
 
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label>Location</Label>
       <Input
         type="text"
-        placeholder={placeholder}
+        placeholder="e.g. Porto, Hotel name, Address"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -94,7 +89,7 @@ export function LocationPicker({ value, onChange, content }: LocationPickerProps
         <span>
           {lat && lng
             ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
-            : pinInstruction}
+            : "Click the map to pin your location"}
         </span>
       </div>
       <div

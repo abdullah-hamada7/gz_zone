@@ -12,7 +12,7 @@ interface FAQ {
 
 export function FAQSection({ faqs, hideHeading, content }: { faqs: FAQ[]; hideHeading?: boolean; content?: Record<string, unknown> }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const heading = content?.heading as string | undefined;
+  const heading = (content?.heading as string) ?? "Frequently Asked Questions";
 
   if (faqs.length === 0) return null;
 
@@ -21,7 +21,7 @@ export function FAQSection({ faqs, hideHeading, content }: { faqs: FAQ[]; hideHe
   return (
     <section className="py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        {!hideHeading && heading && (
+        {!hideHeading && (
           <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">{heading}</h2>
         )}
 
