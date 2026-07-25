@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string }> }) {
   const { key } = await params;
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const { data, error } = await supabase
     .from("site_content")
     .select("*")
@@ -18,7 +18,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
 
 export async function PUT(request: Request, { params }: { params: Promise<{ key: string }> }) {
   const { key } = await params;
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const body = await request.json();
 
   const { data, error } = await supabase
