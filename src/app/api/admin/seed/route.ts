@@ -12,18 +12,21 @@ import {
 
 export async function POST() {
   const supabase = await createServiceClient();
-  const results: Record<string, { success: boolean; count: number }> = {};
+  const results: Record<string, unknown> = {};
 
   const treatmentIdMap: Record<string, string> = {};
 
-  const { data: existing } = await supabase.from("treatments").select("id, slug");
-  if (existing) {
-    for (const t of existing) {
+  const { data: existingTreatments } = await supabase
+    .from("treatments")
+    .select("id, slug");
+
+  if (existingTreatments) {
+    for (const t of existingTreatments) {
       treatmentIdMap[t.slug] = t.id;
     }
   }
 
-  if (!existing || existing.length === 0) {
+  if (!existingTreatments || existingTreatments.length === 0) {
     for (const t of TREATMENTS) {
       const { data, error } = await supabase
         .from("treatments")
@@ -38,14 +41,12 @@ export async function POST() {
         })
         .select("id, slug")
         .single();
-
-      if (!error && data) {
-        treatmentIdMap[data.slug] = data.id;
-      }
+      if (error) results.treatments_error = error.message;
+      if (data) treatmentIdMap[data.slug] = data.id;
     }
-    results.treatments = { success: true, count: TREATMENTS.length };
+    results.treatments = TREATMENTS.length;
   } else {
-    results.treatments = { success: true, count: existing.length };
+    results.treatments = `skipped (${existingTreatments.length} exist)`;
   }
 
   const slugToId: Record<string, string> = {
@@ -62,40 +63,51 @@ export async function POST() {
     "reflexology-1": treatmentIdMap["reflexology"] || "",
   };
 
-  const { data: existingDurations } = await supabase.from("durations").select("id", { count: "exact" });
+  const { data: existingDurations } = await supabase
+    .from("durations")
+    .select("id");
   if (!existingDurations || existingDurations.length === 0) {
+    let count = 0;
     for (const d of DURATIONS) {
-      const treatmentDbId = slugToId[d.treatment_id];
-      if (!treatmentDbId) continue;
-      await supabase.from("durations").insert({
-        treatment_id: treatmentDbId,
+      const tid = slugToId[d.treatment_id];
+      if (!tid) continue;
+      const { error } = await supabase.from("durations").insert({
+        treatment_id: tid,
         minutes: d.minutes,
         price: d.price,
         sort_order: d.minutes,
       });
+      if (!error) count++;
     }
-    results.durations = { success: true, count: DURATIONS.length };
+    results.durations = count;
+  } else {
+    results.durations = `skipped (${existingDurations.length} exist)`;
   }
 
-  const { data: existingFaqs } = await supabase.from("faqs").select("id", { count: "exact" });
+  const { data: existingFaqs } = await supabase.from("faqs").select("id");
   if (!existingFaqs || existingFaqs.length === 0) {
+    let count = 0;
     for (let i = 0; i < FAQS.length; i++) {
       const f = FAQS[i];
-      await supabase.from("faqs").insert({
+      const { error } = await supabase.from("faqs").insert({
         question: f.question,
         answer: f.answer,
         category: f.category,
         sort_order: i,
       });
+      if (!error) count++;
     }
-    results.faqs = { success: true, count: FAQS.length };
+    results.faqs = count;
+  } else {
+    results.faqs = `skipped (${existingFaqs.length} exist)`;
   }
 
-  const { data: existingReviews } = await supabase.from("reviews").select("id", { count: "exact" });
+  const { data: existingReviews } = await supabase.from("reviews").select("id");
   if (!existingReviews || existingReviews.length === 0) {
+    let count = 0;
     for (let i = 0; i < CLIENT_REVIEWS.length; i++) {
       const r = CLIENT_REVIEWS[i];
-      await supabase.from("reviews").insert({
+      const { error } = await supabase.from("reviews").insert({
         customer_name: r.customer_name,
         content: r.content,
         rating: r.rating,
@@ -103,45 +115,58 @@ export async function POST() {
         external_url: r.external_url,
         sort_order: i,
       });
+      if (!error) count++;
     }
-    results.reviews = { success: true, count: CLIENT_REVIEWS.length };
+    results.reviews = count;
+  } else {
+    results.reviews = `skipped (${existingReviews.length} exist)`;
   }
 
-  const { data: existingRatings } = await supabase.from("platform_ratings").select("id", { count: "exact" });
+  const { data: existingRatings } = await supabase.from("platform_ratings").select("id");
   if (!existingRatings || existingRatings.length === 0) {
+    let count = 0;
     for (const p of PLATFORM_RATINGS) {
-      await supabase.from("platform_ratings").insert({
+      const { error } = await supabase.from("platform_ratings").insert({
         platform: p.platform,
         rating: p.rating,
         review_count: p.review_count,
         profile_url: p.profile_url,
       });
+      if (!error) count++;
     }
-    results.platform_ratings = { success: true, count: PLATFORM_RATINGS.length };
+    results.platform_ratings = count;
+  } else {
+    results.platform_ratings = `skipped (${existingRatings.length} exist)`;
   }
 
-  const { data: existingTestimonials } = await supabase.from("testimonials").select("id", { count: "exact" });
+  const { data: existingTestimonials } = await supabase.from("testimonials").select("id");
   if (!existingTestimonials || existingTestimonials.length === 0) {
+    let count = 0;
     for (let i = 0; i < TESTIMONIALS.length; i++) {
       const t = TESTIMONIALS[i];
-      await supabase.from("testimonials").insert({
+      const { error } = await supabase.from("testimonials").insert({
         customer_name: t.customer_name,
         customer_photo_url: t.customer_photo_url,
         content: t.content,
         location: t.location,
         sort_order: i,
       });
+      if (!error) count++;
     }
-    results.testimonials = { success: true, count: TESTIMONIALS.length };
+    results.testimonials = count;
+  } else {
+    results.testimonials = `skipped (${existingTestimonials.length} exist)`;
   }
 
-  const { data: existingSiteContent } = await supabase.from("site_content").select("id", { count: "exact" });
+  const { data: existingSiteContent } = await supabase.from("site_content").select("id");
   if (!existingSiteContent || existingSiteContent.length === 0) {
-    await supabase.from("site_content").upsert({
+    const { error } = await supabase.from("site_content").upsert({
       section_key: "hero",
       content: HERO as unknown as Record<string, unknown>,
     });
-    results.site_content = { success: true, count: 1 };
+    results.site_content = error ? error.message : "seeded";
+  } else {
+    results.site_content = "skipped";
   }
 
   return NextResponse.json({ message: "Seed complete", results });
