@@ -5,15 +5,20 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { GZZoneBrandLogo } from "@/components/ui/gz-zone-brand-logo";
 
+const DEFAULT_NAV_LINKS = [
+  { label: "Treatments", href: "/#treatments" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "About", href: "/#about" },
+  { label: "FAQ", href: "/#faq" },
+];
+
 export function Header({ content }: { content?: Record<string, unknown> }) {
   const [open, setOpen] = useState(false);
 
-  const navLinks = (content?.navLinks as Array<{ label: string; href: string }> | undefined) ?? [];
+  const navLinks = (content?.navLinks as Array<{ label: string; href: string }> | undefined) ?? DEFAULT_NAV_LINKS;
   const menuToggleLabel = (content?.menuToggleLabel as string) ?? "Toggle menu";
-  const tagline = (content?.tagline as string) ?? "";
-  const logoAriaLabel = (content?.logoAriaLabel as string) ?? "";
-
-  if (navLinks.length === 0) return null;
+  const tagline = (content?.tagline as string) ?? "A Zone Without Boundaries";
+  const logoAriaLabel = (content?.logoAriaLabel as string) ?? "GZ'ZONE";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

@@ -28,7 +28,7 @@ export function ReputationSection({
   content?: Record<string, unknown>;
 }) {
   const heading = content?.heading as string | undefined;
-  const subheading = content?.subheading as string | undefined;
+  const subheading = (content?.subheading ?? content?.testimonial_heading) as string | undefined;
   const reviewLabel = (content?.reviewLabel as string) ?? "Read Reviews on";
   const basedOnLabel = (content?.basedOnLabel as string) ?? "Based on";
   const reviewsSuffix = (content?.reviewsSuffix as string) ?? "+ reviews";

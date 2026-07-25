@@ -14,9 +14,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { WhatsAppButton } from "./cta-button";
-
-import type { GalleryImage } from "@/types";
 
 interface Treatment {
   id: string;
@@ -39,12 +36,12 @@ export function Hero({
   const title = content?.title as string | undefined;
   const subtitle = content?.subtitle as string | undefined;
   const description = content?.description as string | undefined;
-  const ctaText = content?.ctaText as string | undefined;
-  const exploreText = content?.exploreText as string | undefined;
-  const locationText = content?.locationText as string | undefined;
-  const dialogTitle = content?.dialogTitle as string | undefined;
-  const dialogDescription = content?.dialogDescription as string | undefined;
-  const dialogLink = content?.dialogLink as string | undefined;
+  const ctaText = (content?.ctaText ?? content?.cta_text) as string | undefined;
+  const exploreText = (content?.exploreText ?? content?.explore_text) as string | undefined;
+  const locationText = (content?.locationText ?? content?.location_text) as string | undefined;
+  const dialogTitle = (content?.dialogTitle ?? content?.dialog_title) as string | undefined;
+  const dialogDescription = (content?.dialogDescription ?? content?.dialog_description) as string | undefined;
+  const dialogLink = (content?.dialogLink ?? content?.dialog_link) as string | undefined;
   const dialogLinkHref = (content?.dialogLinkHref as string) ?? "/treatments";
   const prevLabel = (content?.prevLabel as string) ?? "Previous image";
   const nextLabel = (content?.nextLabel as string) ?? "Next image";

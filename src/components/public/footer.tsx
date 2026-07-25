@@ -4,27 +4,30 @@ import { GZZoneBrandLogo } from "@/components/ui/gz-zone-brand-logo";
 
 export function Footer({ content }: { content?: Record<string, unknown> }) {
   const description = content?.description as string | undefined;
-  const quickLinksHeading = content?.quickLinksHeading as string | undefined;
-  const quickLinks = (content?.quickLinks as Array<{ label: string; href: string }> | undefined) ?? [];
-  const contactHeading = content?.contactHeading as string | undefined;
+  const quickLinksHeading = (content?.quickLinksHeading ?? content?.quick_links_label) as string | undefined;
+  const quickLinks = (content?.quickLinks ?? content?.links) as Array<{ label: string; href: string }> | undefined;
+  const contactHeading = (content?.contactHeading ?? content?.contact_label) as string | undefined;
   const contactAriaLabel = (content?.contactAriaLabel as string) ?? "Contact GZ ZONE via WhatsApp at";
   const phone = content?.phone as string | undefined;
-  const phoneHref = (content?.phoneHref as string) ?? "";
+  const phoneHref = (content?.phoneHref as string) ?? (phone ? `https://wa.me/${phone.replace(/[^0-9]/g, "")}` : "");
   const location = content?.location as string | undefined;
-  const instagramHandle = content?.instagramHandle as string | undefined;
-  const instagramUrl = content?.instagramUrl as string | undefined;
+  const instagramHandle = (content?.instagramHandle ?? content?.instagram) as string | undefined;
+  const instagramUrl = (content?.instagramUrl as string) ?? (instagramHandle ? `https://www.instagram.com/${instagramHandle.replace("@", "")}/` : undefined);
   const instagramAriaLabel = (content?.instagramAriaLabel as string) ?? "Follow GZ ZONE on Instagram";
-  const copyright = content?.copyright as string | undefined;
+  const copyrightRaw = content?.copyright as string | undefined;
+  const copyright = copyrightRaw?.replace(/^©\s*/, "") ?? "GZ'ZONE. All rights reserved.";
   const privacyLabel = (content?.privacyLabel as string) ?? "Privacy Policy";
   const privacyHref = (content?.privacyHref as string) ?? "/privacy-policy";
   const privacyAriaLabel = (content?.privacyAriaLabel as string) ?? "Read Privacy Policy";
   const termsLabel = (content?.termsLabel as string) ?? "Terms";
   const termsHref = (content?.termsHref as string) ?? "/terms";
   const termsAriaLabel = (content?.termsAriaLabel as string) ?? "Read Terms of Service";
-  const tagline = content?.tagline as string | undefined;
-  const logoAriaLabel = content?.logoAriaLabel as string | undefined;
+  const tagline = (content?.tagline as string) ?? "A Zone Without Boundaries";
+  const logoAriaLabel = (content?.logoAriaLabel as string) ?? "GZ'ZONE";
 
-  if (!description && quickLinks.length === 0 && !phone && !location && !instagramHandle) return null;
+  if (!description && !quickLinks && !phone && !location && !instagramHandle) return null;
+
+  const ql = quickLinks ?? [];
 
   return (
     <footer className="border-t bg-muted/30">
@@ -35,11 +38,11 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
             {description && <p className="mt-2 text-sm text-muted-foreground">{description}</p>}
           </div>
 
-          {quickLinks.length > 0 && (
+          {ql.length > 0 && (
             <div>
               {quickLinksHeading && <h3 className="mb-3 text-sm font-semibold">{quickLinksHeading}</h3>}
               <ul className="space-y-1 text-sm text-muted-foreground">
-                {quickLinks.map((link) => (
+                {ql.map((link) => (
                   <li key={link.href + link.label}>
                     <Link href={link.href} className="inline-flex min-h-[44px] items-center py-2 hover:text-foreground">
                       {link.label}
@@ -106,7 +109,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center text-xs text-muted-foreground sm:flex-row">
-          {copyright && <p>&copy; {new Date().getFullYear()} {copyright}</p>}
+          <p>&copy; {new Date().getFullYear()} {copyright}</p>
           <div className="flex gap-4">
             <Link
               href={privacyHref}

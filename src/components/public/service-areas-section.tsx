@@ -17,7 +17,7 @@ export function ServiceAreasSection({
 }) {
   const heading = content?.heading as string | undefined;
   const description = content?.description as string | undefined;
-  const buttonText = (content?.buttonText as string) ?? "";
+  const buttonText = (content?.buttonText ?? content?.button_text) as string | undefined;
 
   if (areas.length === 0 && !heading) return null;
 

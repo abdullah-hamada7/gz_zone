@@ -5,7 +5,7 @@ export function CertificationsSection({ content }: { content?: Record<string, un
   const heading = content?.heading as string | undefined;
   const subheading = content?.subheading as string | undefined;
   const description = content?.description as string | undefined;
-  const imageAlt = (content?.imageAlt as string) ?? "Professional massage certifications";
+  const imageAlt = (content?.imageAlt ?? content?.image_alt) as string | undefined;
 
   if (!heading && !description) return null;
 
@@ -16,15 +16,17 @@ export function CertificationsSection({ content }: { content?: Record<string, un
         {heading && <h2 className="mb-8 text-3xl font-bold tracking-tight">{heading}</h2>}
 
         <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
-          <div className="relative w-64 overflow-hidden rounded-xl border bg-background p-4 shadow-sm">
-            <Image
-              src="/images/certs.jpg"
-              alt={imageAlt}
-              width={240}
-              height={340}
-              className="mx-auto h-auto w-full object-contain"
-            />
-          </div>
+          {imageAlt && (
+            <div className="relative w-64 overflow-hidden rounded-xl border bg-background p-4 shadow-sm">
+              <Image
+                src="/images/certs.jpg"
+                alt={imageAlt}
+                width={240}
+                height={340}
+                className="mx-auto h-auto w-full object-contain"
+              />
+            </div>
+          )}
           <div className="max-w-sm text-left">
             {subheading && <h3 className="mb-2 text-lg font-semibold">{subheading}</h3>}
             {description && <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>}
