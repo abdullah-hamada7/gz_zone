@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { Header } from "@/components/public/header";
 import { Hero } from "@/components/public/hero";
 import { TrustBar } from "@/components/public/trust-bar";
@@ -18,9 +18,11 @@ import {
 } from "@/lib/supabase/queries";
 import { CATEGORY_LABELS } from "@/data";
 
-const FAQSection = dynamic(() => import("@/components/public/faq-section").then((m) => m.FAQSection), {
+const FAQSection = dynamicImport(() => import("@/components/public/faq-section").then((m) => m.FAQSection), {
   ssr: true,
 });
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [treatments, faqs, ratings, reviews, prices, heroContent] = await Promise.all([
