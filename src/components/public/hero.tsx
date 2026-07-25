@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, MessageCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -13,13 +13,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { TREATMENTS } from "@/data";
 import { cn } from "@/lib/utils";
 
 interface HeroContent {
   title?: string;
   subtitle?: string;
   description?: string;
+}
+
+interface Treatment {
+  id: string;
+  name: string;
+  slug: string;
+  short_description: string | null;
+  category: string;
 }
 
 const HERO_IMAGES = [
@@ -61,6 +68,17 @@ const HERO_IMAGES = [
 export function Hero({ content }: { content?: HeroContent }) {
   const [index, setIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+    fetch("/api/treatments")
+      .then((r) => r.json())
+      .then(setTreatments)
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setIndex((i) => (i + 1) % HERO_IMAGES.length), 4500);
@@ -116,7 +134,7 @@ export function Hero({ content }: { content?: HeroContent }) {
                   </DialogHeader>
 
                   <div className="my-2 space-y-2 max-h-[260px] overflow-y-auto pr-1">
-                    {TREATMENTS.slice(0, 6).map((t) => (
+                    {treatments.slice(0, 6).map((t) => (
                       <Link
                         key={t.id}
                         href={`/treatments/${t.slug}`}

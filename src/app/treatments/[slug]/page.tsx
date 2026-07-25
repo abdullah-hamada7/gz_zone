@@ -4,28 +4,23 @@ import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { HoursSection } from "@/components/public/hours-section";
 import { TreatmentBooking } from "./booking";
-import { TREATMENTS, CATEGORY_LABELS, getDurationsForTreatment } from "@/data";
+import { getTreatmentBySlug, getDurationsForTreatment } from "@/lib/supabase/queries";
+import { CATEGORY_LABELS } from "@/data";
 import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return TREATMENTS.map((t) => ({ slug: t.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const treatment = TREATMENTS.find((t) => t.slug === slug);
+  const treatment = await getTreatmentBySlug(slug);
   if (!treatment) return {};
   const canonicalUrl = `https://gzzone.vercel.app/treatments/${slug}`;
   return {
     title: treatment.name,
     description: treatment.short_description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${treatment.name} | GZ'ZONE Mobile Massage Porto`,
       description: treatment.short_description,
@@ -37,10 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TreatmentPage({ params }: Props) {
   const { slug } = await params;
-  const treatment = TREATMENTS.find((t) => t.slug === slug);
+  const treatment = await getTreatmentBySlug(slug);
   if (!treatment) notFound();
 
-  const durations = getDurationsForTreatment(treatment.id);
+  const durations = await getDurationsForTreatment(treatment.id);
   const canonicalUrl = `https://gzzone.vercel.app/treatments/${slug}`;
 
   const serviceLd = {
@@ -53,21 +48,14 @@ export default async function TreatmentPage({ params }: Props) {
       name: "GZ'ZONE — Mobile Massage Porto",
       url: "https://gzzone.vercel.app",
     },
-    areaServed: {
-      "@type": "City",
-      name: "Porto",
-    },
+    areaServed: { "@type": "City", name: "Porto" },
     description: treatment.full_description,
     offers: durations.map((d) => ({
       "@type": "Offer",
       price: d.price,
       priceCurrency: "EUR",
       priceValidUntil: "2027-12-31",
-      eligibleDuration: {
-        "@type": "QuantitativeValue",
-        value: d.minutes,
-        unitCode: "MIN",
-      },
+      eligibleDuration: { "@type": "QuantitativeValue", value: d.minutes, unitCode: "MIN" },
     })),
   };
 
@@ -75,37 +63,16 @@ export default async function TreatmentPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://gzzone.vercel.app",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Treatments",
-        item: "https://gzzone.vercel.app/treatments",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: treatment.name,
-        item: canonicalUrl,
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://gzzone.vercel.app" },
+      { "@type": "ListItem", position: 2, name: "Treatments", item: "https://gzzone.vercel.app/treatments" },
+      { "@type": "ListItem", position: 3, name: treatment.name, item: canonicalUrl },
     ],
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Header />
       <main className="flex-1">
         <section className="py-20">
@@ -121,22 +88,16 @@ export default async function TreatmentPage({ params }: Props) {
             <span className="text-sm font-medium text-muted-foreground">
               {CATEGORY_LABELS[treatment.category] || treatment.category}
             </span>
-            <h1 className="mt-2 text-4xl font-bold tracking-tight">
-              {treatment.name}
-            </h1>
+            <h1 className="mt-2 text-4xl font-bold tracking-tight">{treatment.name}</h1>
 
             {treatment.full_description && (
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                {treatment.full_description}
-              </p>
+              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{treatment.full_description}</p>
             )}
 
             {treatment.ideal_for && (
               <div className="mt-6 rounded-lg bg-muted/50 p-4 border border-border/50">
                 <p className="text-sm font-semibold">Ideal for:</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {treatment.ideal_for}
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{treatment.ideal_for}</p>
               </div>
             )}
 
@@ -164,21 +125,12 @@ export default async function TreatmentPage({ params }: Props) {
 
             {durations.length > 0 && (
               <div className="mt-10">
-                <h2 className="mb-4 text-xl font-semibold">
-                  Pricing & Duration
-                </h2>
+                <h2 className="mb-4 text-xl font-semibold">Pricing & Duration</h2>
                 <div className="divide-y rounded-lg border">
                   {durations.map((d) => (
-                    <div
-                      key={d.id}
-                      className="flex items-center justify-between px-5 py-4"
-                    >
-                      <span className="font-medium">
-                        {d.minutes} minutes session
-                      </span>
-                      <span className="text-lg font-bold">
-                        €{d.price.toFixed(0)}
-                      </span>
+                    <div key={d.id} className="flex items-center justify-between px-5 py-4">
+                      <span className="font-medium">{d.minutes} minutes session</span>
+                      <span className="text-lg font-bold">€{Number(d.price).toFixed(0)}</span>
                     </div>
                   ))}
                 </div>
@@ -187,11 +139,7 @@ export default async function TreatmentPage({ params }: Props) {
 
             <TreatmentBooking
               treatmentName={treatment.name}
-              durations={durations.map((d) => ({
-                id: d.id,
-                minutes: d.minutes,
-                price: d.price,
-              }))}
+              durations={durations.map((d) => ({ id: d.id, minutes: d.minutes, price: d.price }))}
             />
           </div>
         </section>

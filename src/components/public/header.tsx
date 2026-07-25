@@ -22,7 +22,7 @@ export function Header() {
             className="rounded-full"
           />
           <div>
-            <span className="text-lg font-bold tracking-tight">GZ&apos;ZONE</span>
+            <span className="text-lg font-logo tracking-wide">GZ&apos;ZONE</span>
             <p className="text-xs leading-tight text-foreground/80 font-medium">a zone without boundaries</p>
           </div>
         </Link>
