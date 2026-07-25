@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { Upload, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -91,7 +90,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
         </div>
         {value && (
           <div className="relative size-20 shrink-0 overflow-hidden rounded-full border">
-            <Image src={value} alt="Preview" fill className="object-cover" unoptimized />
+            <img src={value} alt="Preview" className="absolute inset-0 size-full object-cover" />
           </div>
         )}
         {!value && !uploading && (

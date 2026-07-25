@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Save, Plus, Trash2, GripVertical } from "lucide-react";
 import type { SiteContent } from "@/types";
@@ -44,7 +45,7 @@ function SectionEditor({
   onChange: (content: Record<string, unknown>) => void;
 }) {
   const set = (key: string, value: unknown) => onChange({ ...content, [key]: value });
-  const str = (key: string, fallback = "") => (content[key] as string) ?? fallback;
+  const str = (key: string, fallback?: string | null) => (content[key] as string) ?? fallback ?? "";
 
   switch (section.key) {
     case "hero":
@@ -422,6 +423,14 @@ function SectionEditor({
             <Label>Image Alt Text</Label>
             <Input value={str("imageAlt")} onChange={(e) => set("imageAlt", e.target.value)} />
           </div>
+          <div className="space-y-2">
+            <Label>Profile Photo</Label>
+            <ImageUpload value={str("image_url", null)} onChange={(url) => set("image_url", url)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Certification Image</Label>
+            <ImageUpload value={str("cert_image_url", null)} onChange={(url) => set("cert_image_url", url)} />
+          </div>
         </div>
       );
 
@@ -581,6 +590,10 @@ function SectionEditor({
               <div className="space-y-2">
                 <Label>Image Alt</Label>
                 <Input value={str("image_alt")} onChange={(e) => set("image_alt", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Image</Label>
+                <ImageUpload value={str("image_url", null)} onChange={(url) => set("image_url", url)} />
               </div>
             </>
           )}

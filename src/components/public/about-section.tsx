@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Shield, Heart, Award, Lock } from "lucide-react";
 
 const defaultTrustPoints = [
@@ -29,6 +28,8 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
   const certText = (content?.certText as string) ??
     "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.";
   const imageAlt = (content?.imageAlt as string) ?? "Omar Elgazzar — Mobile Massage Therapist Porto";
+  const imageUrl = (content?.image_url as string) ?? null;
+  const certImageUrl = (content?.cert_image_url as string) ?? null;
 
   return (
     <section id="about" className="py-20">
@@ -36,15 +37,15 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
         <h2 className="mb-2 text-center text-sm font-semibold tracking-wider text-muted-foreground uppercase">{heading}</h2>
         <h3 className="mb-12 text-center text-3xl font-bold tracking-tight">{subheading}</h3>
 
-        <div className="mx-auto mb-8 size-28 overflow-hidden rounded-full border-4 border-muted shadow-sm">
-          <Image
-            src="/images/untitled_design.jpg"
-            alt={imageAlt}
-            width={112}
-            height={112}
-            className="size-full object-cover"
-          />
-        </div>
+        {imageUrl && (
+          <div className="mx-auto mb-8 size-28 overflow-hidden rounded-full border-4 border-muted shadow-sm">
+            <img
+              src={imageUrl}
+              alt={imageAlt}
+              className="size-full object-cover"
+            />
+          </div>
+        )}
 
         <div className="mb-16 space-y-4 text-center text-muted-foreground">
           {paragraphs.map((p, i) => (
@@ -68,15 +69,15 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
 
         <div className="rounded-xl border bg-muted/20 p-8 sm:p-12">
           <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
-            <div className="relative w-48 shrink-0 overflow-hidden rounded-xl border bg-background p-3 shadow-sm">
-              <Image
-                src="/images/certs.jpg"
-                alt="Professional massage certifications"
-                width={200}
-                height={280}
-                className="mx-auto h-auto w-full object-contain"
-              />
-            </div>
+            {certImageUrl && (
+              <div className="relative w-48 shrink-0 overflow-hidden rounded-xl border bg-background p-3 shadow-sm">
+                <img
+                  src={certImageUrl}
+                  alt="Professional massage certifications"
+                  className="mx-auto h-auto w-full object-contain"
+                />
+              </div>
+            )}
             <div className="max-w-md">
               <p className="mb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">{certLabel}</p>
               <h4 className="mb-3 text-xl font-bold">{certHeading}</h4>

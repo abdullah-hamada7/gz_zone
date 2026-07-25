@@ -42,7 +42,7 @@ export function Hero({
         src: img.public_url,
         alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
       }))
-    : [{ src: "/images/hero-lcp.jpg", alt: "GZ'ZONE mobile massage setup delivered to your location in Porto" }];
+    : [];
 
   const [index, setIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -59,16 +59,15 @@ export function Hero({
   }, []);
 
   useEffect(() => {
+    if (images.length < 2) return;
     const timer = setInterval(() => setIndex((i) => (i + 1) % images.length), 4500);
     return () => clearInterval(timer);
   }, [images.length]);
 
-  const currentImage = images[index] || images[0];
-
   return (
     <section className="relative overflow-hidden w-full">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-24">
-        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className={`grid items-center gap-8 lg:gap-12 ${images.length > 0 ? 'lg:grid-cols-2' : ''}`}>
           <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left w-full">
             {content?.subtitle && (
               <p className="mb-3 text-xs sm:text-sm font-semibold tracking-wider text-muted-foreground uppercase break-words">
@@ -155,37 +154,39 @@ export function Hero({
             </p>
           </div>
 
-          <div className="relative w-full max-w-md mx-auto lg:max-w-none">
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/20">
-              <img
-                key={currentImage.src}
-                src={currentImage.src}
-                alt={currentImage.alt}
-                className="absolute inset-0 size-full object-cover"
-              />
-            </div>
-            <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
-              <button
-                onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="size-5" />
-              </button>
+          {images.length > 0 && (
+            <div className="relative w-full max-w-md mx-auto lg:max-w-none">
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/20">
+                <img
+                  key={images[index]?.src}
+                  src={images[index]?.src}
+                  alt={images[index]?.alt || ""}
+                  className="absolute inset-0 size-full object-cover"
+                />
+              </div>
+              <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
+                <button
+                  onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
 
-              <span className="text-xs font-semibold text-muted-foreground">
-                {index + 1} / {images.length}
-              </span>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {index + 1} / {images.length}
+                </span>
 
-              <button
-                onClick={() => setIndex((i) => (i + 1) % images.length)}
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
-                aria-label="Next image"
-              >
-                <ChevronRight className="size-5" />
-              </button>
+                <button
+                  onClick={() => setIndex((i) => (i + 1) % images.length)}
+                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

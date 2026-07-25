@@ -117,7 +117,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased ${orbitron.variable}`}>
       <head>
-        <link rel="preload" href="/images/hero-lcp.jpg" as="image" type="image/jpeg" fetchPriority="high" />
       </head>
       <body className="flex min-h-full flex-col font-sans overflow-x-hidden" suppressHydrationWarning>
         <script

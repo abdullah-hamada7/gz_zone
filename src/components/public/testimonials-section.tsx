@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
-import Image from "next/image";
 import type { Testimonial } from "@/types";
 
 function getInitials(name: string) {
@@ -51,11 +50,9 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
           <div className="min-h-[200px] rounded-xl border bg-card p-8 pt-12 text-center shadow-sm">
             {t.customer_photo_url ? (
               <div className="-mt-16 mb-4 flex justify-center">
-                <Image
+                <img
                   src={t.customer_photo_url}
                   alt={t.customer_name}
-                  width={64}
-                  height={64}
                   className="size-16 rounded-full border-4 border-background object-cover"
                 />
               </div>

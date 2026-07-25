@@ -151,6 +151,8 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     certText:
       "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.",
     imageAlt: "Omar Elgazzar \u2014 Mobile Massage Therapist Porto",
+    image_url: null,
+    cert_image_url: null,
   },
   reputation_section: {
     heading: "Trusted by Our Clients",
@@ -188,6 +190,7 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     description:
       "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.",
     image_alt: "Professional massage certifications",
+    image_url: null,
   },
   hours_section: {
     heading: "Opening Hours",

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { X } from "lucide-react";
 
 interface GalleryImage {
@@ -29,12 +28,10 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
               onClick={() => setSelected(i)}
               className="group relative aspect-square overflow-hidden rounded-lg bg-muted"
             >
-              <Image
+              <img
                 src={img.public_url}
                 alt={img.alt_text || ""}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </button>
           ))}
@@ -53,12 +50,10 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
             <X className="size-6" />
           </button>
           <div className="relative size-full max-h-[80vh] max-w-3xl">
-            <Image
+            <img
               src={images[selected].public_url}
               alt={images[selected].alt_text || ""}
-              fill
-              className="object-contain"
-              sizes="90vw"
+              className="absolute inset-0 size-full object-contain"
             />
           </div>
         </div>
