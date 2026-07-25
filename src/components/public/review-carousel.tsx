@@ -31,7 +31,7 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
       <div className="min-h-[200px] text-center">
         <div className="mb-3 flex justify-center gap-1">
           {Array.from({ length: r.rating }).map((_, i) => (
-            <Star key={i} className="size-5 fill-yellow-500 text-yellow-500" />
+            <Star key={i} className="size-5 fill-[#B45309] text-[#B45309]" />
           ))}
         </div>
         <p className="text-base leading-relaxed text-muted-foreground">
@@ -55,22 +55,7 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
         <ChevronRight className="size-5" />
       </button>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-1">
-        {reviews.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className="flex min-h-[36px] min-w-[36px] items-center justify-center p-2 cursor-pointer"
-            aria-label={`Go to review ${i + 1}`}
-          >
-            <span
-              className={`size-2.5 rounded-full transition-colors ${
-                i === current ? "bg-foreground" : "bg-muted-foreground/30"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
+
     </div>
   );
 }

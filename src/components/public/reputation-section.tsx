@@ -38,7 +38,7 @@ export function ReputationSection({
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
-                      className="size-4 fill-amber-500 text-amber-500"
+                      className="size-4 fill-[#B45309] text-[#B45309]"
                     />
                   ))}
                 </div>

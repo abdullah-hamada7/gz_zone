@@ -1,5 +1,3 @@
-"use client";
-
 import { WhatsAppButton } from "./cta-button";
 
 export function FinalCTA() {

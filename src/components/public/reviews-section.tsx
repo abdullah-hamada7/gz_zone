@@ -1,5 +1,3 @@
-"use client";
-
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -29,7 +27,7 @@ export function ReviewsSection({ reviews }: { reviews: Review[] }) {
                   {Array.from({ length: r.rating }).map((_, j) => (
                     <Star
                       key={j}
-                      className="size-4 fill-yellow-500 text-yellow-500"
+                      className="size-4 fill-[#B45309] text-[#B45309]"
                     />
                   ))}
                 </div>
