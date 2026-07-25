@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { MapPin, MessageCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { buttonVariants, Button } from "@/components/ui/button";
@@ -158,14 +157,11 @@ export function Hero({
 
           <div className="relative w-full max-w-md mx-auto lg:max-w-none">
             <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/20">
-              <Image
+              <img
                 key={currentImage.src}
                 src={currentImage.src}
                 alt={currentImage.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority={index === 0}
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
             <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
