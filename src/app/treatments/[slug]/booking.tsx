@@ -111,7 +111,7 @@ export function TreatmentBooking({
 
       <button
         onClick={handleBook}
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A8C4A] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[#167841] sm:w-auto"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#157347] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[#13633B] sm:w-auto"
       >
         Book via WhatsApp
       </button>
