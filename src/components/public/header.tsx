@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
+import { GZZoneBrandLogo } from "@/components/ui/gz-zone-brand-logo";
 
 
 export function Header() {
@@ -13,19 +13,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/images/logo.jpg"
-            alt="GZ'ZONE"
-            width={36}
-            height={36}
-            className="rounded-full"
-          />
-          <div>
-            <span className="text-lg font-logo tracking-wide">GZ&apos;ZONE</span>
-            <p className="text-xs leading-tight text-foreground/80 font-medium">a zone without boundaries</p>
-          </div>
-        </Link>
+        <GZZoneBrandLogo href="/" size="sm" />
 
         <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((link) => (

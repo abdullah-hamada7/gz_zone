@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MessageCircle, Globe } from "lucide-react";
+import { GZZoneBrandLogo } from "@/components/ui/gz-zone-brand-logo";
 
 export function Footer() {
   return (
@@ -7,8 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid gap-8 sm:grid-cols-3">
           <div>
-            <h3 className="mb-3 text-sm font-semibold">GZ&apos;ZONE</h3>
-            <p className="text-xs italic text-muted-foreground">a zone without boundaries</p>
+            <GZZoneBrandLogo href="/" size="md" className="mb-3" />
             <p className="mt-2 text-sm text-muted-foreground">
               Professional mobile massage services in Porto and surrounding
               areas.
