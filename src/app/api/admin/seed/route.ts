@@ -10,9 +10,30 @@ import {
 } from "@/data";
 import type { SiteContentKey } from "@/data";
 
-export async function POST() {
+export async function POST(request: Request) {
   const supabase = createServiceClient();
   const results: Record<string, unknown> = {};
+
+  const { searchParams } = new URL(request.url);
+  const table = searchParams.get("table");
+
+  if (table === "testimonials") {
+    await supabase.from("testimonials").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    let count = 0;
+    for (let i = 0; i < TESTIMONIALS.length; i++) {
+      const t = TESTIMONIALS[i];
+      const { error } = await supabase.from("testimonials").insert({
+        customer_name: t.customer_name,
+        customer_photo_url: t.customer_photo_url,
+        content: t.content,
+        location: t.location,
+        sort_order: i,
+      });
+      if (!error) count++;
+    }
+    results.testimonials = count;
+    return NextResponse.json({ message: "Testimonials reseeded", results });
+  }
 
   const treatmentIdMap: Record<string, string> = {};
 
