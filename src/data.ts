@@ -49,6 +49,8 @@ export type SiteContentKey =
   | "trust_bar"
   | "why_mobile_massage"
   | "how_it_works"
+  | "key_benefits"
+  | "what_to_expect"
   | "about_section"
   | "reputation_section"
   | "faq_section"
@@ -57,7 +59,9 @@ export type SiteContentKey =
   | "certifications_section"
   | "hours_section"
   | "service_areas_section"
-  | "gallery_section";
+  | "gallery_section"
+  | "privacy_policy"
+  | "terms";
 
 export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> = {
   hero: {
@@ -213,6 +217,71 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
   },
   gallery_section: {
     heading: "Experience Gallery",
+  },
+  key_benefits: {
+    heading: "Key Benefits",
+    items: [
+      {
+        title: "Muscle Relief",
+        description: "Alleviates persistent muscle stiffness and chronic tension.",
+      },
+      {
+        title: "Cellular Recovery",
+        description: "Promotes micro-circulation and faster cellular recovery.",
+      },
+      {
+        title: "Tailored Pressure",
+        description: "Tailored pressure intensity based on your individual comfort level.",
+      },
+      {
+        title: "At Your Location",
+        description: "Delivered directly to your home, hotel, or apartment in Porto.",
+      },
+    ],
+  },
+  what_to_expect: {
+    heading: "What to Expect",
+    items: [
+      {
+        title: "Full Setup",
+        description: "Complete equipment set-up (portable table, linens, and oils).",
+      },
+      {
+        title: "Pre-Session Consultation",
+        description: "Brief pre-session consultation to identify target pain areas.",
+      },
+      {
+        title: "Professional Session",
+        description: "Professional, hygienic, and respectful bodywork session.",
+      },
+      {
+        title: "Aftercare Advice",
+        description: "Post-treatment posture and hydration advice.",
+      },
+    ],
+  },
+  privacy_policy: {
+    body_html: `      <p>Your privacy is important. This policy outlines how your personal data is collected and used.</p>
+            <h2>Information We Collect</h2>
+            <p>We collect information you provide when booking a massage through WhatsApp, including your name, contact details, and location.</p>
+            <h2>How We Use Your Information</h2>
+            <p>Your information is used solely to provide and schedule your massage treatment. We do not share your data with third parties.</p>
+            <h2>Data Storage</h2>
+            <p>Your information is stored securely. You may request deletion of your data at any time by contacting us via WhatsApp.</p>
+            <h2>Contact</h2>
+            <p>For privacy-related inquiries, contact us on WhatsApp.</p>`,
+  },
+  terms: {
+    body_html: `      <h2>Booking</h2>
+            <p>By booking a massage treatment, you agree to these terms. All bookings are confirmed via WhatsApp.</p>
+            <h2>Cancellation</h2>
+            <p>Please provide at least 24 hours notice for cancellations. Late cancellations may be subject to a fee.</p>
+            <h2>Health</h2>
+            <p>It is your responsibility to inform the therapist of any medical conditions, injuries, or allergies prior to treatment.</p>
+            <h2>Liability</h2>
+            <p>The therapist reserves the right to refuse or modify treatment if there are health concerns that make massage inadvisable.</p>
+            <h2>Contact</h2>
+            <p>For questions about these terms, contact us via WhatsApp.</p>`,
   },
 };
 

@@ -76,3 +76,114 @@ export interface SiteContent {
   content: Record<string, unknown>;
   updated_at?: string;
 }
+
+export interface HeroContent {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  cta_text?: string;
+  explore_text?: string;
+  location_text?: string;
+  dialog_title?: string;
+  dialog_description?: string;
+  dialog_link?: string;
+}
+
+export interface TrustBarContent {
+  items?: { label: string }[];
+}
+
+export interface BenefitItem {
+  title: string;
+  description: string;
+}
+
+export interface WhyMobileMassageContent {
+  heading?: string;
+  description?: string;
+  benefits?: BenefitItem[];
+}
+
+export interface HowItWorksContent {
+  heading?: string;
+  steps?: BenefitItem[];
+}
+
+export interface KeyBenefitsContent {
+  heading?: string;
+  items?: { title: string; description: string }[];
+}
+
+export interface WhatToExpectContent {
+  heading?: string;
+  items?: { title: string; description: string }[];
+}
+
+export interface AboutSectionContent {
+  heading?: string;
+  subheading?: string;
+  paragraphs?: string[];
+  trustHeading?: string;
+  trustPoints?: { title: string; description: string }[];
+  certLabel?: string;
+  certHeading?: string;
+  certText?: string;
+  imageAlt?: string;
+}
+
+export interface ReputationSectionContent {
+  heading?: string;
+  subheading?: string;
+  reviewLabel?: string;
+}
+
+export interface FAQSectionContent {
+  heading?: string;
+}
+
+export interface FooterContent {
+  description?: string;
+  quickLinksHeading?: string;
+  quickLinks?: { label: string; href: string }[];
+  contactHeading?: string;
+  phone?: string;
+  phoneHref?: string;
+  location?: string;
+  instagramHandle?: string;
+  instagramUrl?: string;
+  copyright?: string;
+}
+
+export interface FinalCTAContent {
+  heading?: string;
+  description?: string;
+  button_text?: string;
+}
+
+export interface CertificationsSectionContent {
+  label?: string;
+  heading?: string;
+  subheading?: string;
+  description?: string;
+  image_alt?: string;
+}
+
+export interface HoursSectionContent {
+  heading?: string;
+  subtitle?: string;
+  days?: { day: string; hours: string }[];
+}
+
+export interface ServiceAreasSectionContent {
+  heading?: string;
+  description?: string;
+  button_text?: string;
+}
+
+export interface GallerySectionContent {
+  heading?: string;
+}
+
+export interface LegalPageContent {
+  body_html?: string;
+}

@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { HoursSection } from "@/components/public/hours-section";
+import { KeyBenefits } from "@/components/public/key-benefits";
+import { WhatToExpect } from "@/components/public/what-to-expect";
 import { TreatmentBooking } from "./booking";
-import { getTreatmentBySlug, getDurationsForTreatment } from "@/lib/supabase/queries";
+import { getTreatmentBySlug, getDurationsForTreatment, getAllSiteContent } from "@/lib/supabase/queries";
 import { CATEGORY_LABELS } from "@/data";
 import type { Metadata } from "next";
 
@@ -38,6 +40,7 @@ export default async function TreatmentPage({ params }: Props) {
   if (!treatment) notFound();
 
   const durations = await getDurationsForTreatment(treatment.id);
+  const siteContent = await getAllSiteContent();
   const canonicalUrl = `https://gzzone.vercel.app/treatments/${slug}`;
 
   const serviceLd = {
@@ -104,25 +107,8 @@ export default async function TreatmentPage({ params }: Props) {
             )}
 
             <div className="mt-10 grid gap-8 md:grid-cols-2">
-              <div className="rounded-xl border bg-card p-6">
-                <h2 className="text-lg font-bold mb-3">Key Benefits</h2>
-                <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
-                  <li>Alleviates persistent muscle stiffness and chronic tension.</li>
-                  <li>Promotes micro-circulation and faster cellular recovery.</li>
-                  <li>Tailored pressure intensity based on your individual comfort level.</li>
-                  <li>Delivered directly to your home, hotel, or apartment in Porto.</li>
-                </ul>
-              </div>
-
-              <div className="rounded-xl border bg-card p-6">
-                <h2 className="text-lg font-bold mb-3">What to Expect</h2>
-                <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
-                  <li>Complete equipment set-up (portable table, linens, and oils).</li>
-                  <li>Brief pre-session consultation to identify target pain areas.</li>
-                  <li>Professional, hygienic, and respectful bodywork session.</li>
-                  <li>Post-treatment posture and hydration advice.</li>
-                </ul>
-              </div>
+              <KeyBenefits content={siteContent.key_benefits} />
+              <WhatToExpect content={siteContent.what_to_expect} />
             </div>
 
             {durations.length > 0 && (
