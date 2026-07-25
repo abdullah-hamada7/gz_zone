@@ -13,25 +13,25 @@ interface SectionConfig {
   key: string;
   label: string;
   description: string;
-  category: "homepage" | "legal" | "other";
+  category: "homepage" | "treatments" | "legal" | "other";
 }
 
 const sections: SectionConfig[] = [
   { key: "hero", label: "Hero Section", description: "Main hero banner on homepage", category: "homepage" },
   { key: "trust_bar", label: "Trust Bar", description: "Trust badges below hero", category: "homepage" },
-  { key: "key_benefits", label: "Key Benefits", description: "Benefits section with 4 cards", category: "homepage" },
-  { key: "what_to_expect", label: "What to Expect", description: "What to expect section with 4 cards", category: "homepage" },
   { key: "why_mobile_massage", label: "Why Mobile Massage", description: "Benefits section with 4 cards", category: "homepage" },
   { key: "how_it_works", label: "How It Works", description: "3-step process section", category: "homepage" },
   { key: "about_section", label: "About Section", description: "About Omar / bio section", category: "homepage" },
-  { key: "reputation_section", label: "Reputation Section", description: "Reviews and ratings heading", category: "homepage" },
+  { key: "reputation_section", label: "Reputation Section", description: "Platform ratings heading", category: "homepage" },
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
   { key: "final_cta", label: "Final CTA", description: "Bottom call-to-action section", category: "homepage" },
-  { key: "certifications_section", label: "Certifications Section", description: "Certification display", category: "homepage" },
-  { key: "hours_section", label: "Business Hours", description: "Opening hours display", category: "homepage" },
-  { key: "service_areas_section", label: "Service Areas", description: "Location coverage section", category: "homepage" },
-  { key: "gallery_section", label: "Gallery Section", description: "Gallery section heading", category: "homepage" },
+  { key: "key_benefits", label: "Key Benefits", description: "Benefits section on treatment pages", category: "treatments" },
+  { key: "what_to_expect", label: "What to Expect", description: "What to expect section on treatment pages", category: "treatments" },
+  { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
+  { key: "certifications_section", label: "Certifications Section", description: "Certification display (not used yet)", category: "other" },
+  { key: "service_areas_section", label: "Service Areas", description: "Location coverage (not used yet)", category: "other" },
+  { key: "gallery_section", label: "Gallery Section", description: "Gallery heading (not used yet)", category: "other" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
 ];
@@ -660,7 +660,7 @@ export default function AdminSiteContentPage() {
   const [openSection, setOpenSection] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, Record<string, unknown>>>({});
   const [saving, setSaving] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<"homepage" | "legal" | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   useEffect(() => {
     fetch("/api/admin/site-content")
@@ -718,15 +718,15 @@ export default function AdminSiteContentPage() {
         </p>
       </div>
 
-      <div className="flex gap-2">
-        {(["all", "homepage", "legal"] as const).map((cat) => (
+      <div className="flex flex-wrap gap-2">
+        {["all", "homepage", "treatments", "legal", "other"].map((cat) => (
           <Button
             key={cat}
             variant={activeCategory === cat ? "default" : "outline"}
             size="sm"
             onClick={() => setActiveCategory(cat)}
           >
-            {cat === "all" ? "All Sections" : cat === "homepage" ? "Homepage" : "Legal Pages"}
+            {cat === "all" ? "All" : cat.charAt(0).toUpperCase() + cat.slice(1)}
           </Button>
         ))}
       </div>

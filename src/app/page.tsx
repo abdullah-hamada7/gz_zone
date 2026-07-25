@@ -55,7 +55,6 @@ export default async function HomePage() {
         <TrustBar content={siteContent.trust_bar} />
         <ReputationSection
           ratings={ratings}
-          reviews={reviews}
           content={siteContent.reputation_section}
         />
         <TestimonialsSection testimonials={testimonials} />

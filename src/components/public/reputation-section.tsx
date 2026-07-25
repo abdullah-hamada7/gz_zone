@@ -1,5 +1,4 @@
 import { Star } from "lucide-react";
-import { ReviewCarousel } from "./review-carousel";
 
 interface PlatformRating {
   platform: string;
@@ -8,24 +7,14 @@ interface PlatformRating {
   profile_url: string | null;
 }
 
-interface Review {
-  customer_name: string;
-  content: string;
-  rating: number;
-  platform: string;
-}
-
 export function ReputationSection({
   ratings,
-  reviews,
   content,
 }: {
   ratings: PlatformRating[];
-  reviews: Review[];
   content?: Record<string, unknown>;
 }) {
   const heading = (content?.heading as string) ?? "Trusted by Our Clients";
-  const subheading = (content?.subheading as string) ?? "What Our Clients Say";
   const reviewLabel = (content?.reviewLabel as string) ?? "Read Reviews on";
 
   return (
@@ -61,14 +50,6 @@ export function ReputationSection({
           ))}
         </div>
 
-        {reviews.length > 0 && (
-          <div className="mt-12 border-t pt-12">
-            <p className="mb-8 text-sm font-semibold tracking-wider text-muted-foreground uppercase">
-              {subheading}
-            </p>
-            <ReviewCarousel reviews={reviews} />
-          </div>
-        )}
       </div>
     </section>
   );

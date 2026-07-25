@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { HoursSection } from "@/components/public/hours-section";
-import { KeyBenefits } from "@/components/public/key-benefits";
-import { WhatToExpect } from "@/components/public/what-to-expect";
 import { TreatmentBooking } from "./booking";
 import { getTreatmentBySlug, getDurationsForTreatment, getAllSiteContent } from "@/lib/supabase/queries";
 import { CATEGORY_LABELS } from "@/data";
@@ -106,10 +104,34 @@ export default async function TreatmentPage({ params }: Props) {
               </div>
             )}
 
-            <div className="mt-10 grid gap-8 md:grid-cols-2">
-              <KeyBenefits content={siteContent.key_benefits} />
-              <WhatToExpect content={siteContent.what_to_expect} />
-            </div>
+            {(siteContent.key_benefits || siteContent.what_to_expect) && (
+              <div className="mt-10 grid gap-8 md:grid-cols-2">
+                {siteContent.key_benefits && (
+                  <div className="rounded-xl border bg-card p-6">
+                    <h2 className="text-lg font-bold mb-4">{(siteContent.key_benefits as Record<string, unknown>)?.heading as string || "Key Benefits"}</h2>
+                    <ul className="space-y-3 text-sm text-muted-foreground">
+                      {((siteContent.key_benefits as Record<string, unknown>)?.items as Array<{ title: string; description: string }> | undefined)?.map((item, i) => (
+                        <li key={i}>
+                          <span className="font-semibold text-foreground">{item.title}:</span> {item.description}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {siteContent.what_to_expect && (
+                  <div className="rounded-xl border bg-card p-6">
+                    <h2 className="text-lg font-bold mb-4">{(siteContent.what_to_expect as Record<string, unknown>)?.heading as string || "What to Expect"}</h2>
+                    <ul className="space-y-3 text-sm text-muted-foreground">
+                      {((siteContent.what_to_expect as Record<string, unknown>)?.items as Array<{ title: string; description: string }> | undefined)?.map((item, i) => (
+                        <li key={i}>
+                          <span className="font-semibold text-foreground">{item.title}:</span> {item.description}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
 
             {durations.length > 0 && (
               <div className="mt-10">
