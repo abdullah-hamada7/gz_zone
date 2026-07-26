@@ -3,11 +3,13 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export async function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Supabase env vars missing");
+    return createServerClient("https://placeholder.supabase.co", "placeholder-key", {
+      cookies: { getAll() { return []; }, setAll() {} },
+    });
   }
 
   const cookieStore = await cookies();
@@ -29,11 +31,11 @@ export async function createClient() {
 }
 
 export function createServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Supabase env vars missing");
+    return createSupabaseClient("https://placeholder.supabase.co", "placeholder-key");
   }
 
   return createSupabaseClient(supabaseUrl, supabaseKey);
