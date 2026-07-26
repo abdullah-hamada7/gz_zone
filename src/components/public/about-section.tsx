@@ -1,3 +1,5 @@
+"use client";
+
 import { Shield, Heart, Award, Lock } from "lucide-react";
 
 const defaultTrustPoints = [
