@@ -9,7 +9,13 @@ const defaultTrustPoints = [
 
 const trustPointIcons = [Shield, Heart, Award, Lock] as const;
 
-export function AboutSection({ content }: { content?: Record<string, unknown> }) {
+export function AboutSection({
+  content,
+  certContent,
+}: {
+  content?: Record<string, unknown>;
+  certContent?: Record<string, unknown>;
+}) {
   const heading = (content?.heading as string) ?? "About";
   const subheading = (content?.subheading as string) ?? "Omar Elgazzar";
   const paragraphs = (content?.paragraphs as string[] | undefined) ?? [
@@ -23,13 +29,13 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
   const trustPoints = (trustPointsRaw && trustPointsRaw.length > 0)
     ? trustPointsRaw.map((p, i) => ({ ...p, icon: trustPointIcons[i] ?? trustPointIcons[0] }))
     : defaultTrustPoints;
-  const certLabel = (content?.certLabel as string) ?? "Certified & Professional";
-  const certHeading = (content?.certHeading as string) ?? "Your Wellbeing Is in Safe Hands";
-  const certText = (content?.certText as string) ??
+  const certLabel = (certContent?.label as string) ?? (content?.certLabel as string) ?? "Certified & Professional";
+  const certHeading = (certContent?.heading as string) ?? (content?.certHeading as string) ?? "Your Wellbeing Is in Safe Hands";
+  const certText = (certContent?.description as string) ?? (content?.certText as string) ??
     "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.";
-  const imageAlt = (content?.imageAlt as string) ?? "Omar Elgazzar — Mobile Massage Therapist Porto";
+  const imageAlt = (certContent?.image_alt as string) ?? (content?.imageAlt as string) ?? "Omar Elgazzar — Mobile Massage Therapist Porto";
   const imageUrl = (content?.image_url as string) ?? null;
-  const certImageUrl = (content?.cert_image_url as string) ?? null;
+  const certImageUrl = (certContent?.image_url as string) ?? (content?.cert_image_url as string) ?? null;
 
   return (
     <section id="about" className="py-20">
@@ -43,6 +49,10 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
               src={imageUrl}
               alt={imageAlt}
               className="size-full object-cover"
+              onError={(e) => {
+                const parent = (e.currentTarget as HTMLImageElement).parentElement;
+                if (parent) parent.style.display = "none";
+              }}
             />
           </div>
         )}
@@ -73,8 +83,12 @@ export function AboutSection({ content }: { content?: Record<string, unknown> })
               <div className="relative w-48 shrink-0 overflow-hidden rounded-xl border bg-background p-3 shadow-sm">
                 <img
                   src={certImageUrl}
-                  alt="Professional massage certifications"
+                  alt={imageAlt || "Professional massage certifications"}
                   className="mx-auto h-auto w-full object-contain"
+                  onError={(e) => {
+                    const parent = (e.currentTarget as HTMLImageElement).parentElement;
+                    if (parent) parent.style.display = "none";
+                  }}
                 />
               </div>
             )}

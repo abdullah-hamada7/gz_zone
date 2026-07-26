@@ -162,6 +162,11 @@ export function Hero({
                   src={images[index]?.src}
                   alt={images[index]?.alt || ""}
                   className="absolute inset-0 size-full object-cover"
+                  onError={() => {
+                    if (images.length > 1) {
+                      setIndex((i) => (i + 1) % images.length);
+                    }
+                  }}
                 />
               </div>
               <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">

@@ -15,6 +15,7 @@ function getInitials(name: string) {
 
 export function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
   const [current, setCurrent] = useState(0);
+  const [imgError, setImgError] = useState<Record<string, boolean>>({});
   const len = testimonials.length;
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % len), [len]);
@@ -48,12 +49,13 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
           </div>
 
           <div className="min-h-[200px] rounded-xl border bg-card p-8 pt-12 text-center shadow-sm">
-            {t.customer_photo_url ? (
+            {t.customer_photo_url && !imgError[t.id] ? (
               <div className="-mt-16 mb-4 flex justify-center">
                 <img
                   src={t.customer_photo_url}
                   alt={t.customer_name}
                   className="size-16 rounded-full border-4 border-background object-cover"
+                  onError={() => setImgError((prev) => ({ ...prev, [t.id]: true }))}
                 />
               </div>
             ) : (

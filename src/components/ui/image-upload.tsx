@@ -89,17 +89,24 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           </div>
         </div>
         {value && (
-          <div className="relative size-20 shrink-0 overflow-hidden rounded-full border">
-            <img src={value} alt="Preview" className="absolute inset-0 size-full object-cover" />
+          <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg border bg-muted/30 p-1 flex items-center justify-center">
+            <img
+              src={value}
+              alt="Preview"
+              className="h-full w-full object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
           </div>
         )}
         {!value && !uploading && (
-          <div className="flex size-20 shrink-0 items-center justify-center rounded-full border border-dashed text-muted-foreground">
+          <div className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed text-muted-foreground bg-muted/10">
             <Upload className="size-6" />
           </div>
         )}
         {uploading && !value && (
-          <div className="flex size-20 shrink-0 items-center justify-center rounded-full border border-dashed text-muted-foreground">
+          <div className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed text-muted-foreground bg-muted/10">
             <Loader2 className="size-6 animate-spin" />
           </div>
         )}

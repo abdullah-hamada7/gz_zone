@@ -79,7 +79,7 @@ export default async function HomePage() {
 
         <WhyMobileMassage content={siteContent.why_mobile_massage} />
         <HowItWorks content={siteContent.how_it_works} />
-        <AboutSection content={siteContent.about_section} />
+        <AboutSection content={siteContent.about_section} certContent={siteContent.certifications_section} />
         <section id="faq">
           <FAQSection faqs={faqs} content={siteContent.faq_section} />
         </section>

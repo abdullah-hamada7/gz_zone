@@ -32,6 +32,10 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                 src={img.public_url}
                 alt={img.alt_text || ""}
                 className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  const parent = (e.currentTarget as HTMLImageElement).parentElement;
+                  if (parent) parent.style.display = "none";
+                }}
               />
             </button>
           ))}
@@ -54,6 +58,9 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
               src={images[selected].public_url}
               alt={images[selected].alt_text || ""}
               className="absolute inset-0 size-full object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
             />
           </div>
         </div>

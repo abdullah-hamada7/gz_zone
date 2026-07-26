@@ -14,7 +14,7 @@ interface SectionConfig {
   key: string;
   label: string;
   description: string;
-  category: "homepage" | "treatments" | "legal" | "other";
+  category: "homepage" | "treatments" | "legal";
 }
 
 const sections: SectionConfig[] = [
@@ -730,7 +730,7 @@ export default function AdminSiteContentPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {["all", "homepage", "treatments", "legal", "other"].map((cat) => (
+        {["all", "homepage", "treatments", "legal"].map((cat) => (
           <Button
             key={cat}
             variant={activeCategory === cat ? "default" : "outline"}
