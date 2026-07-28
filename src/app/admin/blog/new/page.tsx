@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowLeft, Save, Upload, ImageIcon } from "lucide-react";
+import { ArrowLeft, Save, Upload, ImageIcon, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { BLOG_CATEGORIES } from "@/data/blog-posts";
 
@@ -227,16 +227,33 @@ export default function NewBlogPostPage() {
               }}
             />
 
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className="shrink-0 w-full sm:w-auto"
-            >
-              <Upload className="mr-2 size-4" />
-              Upload Image
-            </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="shrink-0 flex-1 sm:flex-initial"
+              >
+                <Upload className="mr-2 size-4" />
+                Upload Image
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                  toast.info("Image cleared");
+                }}
+                disabled={!formData.imageUrl || uploading}
+                className="shrink-0 flex-1 sm:flex-initial text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/30"
+              >
+                <Trash2 className="mr-2 size-4" />
+                Delete Image
+              </Button>
+            </div>
           </div>
 
           {formData.imageUrl && (
