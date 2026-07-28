@@ -79,26 +79,11 @@ export function AboutSection({
           })}
         </div>
 
-        <div className="rounded-xl border bg-muted/20 p-8 sm:p-12">
-          <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
-            {certImageUrl && (
-              <div className="relative w-48 shrink-0 overflow-hidden rounded-xl border bg-background p-3 shadow-sm">
-                <img
-                  src={certImageUrl}
-                  alt={imageAlt || "Professional massage certifications"}
-                  className="mx-auto h-auto w-full object-contain"
-                  onError={(e) => {
-                    const parent = (e.currentTarget as HTMLImageElement).parentElement;
-                    if (parent) parent.style.display = "none";
-                  }}
-                />
-              </div>
-            )}
-            <div className="max-w-md">
-              <p className="mb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">{certLabel}</p>
-              <h4 className="mb-3 text-xl font-bold">{certHeading}</h4>
-              <p className="text-sm leading-relaxed text-muted-foreground">{certText}</p>
-            </div>
+        <div className="rounded-xl border bg-muted/20 p-8 sm:p-12 text-center">
+          <div className="mx-auto max-w-2xl">
+            <p className="mb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">{certLabel}</p>
+            <h4 className="mb-3 text-xl sm:text-2xl font-bold">{certHeading}</h4>
+            <p className="text-sm leading-relaxed text-muted-foreground">{certText}</p>
           </div>
         </div>
       </div>

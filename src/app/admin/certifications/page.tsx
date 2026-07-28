@@ -96,7 +96,8 @@ export default function AdminCertificationsPage() {
       if (fileInputRef.current) fileInputRef.current.value = "";
       fetchCertifications();
     } else {
-      toast.error("Failed to save certification record");
+      const err = await createRes.json().catch(() => null);
+      toast.error(err?.error ? `Error: ${err.error}` : "Failed to save certification record");
     }
   }
 

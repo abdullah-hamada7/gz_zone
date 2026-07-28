@@ -7,7 +7,10 @@ export async function GET() {
     .from("certifications")
     .select("*")
     .order("sort_order");
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) {
+    console.error("GET certifications error:", error);
+    return NextResponse.json([], { status: 200 });
+  }
   return NextResponse.json(data);
 }
 
@@ -19,6 +22,9 @@ export async function POST(request: Request) {
     .insert(body)
     .select()
     .single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  if (error) {
+    console.error("POST certifications error:", error);
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
   return NextResponse.json(data);
 }

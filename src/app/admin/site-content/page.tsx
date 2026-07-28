@@ -423,10 +423,6 @@ function SectionEditor({
             <Label>Profile Photo</Label>
             <ImageUpload value={str("image_url", null)} onChange={(url) => set("image_url", url)} />
           </div>
-          <div className="space-y-2">
-            <Label>Certification Image</Label>
-            <ImageUpload value={str("cert_image_url", null)} onChange={(url) => set("cert_image_url", url)} />
-          </div>
         </div>
       );
 
