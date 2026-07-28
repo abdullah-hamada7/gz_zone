@@ -9,7 +9,10 @@ import type {
   GalleryImage,
   Certification,
   ConversionEvent,
+  BlogPost,
+  NewsletterSubscriber,
 } from "@/types";
+import { BLOG_POSTS } from "@/data/blog-posts";
 
 async function safeQuery<T>(fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T> {
   try {
@@ -150,6 +153,89 @@ export async function getConversionEvents(limit = 100): Promise<ConversionEvent[
       .select("*")
       .order("created_at", { ascending: false })
       .limit(limit);
+  });
+}
+
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const supabase = await db();
+    const { data, error } = await supabase
+      .from("blog_posts")
+      .select("*")
+      .order("sort_order");
+
+    if (error || !data || data.length === 0) {
+      return BLOG_POSTS;
+    }
+
+    return data.map((row) => ({
+      id: row.id,
+      title: row.title,
+      slug: row.slug,
+      excerpt: row.excerpt,
+      content: row.content,
+      category: row.category,
+      categorySlug: row.category_slug,
+      readTime: row.read_time,
+      publishedAt: row.published_at,
+      author: {
+        name: row.author_name || "GZ Zone Specialist",
+        role: row.author_role || "Certified Therapist",
+      },
+      imageUrl: row.image_url,
+      imageAlt: row.image_alt || row.title,
+      tags: row.tags || [],
+      featured: row.featured,
+      relatedTreatmentSlug: row.related_treatment_slug,
+      views_count: row.views_count || 0,
+      sort_order: row.sort_order,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+    }));
+  } catch {
+    return BLOG_POSTS;
+  }
+}
+
+export async function incrementBlogPostViews(slug: string): Promise<number> {
+  try {
+    const supabase = await db();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("id, views_count")
+      .eq("slug", slug)
+      .single();
+
+    if (data) {
+      const newCount = (data.views_count || 0) + 1;
+      await supabase
+        .from("blog_posts")
+        .update({ views_count: newCount })
+        .eq("id", data.id);
+      return newCount;
+    }
+  } catch {
+    // Fail silently
+  }
+  return 0;
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const posts = await getBlogPosts();
+    return posts.find((p) => p.slug === slug) || null;
+  } catch {
+    return BLOG_POSTS.find((p) => p.slug === slug) || null;
+  }
+}
+
+export async function getNewsletterSubscribers(): Promise<NewsletterSubscriber[]> {
+  return safeQuery(async () => {
+    const supabase = await db();
+    return supabase
+      .from("newsletter_subscribers")
+      .select("*")
+      .order("created_at", { ascending: false });
   });
 }
 

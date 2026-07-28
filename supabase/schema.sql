@@ -102,3 +102,33 @@ CREATE TABLE IF NOT EXISTS conversion_events (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS blog_posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  excerpt TEXT DEFAULT '',
+  content TEXT DEFAULT '',
+  category TEXT DEFAULT 'Massage Therapy',
+  category_slug TEXT DEFAULT 'massage-therapy',
+  read_time TEXT DEFAULT '5 min read',
+  published_at TEXT DEFAULT '',
+  author_name TEXT DEFAULT 'GZ Zone Specialist',
+  author_role TEXT DEFAULT 'Certified Massage & Cupping Therapist',
+  image_url TEXT DEFAULT '',
+  image_alt TEXT DEFAULT '',
+  tags TEXT[] DEFAULT '{}',
+  featured BOOLEAN DEFAULT false,
+  related_treatment_slug TEXT,
+  views_count INTEGER DEFAULT 0,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL UNIQUE,
+  source TEXT DEFAULT 'website',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+

@@ -10,6 +10,7 @@ import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
 import { TestimonialsSection } from "@/components/public/testimonials-section";
 import { CertificationsSection } from "@/components/public/certifications-section";
+import { BlogSection } from "@/components/public/blog-section";
 import {
   getTreatments,
   getFAQs,
@@ -84,6 +85,7 @@ export default async function HomePage() {
         <HowItWorks content={siteContent.how_it_works} />
         <AboutSection content={siteContent.about_section} certContent={siteContent.certifications_section} />
         <CertificationsSection certifications={certifications} />
+        <BlogSection />
         <section id="faq">
           <FAQSection faqs={faqs} content={siteContent.faq_section} />
         </section>
