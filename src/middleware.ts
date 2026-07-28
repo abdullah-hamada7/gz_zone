@@ -9,9 +9,7 @@ export async function middleware(request: NextRequest) {
     const isLoginPage = request.nextUrl.pathname === "/admin/login";
     const isApiAdminRoute = request.nextUrl.pathname.startsWith("/api/admin");
     const isAuthApi = request.nextUrl.pathname.startsWith("/api/admin/auth");
-    const isSeedApi = request.nextUrl.pathname === "/api/admin/seed";
-
-    if (isApiAdminRoute && !isAuthApi && !isSeedApi) {
+    if (isApiAdminRoute && !isAuthApi) {
       if (!user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
