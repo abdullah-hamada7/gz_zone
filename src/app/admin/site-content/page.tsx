@@ -404,18 +404,6 @@ function SectionEditor({
             <Plus className="mr-2 size-4" /> Add Trust Point
           </Button>
           <div className="space-y-2">
-            <Label>Cert Label</Label>
-            <Input value={str("certLabel")} onChange={(e) => set("certLabel", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Cert Heading</Label>
-            <Input value={str("certHeading")} onChange={(e) => set("certHeading", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Cert Text</Label>
-            <Textarea value={str("certText")} onChange={(e) => set("certText", e.target.value)} />
-          </div>
-          <div className="space-y-2">
             <Label>Image Alt Text</Label>
             <Input value={str("imageAlt")} onChange={(e) => set("imageAlt", e.target.value)} />
           </div>

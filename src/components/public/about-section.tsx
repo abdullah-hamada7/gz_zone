@@ -31,13 +31,8 @@ export function AboutSection({
   const trustPoints = (trustPointsRaw && trustPointsRaw.length > 0)
     ? trustPointsRaw.map((p, i) => ({ ...p, icon: trustPointIcons[i] ?? trustPointIcons[0] }))
     : defaultTrustPoints;
-  const certLabel = (certContent?.label as string) ?? (content?.certLabel as string) ?? "Certified & Professional";
-  const certHeading = (certContent?.heading as string) ?? (content?.certHeading as string) ?? "Your Wellbeing Is in Safe Hands";
-  const certText = (certContent?.description as string) ?? (content?.certText as string) ??
-    "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.";
   const imageAlt = (certContent?.image_alt as string) ?? (content?.imageAlt as string) ?? "Omar Elgazzar — Mobile Massage Therapist Porto";
   const imageUrl = (content?.image_url as string) ?? null;
-  const certImageUrl = (certContent?.image_url as string) ?? (content?.cert_image_url as string) ?? null;
 
   return (
     <section id="about" className="py-20">
@@ -66,7 +61,7 @@ export function AboutSection({
         </div>
 
         <h3 className="mb-8 text-center text-2xl font-bold">{trustHeading}</h3>
-        <div className="mb-16 grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           {trustPoints.map((point) => {
             const Icon = point.icon;
             return (
@@ -77,14 +72,6 @@ export function AboutSection({
               </div>
             );
           })}
-        </div>
-
-        <div className="rounded-xl border bg-muted/20 p-8 sm:p-12 text-center">
-          <div className="mx-auto max-w-2xl">
-            <p className="mb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">{certLabel}</p>
-            <h4 className="mb-3 text-xl sm:text-2xl font-bold">{certHeading}</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">{certText}</p>
-          </div>
         </div>
       </div>
     </section>
