@@ -169,22 +169,20 @@ export function Hero({
                   }}
                 />
               </div>
-              <div className="mt-3 flex items-center justify-center py-1">
-                <div className="flex items-center gap-2 rounded-full border bg-background/90 px-3.5 py-2 shadow-xs">
-                  {images.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setIndex(i)}
-                      className={cn(
-                        "size-2.5 rounded-full transition-all cursor-pointer",
-                        i === index
-                          ? "bg-primary w-5"
-                          : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
-                      )}
-                      aria-label={`Go to slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
+              <div className="mt-3 flex items-center justify-center gap-1.5 py-1">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setIndex(i)}
+                    className={cn(
+                      "size-1.5 rounded-full transition-all cursor-pointer",
+                      i === index
+                        ? "bg-primary w-3.5"
+                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                    )}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
               </div>
             </div>
           )}

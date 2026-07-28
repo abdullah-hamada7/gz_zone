@@ -49,12 +49,12 @@ export function GZZoneBrandLogo({
         className={`${currentSize.imgClass} shrink-0 rounded-full object-cover shadow-sm border border-border/50`}
         priority
       />
-      <div className={`flex items-center gap-x-1 font-sans ${currentSize.textClass} leading-tight whitespace-nowrap`}>
-        <span className="font-bold tracking-tight text-foreground whitespace-nowrap">
+      <div className={`flex items-center gap-x-1 font-sans ${currentSize.textClass} leading-tight min-w-0 max-w-full`}>
+        <span className="font-bold tracking-tight text-foreground whitespace-nowrap shrink-0">
           Gz&apos;zone
         </span>
         {showTagline && (
-          <span className="hidden min-[540px]:inline font-medium text-muted-foreground whitespace-nowrap">
+          <span className="font-medium text-muted-foreground truncate">
             - Massage &amp; Cupping Therapy | Porto
           </span>
         )}
