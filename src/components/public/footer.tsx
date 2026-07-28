@@ -14,6 +14,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
   const copyright = (content?.copyright as string) ?? "GZ'ZONE. All rights reserved.";
   const quickLinks = (content?.quickLinks as Array<{ label: string; href: string }> | undefined) ?? [
     { label: "Treatments & Prices", href: "/treatments" },
+    { label: "Blog", href: "/blog" },
     { label: "About", href: "/#about" },
     { label: "FAQ", href: "/#faq" },
   ];

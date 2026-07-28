@@ -5,6 +5,8 @@ export default async function AdminDashboardPage() {
   const supabase = createServiceClient();
 
   const tables = [
+    "blog_posts",
+    "newsletter_subscribers",
     "conversion_events",
     "treatments",
     "durations",
@@ -30,6 +32,8 @@ export default async function AdminDashboardPage() {
   }
 
   const labels: Record<string, string> = {
+    blog_posts: "Blog Posts",
+    newsletter_subscribers: "Email Subscribers",
     conversion_events: "Conversion Events",
     treatments: "Treatments",
     durations: "Durations",
@@ -44,9 +48,9 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Dashboard Overview</h1>
         <p className="text-sm text-muted-foreground">
-          Overview of your content
+          Real-time summary of your website content, subscribers, and analytics
         </p>
       </div>
 
@@ -54,7 +58,7 @@ export default async function AdminDashboardPage() {
         {tables.map((table) => (
           <div
             key={table}
-            className="rounded-xl border bg-card p-6 shadow-sm hover:border-primary/40 transition-colors"
+            className="rounded-xl border bg-card p-6 shadow-xs hover:border-primary/40 transition-colors"
           >
             <p className="text-sm font-medium text-muted-foreground">
               {labels[table]}

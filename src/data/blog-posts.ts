@@ -23,8 +23,7 @@ export const BLOG_POSTS: BlogPost[] = [
       name: "GZ Zone Specialist",
       role: "Certified Massage & Cupping Therapist",
     },
-    imageUrl:
-      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "https://cjfkxwgijyznrxvlgfsy.supabase.co/storage/v1/object/public/gallery/blog/blog_cupping_guide.jpg",
     imageAlt: "Cupping therapy session on client's back",
     tags: ["Cupping", "Pain Relief", "Fascia Release", "Recovery"],
     featured: true,
@@ -87,8 +86,7 @@ Ready to experience authentic cupping therapy? You can book your personalized se
       name: "GZ Zone Specialist",
       role: "Certified Massage & Cupping Therapist",
     },
-    imageUrl:
-      "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "https://cjfkxwgijyznrxvlgfsy.supabase.co/storage/v1/object/public/gallery/blog/blog_deep_tissue.jpg",
     imageAlt: "Therapist applying deep tissue massage on back muscles",
     tags: ["Deep Tissue", "Swedish Massage", "Relaxation", "Muscle Knots"],
     featured: true,
@@ -154,8 +152,7 @@ Yes! A customized mobile massage treatment with **GZ Zone** can blend Swedish te
       name: "GZ Zone Specialist",
       role: "Certified Massage & Cupping Therapist",
     },
-    imageUrl:
-      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "https://cjfkxwgijyznrxvlgfsy.supabase.co/storage/v1/object/public/gallery/blog/blog_mobile_recovery.jpg",
     imageAlt: "In-home relaxing massage setup with oils and towels",
     tags: ["Mobile Massage", "Recovery", "Home Wellness", "Porto"],
     featured: false,
@@ -201,8 +198,7 @@ Book your private in-home or hotel session in Porto with **GZ Zone** today and e
       name: "GZ Zone Specialist",
       role: "Certified Massage & Cupping Therapist",
     },
-    imageUrl:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "https://cjfkxwgijyznrxvlgfsy.supabase.co/storage/v1/object/public/gallery/blog/blog_tech_neck.jpg",
     imageAlt: "Person stretching neck and shoulders at home workspace",
     tags: ["Posture", "Tech Neck", "Stretching", "Office Ergonomics"],
     featured: false,
@@ -254,8 +250,7 @@ If you work remotely or spend long hours at a desk in Porto, schedule a targeted
       name: "GZ Zone Specialist",
       role: "Certified Massage & Cupping Therapist",
     },
-    imageUrl:
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "https://cjfkxwgijyznrxvlgfsy.supabase.co/storage/v1/object/public/gallery/blog/blog_cupping_synergy.jpg",
     imageAlt: "Combined cupping and massage therapy session",
     tags: ["Cupping", "Synergy", "Myofascial Release", "Back Pain"],
     featured: false,
