@@ -1,70 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Camera, Maximize2, X } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import type { GalleryImage } from "@/types";
 
-interface GalleryImage {
-  public_url: string;
-  alt_text: string | null;
-  title: string | null;
-}
+export function GallerySection({
+  images,
+}: {
+  images?: GalleryImage[];
+}) {
+  const [selectedImg, setSelectedImg] = useState<GalleryImage | null>(null);
 
-export function GallerySection({ images }: { images: GalleryImage[] }) {
-  const [selected, setSelected] = useState<number | null>(null);
-
-  if (images.length === 0) return null;
+  if (!images || images.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="py-20">
+    <section id="gallery" className="w-full py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">
-          Experience Gallery
-        </h2>
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <div className="inline-flex items-center gap-1.5 rounded-full border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+            <Camera className="size-3.5" />
+            <span>Real Environment &amp; Professional Equipment</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Session &amp; Treatment Gallery
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
+            Take a look at the professional mobile massage setup, hygiene standards, and relaxing environment brought to your location.
+          </p>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {images.map((img, i) => (
-            <button
-              key={i}
-              onClick={() => setSelected(i)}
-              className="group relative aspect-square overflow-hidden rounded-lg bg-muted"
+          {images.map((img) => (
+            <div
+              key={img.id}
+              onClick={() => setSelectedImg(img)}
+              className="group relative aspect-4/3 overflow-hidden rounded-2xl border bg-muted shadow-xs hover:shadow-lg transition-all cursor-pointer"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img.public_url}
-                alt={img.alt_text || ""}
-                className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                alt={img.title || "Gz'zone Treatment Session Photo"}
+                className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
-                  const parent = (e.currentTarget as HTMLImageElement).parentElement;
-                  if (parent) parent.style.display = "none";
+                  (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
                 }}
               />
-            </button>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                <p className="text-sm font-semibold text-white truncate">{img.title || "Gz'zone Session Setup"}</p>
+                <span className="mt-1 inline-flex items-center gap-1 text-xs text-white/80">
+                  <Maximize2 className="size-3 text-primary" /> Click to view full image
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {selected !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setSelected(null)}
-        >
-          <button
-            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
-            onClick={() => setSelected(null)}
-          >
-            <X className="size-6" />
-          </button>
-          <div className="relative size-full max-h-[80vh] max-w-3xl">
-            <img
-              src={images[selected].public_url}
-              alt={images[selected].alt_text || ""}
-              className="absolute inset-0 size-full object-contain"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-              }}
-            />
-          </div>
-        </div>
-      )}
+      {/* Gallery Lightbox Dialog */}
+      <Dialog open={!!selectedImg} onOpenChange={(open) => !open && setSelectedImg(null)}>
+        <DialogContent className="sm:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6 bg-background">
+          {selectedImg && (
+            <div>
+              {selectedImg.title && (
+                <DialogHeader className="mb-3">
+                  <DialogTitle className="text-lg sm:text-xl font-bold text-foreground">
+                    {selectedImg.title}
+                  </DialogTitle>
+                </DialogHeader>
+              )}
+
+              <div className="relative w-full overflow-hidden rounded-xl bg-black flex items-center justify-center min-h-[300px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={selectedImg.public_url}
+                  alt={selectedImg.title || "Gz'zone Gallery Image"}
+                  className="max-h-[75vh] w-auto max-w-full object-contain"
+                />
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
