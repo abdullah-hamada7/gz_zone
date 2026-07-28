@@ -27,7 +27,6 @@ const sections: SectionConfig[] = [
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
-  { key: "certifications_section", label: "Certifications Section", description: "Certification display on homepage", category: "homepage" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
 ];
@@ -561,7 +560,6 @@ function SectionEditor({
         </div>
       );
 
-    case "certifications_section":
     case "hours_section":
     case "service_areas_section":
       return (
@@ -570,30 +568,6 @@ function SectionEditor({
             <Label>Heading</Label>
             <Input value={str("heading")} onChange={(e) => set("heading", e.target.value)} />
           </div>
-          {section.key === "certifications_section" && (
-            <>
-              <div className="space-y-2">
-                <Label>Label</Label>
-                <Input value={str("label")} onChange={(e) => set("label", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Subheading</Label>
-                <Input value={str("subheading")} onChange={(e) => set("subheading", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Description</Label>
-                <Textarea value={str("description")} onChange={(e) => set("description", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Image Alt</Label>
-                <Input value={str("image_alt")} onChange={(e) => set("image_alt", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Image</Label>
-                <ImageUpload value={str("image_url", null)} onChange={(url) => set("image_url", url)} />
-              </div>
-            </>
-          )}
           {section.key === "hours_section" && (
             <>
               <div className="space-y-2">

@@ -9,6 +9,7 @@ import { TreatmentSlider } from "@/components/public/treatment-slider";
 import { ReputationSection } from "@/components/public/reputation-section";
 import { AboutSection } from "@/components/public/about-section";
 import { TestimonialsSection } from "@/components/public/testimonials-section";
+import { CertificationsSection } from "@/components/public/certifications-section";
 import {
   getTreatments,
   getFAQs,
@@ -17,6 +18,7 @@ import {
   getAllSiteContent,
   getGalleryImages,
   getTestimonials,
+  getCertifications,
 } from "@/lib/supabase/queries";
 import { CATEGORY_LABELS } from "@/data";
 
@@ -27,7 +29,7 @@ const FAQSection = dynamicImport(() => import("@/components/public/faq-section")
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [treatments, faqs, ratings, prices, siteContent, galleryImages, testimonials] = await Promise.all([
+  const [treatments, faqs, ratings, prices, siteContent, galleryImages, testimonials, certifications] = await Promise.all([
     getTreatments(),
     getFAQs(),
     getPlatformRatings(),
@@ -35,6 +37,7 @@ export default async function HomePage() {
     getAllSiteContent(),
     getGalleryImages(),
     getTestimonials(),
+    getCertifications(),
   ]);
 
   return (
@@ -80,6 +83,7 @@ export default async function HomePage() {
         <WhyMobileMassage content={siteContent.why_mobile_massage} />
         <HowItWorks content={siteContent.how_it_works} />
         <AboutSection content={siteContent.about_section} certContent={siteContent.certifications_section} />
+        <CertificationsSection certifications={certifications} />
         <section id="faq">
           <FAQSection faqs={faqs} content={siteContent.faq_section} />
         </section>

@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 export default async function AdminDashboardPage() {
   const supabase = createServiceClient();
@@ -7,6 +8,7 @@ export default async function AdminDashboardPage() {
     "treatments",
     "durations",
     "faqs",
+    "certifications",
     "platform_ratings",
     "testimonials",
     "site_content",
@@ -30,6 +32,7 @@ export default async function AdminDashboardPage() {
     treatments: "Treatments",
     durations: "Durations",
     faqs: "FAQs",
+    certifications: "Certifications",
     platform_ratings: "Platform Ratings",
     testimonials: "Testimonials",
     site_content: "Site Sections",
@@ -49,12 +52,14 @@ export default async function AdminDashboardPage() {
         {tables.map((table) => (
           <div
             key={table}
-            className="rounded-xl border bg-card p-6 shadow-sm"
+            className="rounded-xl border bg-card p-6 shadow-sm hover:border-primary/40 transition-colors"
           >
             <p className="text-sm font-medium text-muted-foreground">
               {labels[table]}
             </p>
-            <p className="mt-2 text-3xl font-bold">{counts[table]}</p>
+            <p className="mt-2 text-3xl font-bold tracking-tight">
+              <AnimatedCounter value={counts[table]} />
+            </p>
           </div>
         ))}
       </div>

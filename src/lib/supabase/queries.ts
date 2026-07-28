@@ -7,6 +7,7 @@ import type {
   PlatformRating,
   Testimonial,
   GalleryImage,
+  Certification,
 } from "@/types";
 
 async function safeQuery<T>(fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T> {
@@ -81,6 +82,13 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
   return safeQuery(async () => {
     const supabase = await db();
     return supabase.from("gallery_images").select("*").order("sort_order");
+  });
+}
+
+export async function getCertifications(): Promise<Certification[]> {
+  return safeQuery(async () => {
+    const supabase = await db();
+    return supabase.from("certifications").select("*").order("sort_order");
   });
 }
 

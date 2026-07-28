@@ -70,6 +70,17 @@ export interface GalleryImage {
   created_at?: string;
 }
 
+export interface Certification {
+  id: string;
+  title: string;
+  issuer: string | null;
+  issue_year: string | null;
+  public_url: string;
+  description: string | null;
+  sort_order?: number;
+  created_at?: string;
+}
+
 export interface SiteContent {
   id: string;
   section_key: string;

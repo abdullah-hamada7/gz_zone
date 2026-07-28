@@ -13,6 +13,7 @@ import {
   Quote,
   FileText,
   Image,
+  Award,
   Menu,
   X,
   LogOut,
@@ -26,7 +27,7 @@ const navItems = [
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
-
+  { label: "Certifications", href: "/admin/certifications", icon: Award },
   { label: "Platform Ratings", href: "/admin/platform-ratings", icon: BarChart3 },
   { label: "Testimonials", href: "/admin/testimonials", icon: Quote },
   { label: "Site Content", href: "/admin/site-content", icon: FileText },
