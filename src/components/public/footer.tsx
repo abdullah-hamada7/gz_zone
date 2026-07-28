@@ -20,19 +20,19 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
 
   return (
     <footer className="border-t bg-muted/30">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <GZZoneBrandLogo href="/" size="md" className="mb-3" />
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-md">{description}</p>
+            <GZZoneBrandLogo href="/" size="md" className="mb-2" />
+            <p className="mt-1 text-sm text-muted-foreground leading-relaxed max-w-md">{description}</p>
           </div>
 
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-foreground tracking-tight">{quickLinksHeading}</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="mb-2 text-sm font-semibold text-foreground tracking-tight">{quickLinksHeading}</h3>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
               {quickLinks.map((link) => (
                 <li key={link.href + link.label}>
-                  <Link href={link.href} className="inline-flex items-center hover:text-foreground transition-colors py-1">
+                  <Link href={link.href} className="inline-flex items-center hover:text-foreground transition-colors py-0.5">
                     {link.label}
                   </Link>
                 </li>
@@ -41,21 +41,21 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
           </div>
 
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-foreground tracking-tight">{contactHeading}</h3>
-            <ul className="space-y-2.5 text-sm text-muted-foreground">
+            <h3 className="mb-2 text-sm font-semibold text-foreground tracking-tight">{contactHeading}</h3>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
               <li>
                 <a
                   href={phoneHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Contact GZ ZONE via WhatsApp at ${phone}`}
-                  className="inline-flex items-center gap-2.5 hover:text-foreground transition-colors py-1"
+                  className="inline-flex items-center gap-2 hover:text-foreground transition-colors py-0.5"
                 >
                   <MessageCircle className="size-4 shrink-0 text-primary" />
                   <span>{phone}</span>
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 py-1">
+              <li className="flex items-center gap-2 py-0.5">
                 <Globe className="size-4 shrink-0 text-primary" />
                 <span>{location}</span>
               </li>
@@ -65,7 +65,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Follow GZ ZONE on Instagram ${instagramHandle}`}
-                  className="inline-flex items-center gap-2.5 hover:text-foreground transition-colors py-1"
+                  className="inline-flex items-center gap-2 hover:text-foreground transition-colors py-0.5"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t pt-4 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>&copy; {new Date().getFullYear()} {copyright}</p>
           <div className="flex gap-6">
             <Link

@@ -7,7 +7,6 @@ export default async function AdminDashboardPage() {
     "treatments",
     "durations",
     "faqs",
-    "reviews",
     "platform_ratings",
     "testimonials",
     "site_content",
@@ -17,17 +16,20 @@ export default async function AdminDashboardPage() {
   const counts: Record<string, number> = {};
 
   for (const table of tables) {
-    const { count } = await supabase
-      .from(table)
-      .select("*", { count: "exact", head: true });
-    counts[table] = count ?? 0;
+    try {
+      const { count, data } = await supabase
+        .from(table)
+        .select("id", { count: "exact" });
+      counts[table] = count ?? data?.length ?? 0;
+    } catch {
+      counts[table] = 0;
+    }
   }
 
   const labels: Record<string, string> = {
     treatments: "Treatments",
     durations: "Durations",
     faqs: "FAQs",
-    reviews: "Reviews",
     platform_ratings: "Platform Ratings",
     testimonials: "Testimonials",
     site_content: "Site Sections",

@@ -178,9 +178,21 @@ export function Hero({
                   <ChevronLeft className="size-5" />
                 </button>
 
-                <span className="text-xs font-semibold text-muted-foreground">
-                  {index + 1} / {images.length}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setIndex(i)}
+                      className={cn(
+                        "size-2 rounded-full transition-all cursor-pointer",
+                        i === index
+                          ? "bg-primary w-4"
+                          : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                      )}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
 
                 <button
                   onClick={() => setIndex((i) => (i + 1) % images.length)}

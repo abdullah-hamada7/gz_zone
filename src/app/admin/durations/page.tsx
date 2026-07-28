@@ -61,7 +61,7 @@ export default function AdminDurationsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="px-4 py-3 text-left font-medium hidden sm:table-cell">Treatment</th>
+                  <th className="px-4 py-3 text-left font-medium">Treatment</th>
                   <th className="px-4 py-3 text-left font-medium">Minutes</th>
                   <th className="px-4 py-3 text-left font-medium">Price (€)</th>
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
@@ -70,10 +70,10 @@ export default function AdminDurationsPage() {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id} className="border-b last:border-0">
-                    <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">
+                    <td className="px-4 py-3 font-medium text-foreground">
                       {treatmentMap[item.treatment_id] || "Unknown"}
                     </td>
-                    <td className="px-4 py-3">{item.minutes} min</td>
+                    <td className="px-4 py-3">{item.minutes ?? 0} min</td>
                     <td className="px-4 py-3">€{Number(item.price).toFixed(0)}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-1">

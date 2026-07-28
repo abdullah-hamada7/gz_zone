@@ -15,8 +15,8 @@ export default function EditDurationPage() {
   const params = useParams<{ id: string }>();
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [treatmentId, setTreatmentId] = useState("");
-  const [minutes, setMinutes] = useState(60);
-  const [price, setPrice] = useState(0);
+  const [minutes, setMinutes] = useState<number | string>(60);
+  const [price, setPrice] = useState<number | string>(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -26,8 +26,8 @@ export default function EditDurationPage() {
       fetch("/api/admin/treatments").then((r) => r.json()),
     ]).then(([duration, treatmentsData]) => {
       setTreatmentId(duration.treatment_id || "");
-      setMinutes(duration.minutes || 60);
-      setPrice(duration.price || 0);
+      setMinutes(duration.minutes ?? 60);
+      setPrice(duration.price ?? 0);
       setTreatments(treatmentsData);
       setLoading(false);
     }).catch(() => {
@@ -38,11 +38,22 @@ export default function EditDurationPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const numMinutes = parseInt(String(minutes), 10);
+    const numPrice = parseFloat(String(price));
+    if (isNaN(numMinutes) || numMinutes <= 0) {
+      toast.error("Please enter valid minutes");
+      return;
+    }
     setSaving(true);
     const res = await fetch(`/api/admin/durations/${params.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ treatment_id: treatmentId, minutes, price, sort_order: minutes }),
+      body: JSON.stringify({
+        treatment_id: treatmentId,
+        minutes: numMinutes,
+        price: isNaN(numPrice) ? 0 : numPrice,
+        sort_order: numMinutes,
+      }),
     });
     setSaving(false);
     if (res.ok) {
@@ -78,12 +89,27 @@ export default function EditDurationPage() {
 
         <div className="space-y-2">
           <Label htmlFor="minutes">Duration (minutes)</Label>
-          <Input id="minutes" type="number" value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} required />
+          <Input
+            id="minutes"
+            type="number"
+            min="1"
+            value={minutes}
+            onChange={(e) => setMinutes(e.target.value)}
+            required
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="price">Price (€)</Label>
-          <Input id="price" type="number" step="0.01" value={price} onChange={(e) => setPrice(Number(e.target.value))} required />
+          <Input
+            id="price"
+            type="number"
+            step="0.01"
+            min="0"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+          />
         </div>
 
         <div className="flex gap-3 pt-2">
