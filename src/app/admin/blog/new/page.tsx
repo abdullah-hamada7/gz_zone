@@ -20,7 +20,7 @@ export default function NewBlogPostPage() {
     category: "Cupping Therapy",
     categorySlug: "cupping-therapy",
     readTime: "5 min read",
-    imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80",
+    imageUrl: "",
     imageAlt: "",
     excerpt: "",
     content: "",

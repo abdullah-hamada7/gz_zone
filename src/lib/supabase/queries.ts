@@ -12,7 +12,6 @@ import type {
   BlogPost,
   NewsletterSubscriber,
 } from "@/types";
-import { BLOG_POSTS } from "@/data/blog-posts";
 
 async function safeQuery<T>(fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T> {
   try {
@@ -164,8 +163,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       .select("*")
       .order("sort_order");
 
-    if (error || !data || data.length === 0) {
-      return BLOG_POSTS;
+    if (error || !data) {
+      return [];
     }
 
     return data.map((row) => ({
@@ -193,7 +192,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       updated_at: row.updated_at,
     }));
   } catch {
-    return BLOG_POSTS;
+    return [];
   }
 }
 
@@ -225,7 +224,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     const posts = await getBlogPosts();
     return posts.find((p) => p.slug === slug) || null;
   } catch {
-    return BLOG_POSTS.find((p) => p.slug === slug) || null;
+    return null;
   }
 }
 

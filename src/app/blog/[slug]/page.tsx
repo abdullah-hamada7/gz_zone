@@ -10,6 +10,7 @@ import { BlogCard } from "@/components/public/blog-card";
 import { getAllSiteContent, getBlogPosts, getBlogPostBySlug } from "@/lib/supabase/queries";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { BlogViewTracker } from "@/components/public/blog-view-tracker";
+import { MarkdownRenderer } from "@/components/public/markdown-renderer";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -153,49 +154,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Article Body Content */}
           <div className="mx-auto max-w-3xl px-4 sm:px-6 mt-10">
-            <div className="prose prose-neutral dark:prose-invert max-w-none text-foreground leading-relaxed text-base sm:text-lg space-y-6">
-              {post.content
-                .split("\n\n")
-                .filter(Boolean)
-                .map((paragraph, index) => {
-                  if (paragraph.startsWith("## ")) {
-                    return (
-                      <h2 key={index} className="text-2xl font-bold tracking-tight mt-8 mb-4 border-b pb-2 text-foreground">
-                        {paragraph.replace("## ", "")}
-                      </h2>
-                    );
-                  }
-                  if (paragraph.startsWith("### ")) {
-                    return (
-                      <h3 key={index} className="text-xl font-semibold tracking-tight mt-6 mb-3 text-foreground">
-                        {paragraph.replace("### ", "")}
-                      </h3>
-                    );
-                  }
-                  if (paragraph.startsWith("* ")) {
-                    const items = paragraph.split("\n* ");
-                    return (
-                      <ul key={index} className="list-disc pl-6 space-y-2 text-muted-foreground my-4">
-                        {items.map((item, i) => (
-                          <li key={i}>{item.replace("* ", "")}</li>
-                        ))}
-                      </ul>
-                    );
-                  }
-                  if (paragraph.startsWith("| ")) {
-                    return (
-                      <div key={index} className="overflow-x-auto my-6 border rounded-lg p-2 bg-muted/20">
-                        <pre className="text-xs font-sans whitespace-pre-wrap">{paragraph}</pre>
-                      </div>
-                    );
-                  }
-                  return (
-                    <p key={index} className="text-muted-foreground leading-relaxed">
-                      {paragraph}
-                    </p>
-                  );
-                })}
-            </div>
+            <MarkdownRenderer content={post.content} />
 
             {/* Article Tags */}
             <div className="mt-10 pt-6 border-t flex flex-wrap items-center gap-2">

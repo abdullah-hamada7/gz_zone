@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { BLOG_POSTS } from "@/data/blog-posts";
 
 export async function GET() {
   const supabase = createServiceClient();
@@ -9,13 +8,8 @@ export async function GET() {
     .select("*")
     .order("sort_order");
 
-  if (error) {
-    // Return initial seed posts if table does not exist or has error
-    return NextResponse.json(BLOG_POSTS);
-  }
-
-  if (!data || data.length === 0) {
-    return NextResponse.json(BLOG_POSTS);
+  if (error || !data) {
+    return NextResponse.json([]);
   }
 
   return NextResponse.json(
