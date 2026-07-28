@@ -1,6 +1,6 @@
 export const HERO = {
   title: "Professional Massage. Delivered to You.",
-  subtitle: "GZ'ZONE — A ZONE WITHOUT BOUNDARIES",
+  subtitle: "Gz'zone - a zone without boundaries",
   description:
     "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you.",
 };
@@ -59,7 +59,7 @@ export type SiteContentKey =
 export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> = {
   hero: {
     title: "Professional Massage. Delivered to You.",
-    subtitle: "GZ'ZONE — A ZONE WITHOUT BOUNDARIES",
+    subtitle: "Gz'zone - a zone without boundaries",
     description:
       "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you.",
     cta_text: "Book via WhatsApp",

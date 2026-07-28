@@ -54,7 +54,7 @@ export function GZZoneBrandLogo({
           Gz&apos;zone
         </span>
         {showTagline && (
-          <span className="font-medium text-muted-foreground whitespace-nowrap">
+          <span className="hidden min-[540px]:inline font-medium text-muted-foreground whitespace-nowrap">
             - Massage &amp; Cupping Therapy | Porto
           </span>
         )}

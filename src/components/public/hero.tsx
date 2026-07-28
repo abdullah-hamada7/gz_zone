@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { MapPin, MessageCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
 import { buttonVariants, Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -70,7 +70,7 @@ export function Hero({
         <div className={`grid items-center gap-8 lg:gap-12 ${images.length > 0 ? 'lg:grid-cols-2' : ''}`}>
           <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left w-full">
             {content?.subtitle && (
-              <p className="mb-3 text-xs sm:text-sm font-semibold tracking-wider text-muted-foreground uppercase break-words">
+              <p className="mb-3 text-xs sm:text-sm font-semibold tracking-wider text-muted-foreground break-words">
                 {content.subtitle}
               </p>
             )}
@@ -169,38 +169,22 @@ export function Hero({
                   }}
                 />
               </div>
-              <div className="mt-3 flex items-center justify-between rounded-xl border bg-background/90 px-4 py-1.5 shadow-xs">
-                <button
-                  onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
-                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="size-5" />
-                </button>
-
-                <div className="flex items-center gap-1.5">
+              <div className="mt-3 flex items-center justify-center py-1">
+                <div className="flex items-center gap-2 rounded-full border bg-background/90 px-3.5 py-2 shadow-xs">
                   {images.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setIndex(i)}
                       className={cn(
-                        "size-2 rounded-full transition-all cursor-pointer",
+                        "size-2.5 rounded-full transition-all cursor-pointer",
                         i === index
-                          ? "bg-primary w-4"
-                          : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                          ? "bg-primary w-5"
+                          : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
                       )}
                       aria-label={`Go to slide ${i + 1}`}
                     />
                   ))}
                 </div>
-
-                <button
-                  onClick={() => setIndex((i) => (i + 1) % images.length)}
-                  className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="size-5" />
-                </button>
               </div>
             </div>
           )}
