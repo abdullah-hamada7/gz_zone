@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TreatmentCard } from "./treatment-card";
+import { cn } from "@/lib/utils";
 
 interface Treatment {
   id: string;
@@ -17,12 +18,21 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIdx, setActiveIdx] = useState(0);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
     if (!el) return;
     setCanScrollLeft(el.scrollLeft > 4);
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    const itemWidth = el.scrollWidth / (treatments.length || 1);
+    if (itemWidth > 0) {
+      const idx = Math.min(
+        treatments.length - 1,
+        Math.max(0, Math.round(el.scrollLeft / itemWidth))
+      );
+      setActiveIdx(idx);
+    }
   };
 
   useEffect(() => {
@@ -38,6 +48,13 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
     if (!el) return;
     const cardW = 380;
     el.scrollBy({ left: dir === "left" ? -cardW : cardW, behavior: "smooth" });
+  };
+
+  const scrollToIndex = (idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const itemWidth = el.scrollWidth / (treatments.length || 1);
+    el.scrollTo({ left: idx * itemWidth, behavior: "smooth" });
   };
 
   return (
@@ -76,6 +93,24 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
           </div>
         ))}
       </div>
+
+      {treatments.length > 1 && (
+        <div className="mt-4 flex items-center justify-center gap-1.5 py-1">
+          {treatments.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollToIndex(i)}
+              className={cn(
+                "size-1.5 rounded-full transition-all cursor-pointer",
+                i === activeIdx
+                  ? "bg-primary w-3.5"
+                  : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+              )}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
