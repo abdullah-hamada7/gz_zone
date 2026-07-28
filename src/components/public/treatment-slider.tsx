@@ -95,7 +95,7 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
       </div>
 
       {treatments.length > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-1.5 py-1">
+        <div className="mt-4 flex items-center justify-center gap-1.5 py-1 sm:hidden">
           {treatments.map((_, i) => (
             <button
               key={i}
