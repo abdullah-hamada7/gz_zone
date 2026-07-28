@@ -9,18 +9,22 @@ interface CTAButtonProps {
   size?: "default" | "sm" | "lg";
   className?: string;
   children?: React.ReactNode;
+  source?: string;
+  treatment?: string;
 }
 
 export function WhatsAppButton({
   size = "lg",
   className,
   children,
+  source = "general_cta_button",
+  treatment = "General inquiry",
 }: CTAButtonProps) {
   const { getUrl, trackAndOpen } = useWhatsApp();
 
   const handleClick = () => {
-    const url = getUrl({ treatment: "General inquiry" });
-    trackAndOpen(url);
+    const url = getUrl({ treatment });
+    trackAndOpen(url, { treatment, source_component: source });
   };
 
   return (
@@ -37,3 +41,4 @@ export function WhatsAppButton({
     </Button>
   );
 }
+

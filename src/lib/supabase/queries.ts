@@ -8,6 +8,7 @@ import type {
   Testimonial,
   GalleryImage,
   Certification,
+  ConversionEvent,
 } from "@/types";
 
 async function safeQuery<T>(fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T> {
@@ -140,3 +141,15 @@ export async function getTreatmentPrices(): Promise<Record<string, number>> {
     return {};
   }
 }
+
+export async function getConversionEvents(limit = 100): Promise<ConversionEvent[]> {
+  return safeQuery(async () => {
+    const supabase = await db();
+    return supabase
+      .from("conversion_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+  });
+}
+

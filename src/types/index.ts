@@ -198,3 +198,16 @@ export interface GallerySectionContent {
 export interface LegalPageContent {
   body_html?: string;
 }
+
+export interface ConversionEvent {
+  id: string;
+  event_name: string;
+  treatment: string | null;
+  duration: string | null;
+  source_component: string | null;
+  path: string | null;
+  user_agent: string | null;
+  referrer: string | null;
+  created_at?: string;
+}
+

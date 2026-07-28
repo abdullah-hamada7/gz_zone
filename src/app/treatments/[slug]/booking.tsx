@@ -34,16 +34,21 @@ export function TreatmentBooking({
     const selected = durations.find(
       (d) => d.minutes === selectedDuration
     );
+    const durationStr = selected ? `${selected.minutes} min (€${selected.price})` : undefined;
     const url = buildWhatsAppUrl({
       phone: DEFAULT_WHATSAPP,
       treatment: treatmentName,
-      duration: selected ? `${selected.minutes} min (€${selected.price})` : undefined,
+      duration: durationStr,
       date: date || undefined,
       time: time || undefined,
       location: location || undefined,
       notes: notes || undefined,
     });
-    trackAndOpen(url);
+    trackAndOpen(url, {
+      treatment: treatmentName,
+      duration: durationStr,
+      source_component: "treatment_booking_form",
+    });
   };
 
   return (

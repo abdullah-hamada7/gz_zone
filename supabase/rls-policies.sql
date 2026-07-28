@@ -41,3 +41,9 @@ CREATE POLICY "Authenticated can manage site_content" ON site_content FOR ALL US
 ALTER TABLE gallery_images ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can view gallery_images" ON gallery_images FOR SELECT USING (true);
 CREATE POLICY "Authenticated can manage gallery_images" ON gallery_images FOR ALL USING (auth.role() = 'authenticated');
+
+-- Conversion Events
+ALTER TABLE conversion_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public can insert conversion_events" ON conversion_events FOR INSERT WITH CHECK (true);
+CREATE POLICY "Authenticated can manage conversion_events" ON conversion_events FOR ALL USING (auth.role() = 'authenticated');
+

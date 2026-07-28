@@ -89,3 +89,16 @@ CREATE TABLE IF NOT EXISTS certifications (
   sort_order INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS conversion_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_name TEXT NOT NULL,
+  treatment TEXT,
+  duration TEXT,
+  source_component TEXT,
+  path TEXT,
+  user_agent TEXT,
+  referrer TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
