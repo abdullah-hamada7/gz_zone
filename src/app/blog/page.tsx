@@ -27,6 +27,11 @@ export default async function BlogPage() {
   ]);
   const featuredPost = posts.find((p) => p.featured) || posts[0];
 
+  const blogHeader = siteContent.blog_page || {};
+  const badgeText = (blogHeader.badge as string) ?? "🌿 GZ'ZONE Wellness & Recovery Journal";
+  const headingText = (blogHeader.heading as string) ?? "Massage & Cupping Insights";
+  const descriptionText = (blogHeader.description as string) ?? "Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.";
+
   return (
     <>
       <Header />
@@ -35,13 +40,13 @@ export default async function BlogPage() {
         <section className="relative border-b bg-gradient-to-b from-muted/50 via-background to-background py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 text-center">
             <div className="inline-flex items-center gap-2 rounded-full border bg-background/80 px-3.5 py-1 text-xs font-semibold text-primary backdrop-blur-md mb-4 shadow-xs">
-              <span>🌿 GZ'ZONE Wellness & Recovery Journal</span>
+              <span>{badgeText}</span>
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-              Massage & Cupping Insights
+              {headingText}
             </h1>
             <p className="mt-4 mx-auto max-w-2xl text-muted-foreground text-base sm:text-lg leading-relaxed">
-              Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.
+              {descriptionText}
             </p>
           </div>
         </section>
@@ -54,7 +59,7 @@ export default async function BlogPage() {
         </section>
 
         {/* Newsletter Callout Banner */}
-        <NewsletterSection />
+        <NewsletterSection content={siteContent.newsletter} />
       </main>
       <Footer content={siteContent.footer} />
     </>

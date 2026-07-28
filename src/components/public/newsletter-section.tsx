@@ -3,11 +3,15 @@
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 
-export function NewsletterSection() {
+export function NewsletterSection({ content }: { content?: Record<string, unknown> }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  const heading = (content?.heading as string) ?? "Get Wellness Tips & 10% Off Your First Session";
+  const subheading = (content?.subheading as string) ?? "Subscribe to our newsletter for exclusive cupping advice, last-minute slot deals, and home stretching routines.";
+  const privacyText = (content?.privacyText as string) ?? "🔒 We respect your privacy. No spam. Unsubscribe anytime.";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,10 +58,10 @@ export function NewsletterSection() {
           ) : (
             <>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Get Wellness Tips & 10% Off Your First Session
+                {heading}
               </h2>
               <p className="mt-3 text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-                Subscribe to our newsletter for exclusive cupping advice, last-minute slot deals, and home stretching routines.
+                {subheading}
               </p>
 
               <form
@@ -74,15 +78,18 @@ export function NewsletterSection() {
                 />
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all shrink-0 shadow-xs"
+                  disabled={loading}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all shrink-0 shadow-xs disabled:opacity-50"
                 >
-                  <span>Subscribe</span>
+                  <span>{loading ? "Subscribing..." : "Subscribe"}</span>
                   <Send className="size-4" />
                 </button>
               </form>
 
+              {errorMsg && <p className="mt-2 text-xs text-destructive">{errorMsg}</p>}
+
               <p className="mt-3 text-xs text-muted-foreground">
-                🔒 We respect your privacy. No spam. Unsubscribe anytime.
+                {privacyText}
               </p>
             </>
           )}

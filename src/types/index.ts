@@ -199,6 +199,18 @@ export interface LegalPageContent {
   body_html?: string;
 }
 
+export interface BlogPageContent {
+  badge?: string;
+  heading?: string;
+  description?: string;
+}
+
+export interface NewsletterContent {
+  heading?: string;
+  subheading?: string;
+  privacyText?: string;
+}
+
 
 export interface ConversionEvent {
   id: string;

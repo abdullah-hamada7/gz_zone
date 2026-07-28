@@ -54,9 +54,21 @@ export type SiteContentKey =
   | "service_areas_section"
   | "gallery_section"
   | "privacy_policy"
-  | "terms";
+  | "terms"
+  | "blog_page"
+  | "newsletter";
 
 export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> = {
+  blog_page: {
+    badge: "🌿 GZ'ZONE Wellness & Recovery Journal",
+    heading: "Massage & Cupping Insights",
+    description: "Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.",
+  },
+  newsletter: {
+    heading: "Get Wellness Tips & 10% Off Your First Session",
+    subheading: "Subscribe to our newsletter for exclusive cupping advice, last-minute slot deals, and home stretching routines.",
+    privacyText: "🔒 We respect your privacy. No spam. Unsubscribe anytime.",
+  },
   hero: {
     title: "Professional Massage. Delivered to You.",
     subtitle: "Gz'zone - a zone without boundaries",
