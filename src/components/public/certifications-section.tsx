@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Award, CheckCircle2, Maximize2, ExternalLink } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Award, CheckCircle2, Maximize2, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,31 @@ export function CertificationsSection({
   certifications?: Certification[];
 }) {
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollState = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => el.removeEventListener("scroll", updateScrollState);
+  }, [certifications]);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardW = 360;
+    el.scrollBy({ left: dir === "left" ? -cardW : cardW, behavior: "smooth" });
+  };
 
   if (!certifications || certifications.length === 0) {
     return null;
@@ -38,62 +63,90 @@ export function CertificationsSection({
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {certifications.map((cert) => (
-            <div
-              key={cert.id}
-              onClick={() => setSelectedCert(cert)}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 shadow-xs hover:shadow-md hover:border-primary/50 transition-all cursor-pointer"
+        <div className="relative">
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll("left")}
+              className="absolute -left-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
+              aria-label="Previous certifications"
             >
-              <div>
-                <div className="relative mb-4 aspect-4/3 w-full overflow-hidden rounded-xl bg-muted border border-border/60">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={cert.public_url}
-                    alt={cert.title}
-                    className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
-                      <Maximize2 className="size-3.5 text-primary" /> View Certificate
-                    </span>
+              <ChevronLeft className="size-5" />
+            </button>
+          )}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll("right")}
+              className="absolute -right-4 top-1/2 z-10 hidden min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-md transition-colors hover:bg-muted sm:flex cursor-pointer"
+              aria-label="Next certifications"
+            >
+              <ChevronRight className="size-5" />
+            </button>
+          )}
+
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto scroll-smooth pb-4 scrollbar-none"
+          >
+            {certifications.map((cert) => (
+              <div
+                key={cert.id}
+                className="w-[280px] sm:w-[350px] max-w-[82vw] shrink-0 snap-start"
+              >
+                <div
+                  onClick={() => setSelectedCert(cert)}
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 shadow-xs hover:shadow-md hover:border-primary/50 transition-all cursor-pointer"
+                >
+                  <div>
+                    <div className="relative mb-4 aspect-4/3 w-full overflow-hidden rounded-xl bg-muted border border-border/60">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cert.public_url}
+                        alt={cert.title}
+                        className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+                          <Maximize2 className="size-3.5 text-primary" /> View Certificate
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-bold text-foreground text-base leading-snug group-hover:text-primary transition-colors">
+                        {cert.title}
+                      </h3>
+                      {cert.issue_year && (
+                        <span className="shrink-0 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                          {cert.issue_year}
+                        </span>
+                      )}
+                    </div>
+
+                    {cert.issuer && (
+                      <p className="mt-1 text-xs font-medium text-primary/90 flex items-center gap-1">
+                        <Award className="size-3 shrink-0" />
+                        <span>{cert.issuer}</span>
+                      </p>
+                    )}
+
+                    {cert.description && (
+                      <p className="mt-2.5 text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                        {cert.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground font-medium">
+                    <span>Click to inspect</span>
+                    <Maximize2 className="size-3.5 text-muted-foreground/70 group-hover:text-primary transition-colors" />
                   </div>
                 </div>
-
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-bold text-foreground text-base leading-snug group-hover:text-primary transition-colors">
-                    {cert.title}
-                  </h3>
-                  {cert.issue_year && (
-                    <span className="shrink-0 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                      {cert.issue_year}
-                    </span>
-                  )}
-                </div>
-
-                {cert.issuer && (
-                  <p className="mt-1 text-xs font-medium text-primary/90 flex items-center gap-1">
-                    <Award className="size-3 shrink-0" />
-                    <span>{cert.issuer}</span>
-                  </p>
-                )}
-
-                {cert.description && (
-                  <p className="mt-2.5 text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                    {cert.description}
-                  </p>
-                )}
               </div>
-
-              <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground font-medium">
-                <span>Click to inspect</span>
-                <Maximize2 className="size-3.5 text-muted-foreground/70 group-hover:text-primary transition-colors" />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
