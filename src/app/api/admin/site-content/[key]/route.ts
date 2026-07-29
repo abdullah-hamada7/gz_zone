@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { revalidatePublicPages } from "@/lib/revalidate";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string }> }) {
   const { key } = await params;
@@ -35,5 +36,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ key:
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  revalidatePublicPages();
   return NextResponse.json(data);
 }

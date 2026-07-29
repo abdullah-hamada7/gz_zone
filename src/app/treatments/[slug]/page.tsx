@@ -8,6 +8,9 @@ import { getTreatmentBySlug, getDurationsForTreatment, getAllSiteContent } from 
 import { CATEGORY_LABELS } from "@/data";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -29,8 +32,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
-
-export const dynamic = "force-dynamic";
 
 export default async function TreatmentPage({ params }: Props) {
   const { slug } = await params;

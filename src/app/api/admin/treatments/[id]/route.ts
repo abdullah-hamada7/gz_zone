@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { revalidatePublicPages } from "@/lib/revalidate";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -20,6 +21,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     .select()
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  revalidatePublicPages(data?.slug);
   return NextResponse.json(data);
 }
 
@@ -28,5 +30,6 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   const supabase = createServiceClient();
   const { error } = await supabase.from("treatments").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  revalidatePublicPages();
   return NextResponse.json({ success: true });
 }

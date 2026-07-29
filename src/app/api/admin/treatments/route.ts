@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
+import { revalidatePublicPages } from "@/lib/revalidate";
 
 export async function GET() {
   const supabase = createServiceClient();
@@ -20,5 +21,6 @@ export async function POST(request: Request) {
     .select()
     .single();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  revalidatePublicPages(data?.slug);
   return NextResponse.json(data);
 }

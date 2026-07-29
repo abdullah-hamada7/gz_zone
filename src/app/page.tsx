@@ -27,6 +27,7 @@ const FAQSection = dynamicImport(() => import("@/components/public/faq-section")
 });
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [treatments, faqs, ratings, prices, siteContent, galleryImages, testimonials, certifications] = await Promise.all([
