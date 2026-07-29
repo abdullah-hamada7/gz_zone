@@ -8,6 +8,7 @@ import {
   TESTIMONIALS,
   SITE_CONTENT_SEED,
 } from "@/data";
+import { BLOG_POSTS } from "@/data/blog-posts";
 import type { SiteContentKey } from "@/data";
 
 export async function POST(request: Request) {
@@ -32,73 +33,41 @@ export async function POST(request: Request) {
       if (!error) count++;
     }
     results.testimonials = count;
-    return NextResponse.json({ message: "Testimonials reseeded", results });
+    return NextResponse.json({ message: "Re-seeded testimonials", count });
   }
 
-  const treatmentIdMap: Record<string, string> = {};
-
-  const { data: existingTreatments } = await supabase
-    .from("treatments")
-    .select("id, slug");
-
-  if (existingTreatments) {
-    for (const t of existingTreatments) {
-      treatmentIdMap[t.slug] = t.id;
-    }
-  }
-
+  const { data: existingTreatments } = await supabase.from("treatments").select("id");
   if (!existingTreatments || existingTreatments.length === 0) {
-    for (const t of TREATMENTS) {
-      const { data, error } = await supabase
-        .from("treatments")
-        .insert({
-          name: t.name,
-          slug: t.slug,
-          category: t.category,
-          short_description: t.short_description,
-          full_description: t.full_description,
-          ideal_for: t.ideal_for,
-          sort_order: t.sort_order,
-        })
-        .select("id, slug")
-        .single();
-      if (error) results.treatments_error = error.message;
-      if (data) treatmentIdMap[data.slug] = data.id;
+    let count = 0;
+    for (let i = 0; i < TREATMENTS.length; i++) {
+      const t = TREATMENTS[i];
+      const { error } = await supabase.from("treatments").insert({
+        id: t.id,
+        name: t.name,
+        slug: t.slug,
+        category: t.category,
+        short_description: t.short_description,
+        full_description: t.full_description,
+        ideal_for: t.ideal_for,
+        sort_order: t.sort_order ?? i,
+      });
+      if (!error) count++;
     }
-    results.treatments = TREATMENTS.length;
+    results.treatments = count;
   } else {
     results.treatments = `skipped (${existingTreatments.length} exist)`;
   }
 
-  const slugToId: Record<string, string> = {
-    "massage-therapy-1": treatmentIdMap["massage-therapy"] || "",
-    "deep-tissue-1": treatmentIdMap["deep-tissue-massage"] || "",
-    "facial-massage-1": treatmentIdMap["facial-massage"] || "",
-    "reflexology-massage-1": treatmentIdMap["reflexology-massage"] || "",
-    "back-neck-1": treatmentIdMap["back-neck-shoulders-head-massage"] || "",
-    "sports-massage-1": treatmentIdMap["sports-massage"] || "",
-    "cellulite-treatment-1": treatmentIdMap["cellulite-treatment"] || "",
-    "anti-cellulite-cupping-1": treatmentIdMap["anti-cellulite-cupping"] || "",
-    "anti-cellulite-massage-1": treatmentIdMap["anti-cellulite-massage"] || "",
-    "dry-cupping-1": treatmentIdMap["dry-cupping"] || "",
-    "reflexology-1": treatmentIdMap["reflexology"] || "",
-    "stretching-class-1": treatmentIdMap["stretching-class"] || "",
-  };
-
-  const { data: existingDurations } = await supabase
-    .from("durations")
-    .select("id");
+  const { data: existingDurations } = await supabase.from("durations").select("id");
   if (!existingDurations || existingDurations.length === 0) {
     let count = 0;
     for (const d of DURATIONS) {
-      const tid = slugToId[d.treatment_id];
-      if (!tid) continue;
       const { error } = await supabase.from("durations").insert({
-        treatment_id: tid,
+        id: d.id,
+        treatment_id: d.treatment_id,
         minutes: d.minutes,
         price: d.price,
         unit: d.unit || "min",
-        sort_order: d.minutes,
       });
       if (!error) count++;
     }
@@ -159,6 +128,37 @@ export async function POST(request: Request) {
     results.testimonials = count;
   } else {
     results.testimonials = `skipped (${existingTestimonials.length} exist)`;
+  }
+
+  const { data: existingBlog } = await supabase.from("blog_posts").select("id");
+  if (!existingBlog || existingBlog.length === 0) {
+    let count = 0;
+    for (let i = 0; i < BLOG_POSTS.length; i++) {
+      const b = BLOG_POSTS[i];
+      const { error } = await supabase.from("blog_posts").insert({
+        title: b.title,
+        slug: b.slug,
+        excerpt: b.excerpt,
+        content: b.content,
+        category: b.category,
+        category_slug: b.categorySlug,
+        read_time: b.readTime,
+        published_at: b.publishedAt,
+        author_name: b.author.name,
+        author_role: b.author.role,
+        image_url: b.imageUrl,
+        image_alt: b.imageAlt,
+        tags: b.tags,
+        featured: b.featured || false,
+        related_treatment_slug: b.relatedTreatmentSlug || null,
+        views_count: b.views_count || 0,
+        sort_order: i,
+      });
+      if (!error) count++;
+    }
+    results.blog_posts = count;
+  } else {
+    results.blog_posts = `skipped (${existingBlog.length} exist)`;
   }
 
   const { data: existingSiteContent } = await supabase.from("site_content").select("section_key");

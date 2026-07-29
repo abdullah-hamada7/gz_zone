@@ -8,6 +8,9 @@ import { getAllSiteContent, getBlogPosts } from "@/lib/supabase/queries";
 import { BlogClientFilter } from "@/components/public/blog-client-filter";
 import { NewsletterSection } from "@/components/public/newsletter-section";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Massage & Cupping Wellness Blog | GZ'ZONE Porto",
   description:

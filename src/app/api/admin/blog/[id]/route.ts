@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/server";
 
 function isUuid(str: string) {
@@ -65,6 +66,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const { data, error } = await updateQuery.select().maybeSingle();
 
     if (data) {
+      try {
+        revalidatePath("/blog");
+        revalidatePath("/blog/[slug]", "page");
+        revalidatePath(`/blog/${data.slug}`);
+        revalidatePath("/");
+      } catch {}
       return NextResponse.json(data);
     }
 
@@ -76,6 +83,14 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       .single();
 
     if (insertError) return NextResponse.json({ error: insertError.message }, { status: 400 });
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/blog/[slug]", "page");
+      revalidatePath(`/blog/${inserted.slug}`);
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json(inserted);
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : "Update error";
@@ -96,6 +111,13 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
     }
 
     await deleteQuery;
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/blog/[slug]", "page");
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ success: true });

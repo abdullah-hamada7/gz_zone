@@ -164,36 +164,41 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       .select("*")
       .order("sort_order");
 
-    if (error || !data || data.length === 0) {
-      return BLOG_POSTS;
+    if (!error && data && data.length > 0) {
+      return data.map((row) => ({
+        id: row.id,
+        title: row.title,
+        slug: row.slug,
+        excerpt: row.excerpt,
+        content: row.content,
+        category: row.category,
+        categorySlug: row.category_slug,
+        readTime: row.read_time,
+        publishedAt: row.published_at,
+        author: {
+          name: row.author_name || "GZ Zone Specialist",
+          role: row.author_role || "Certified Therapist",
+        },
+        imageUrl: row.image_url,
+        imageAlt: row.image_alt || row.title,
+        tags: row.tags || [],
+        featured: row.featured,
+        relatedTreatmentSlug: row.related_treatment_slug,
+        views_count: row.views_count || 0,
+        sort_order: row.sort_order,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+      }));
     }
 
-    return data.map((row) => ({
-      id: row.id,
-      title: row.title,
-      slug: row.slug,
-      excerpt: row.excerpt,
-      content: row.content,
-      category: row.category,
-      categorySlug: row.category_slug,
-      readTime: row.read_time,
-      publishedAt: row.published_at,
-      author: {
-        name: row.author_name || "GZ Zone Specialist",
-        role: row.author_role || "Certified Therapist",
-      },
-      imageUrl: row.image_url,
-      imageAlt: row.image_alt || row.title,
-      tags: row.tags || [],
-      featured: row.featured,
-      relatedTreatmentSlug: row.related_treatment_slug,
-      views_count: row.views_count || 0,
-      sort_order: row.sort_order,
-      created_at: row.created_at,
-      updated_at: row.updated_at,
-    }));
+    // If database table is connected but empty, return empty array if error is null (posts deleted by admin)
+    if (!error && data && data.length === 0) {
+      return [];
+    }
+
+    return BLOG_POSTS;
   } catch {
-    return [];
+    return BLOG_POSTS;
   }
 }
 

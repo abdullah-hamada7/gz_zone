@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export async function GET() {
@@ -69,5 +70,12 @@ export async function POST(request: Request) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+  try {
+    revalidatePath("/blog");
+    revalidatePath("/blog/[slug]", "page");
+    revalidatePath("/");
+  } catch {}
+
   return NextResponse.json(data);
 }
