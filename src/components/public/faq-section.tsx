@@ -19,7 +19,7 @@ export function FAQSection({ faqs, hideHeading, content }: { faqs: FAQ[]; hideHe
   const categories = [...new Set(faqs.map((f) => f.category).filter(Boolean))];
 
   return (
-    <section className="pt-16 pb-6 sm:pt-20 sm:pb-8">
+    <section className="py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         {!hideHeading && (
           <h2 className="mb-8 text-center text-3xl font-bold tracking-tight">{heading}</h2>
