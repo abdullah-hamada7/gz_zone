@@ -6,7 +6,6 @@ import { BLOG_POSTS } from "@/data/blog-posts";
 import { BlogCard } from "@/components/public/blog-card";
 import { getAllSiteContent, getBlogPosts } from "@/lib/supabase/queries";
 import { BlogClientFilter } from "@/components/public/blog-client-filter";
-import { NewsletterSection } from "@/components/public/newsletter-section";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -61,8 +60,7 @@ export default async function BlogPage() {
           </div>
         </section>
 
-        {/* Newsletter Callout Banner */}
-        <NewsletterSection content={siteContent.newsletter} />
+
       </main>
       <Footer content={siteContent.footer} />
     </>

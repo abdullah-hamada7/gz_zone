@@ -29,7 +29,6 @@ const sections: SectionConfig[] = [
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
   { key: "blog_page", label: "Blog Page Header", description: "Header badge, title and description on /blog", category: "blog" },
-  { key: "newsletter", label: "Newsletter Banner", description: "Heading, subheading, and privacy notice for newsletter form", category: "blog" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
 ];
@@ -646,23 +645,6 @@ function SectionEditor({
         </div>
       );
 
-    case "newsletter":
-      return (
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Heading</Label>
-            <Input value={str("heading", "Get Wellness Tips & 10% Off Your First Session")} onChange={(e) => set("heading", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Subheading</Label>
-            <Textarea value={str("subheading", "Subscribe to our newsletter for exclusive cupping advice, last-minute slot deals, and home stretching routines.")} onChange={(e) => set("subheading", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Privacy Notice</Label>
-            <Input value={str("privacyText", "🔒 We respect your privacy. No spam. Unsubscribe anytime.")} onChange={(e) => set("privacyText", e.target.value)} />
-          </div>
-        </div>
-      );
 
     case "privacy_policy":
     case "terms":

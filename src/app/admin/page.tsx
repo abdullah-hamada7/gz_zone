@@ -6,7 +6,6 @@ export default async function AdminDashboardPage() {
 
   const tables = [
     "blog_posts",
-    "newsletter_subscribers",
     "conversion_events",
     "treatments",
     "durations",
@@ -33,7 +32,6 @@ export default async function AdminDashboardPage() {
 
   const labels: Record<string, string> = {
     blog_posts: "Blog Posts",
-    newsletter_subscribers: "Email Subscribers",
     conversion_events: "Conversion Events",
     treatments: "Treatments",
     durations: "Durations",
@@ -50,7 +48,7 @@ export default async function AdminDashboardPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Dashboard Overview</h1>
         <p className="text-sm text-muted-foreground">
-          Real-time summary of your website content, subscribers, and analytics
+          Real-time summary of your website content and analytics
         </p>
       </div>
 

@@ -22,18 +22,10 @@ const SITE_CONTENT_SEED = [
       description: "Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.",
     },
   },
-  {
-    section_key: "newsletter",
-    content: {
-      heading: "Get Wellness Tips & 10% Off Your First Session",
-      subheading: "Subscribe to our newsletter for exclusive cupping advice, last-minute slot deals, and home stretching routines.",
-      privacyText: "🔒 We respect your privacy. No spam. Unsubscribe anytime.",
-    },
-  },
 ];
 
 async function seedSiteContent() {
-  console.log("Seeding blog_page and newsletter sections into site_content...");
+  console.log("Seeding blog_page section into site_content...");
   for (const item of SITE_CONTENT_SEED) {
     const { error } = await supabase.from("site_content").upsert(
       {

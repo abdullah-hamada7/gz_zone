@@ -11,7 +11,6 @@ import type {
   Certification,
   ConversionEvent,
   BlogPost,
-  NewsletterSubscriber,
 } from "@/types";
 
 async function safeQuery<T>(fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T> {
@@ -262,13 +261,4 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   }
 }
 
-export async function getNewsletterSubscribers(): Promise<NewsletterSubscriber[]> {
-  return safeQuery(async () => {
-    const supabase = await db();
-    return supabase
-      .from("newsletter_subscribers")
-      .select("*")
-      .order("created_at", { ascending: false });
-  });
-}
 

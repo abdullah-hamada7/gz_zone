@@ -28,10 +28,11 @@ export default function NewDurationPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!treatmentId) { toast.error("Please select a treatment"); return; }
-    const numMinutes = parseInt(String(minutes), 10);
+    const isPerMin = unit === "min";
+    const numMinutes = isPerMin ? parseInt(String(minutes), 10) : 0;
     const numPrice = parseFloat(String(price));
-    if (isNaN(numMinutes) || numMinutes <= 0) {
-      toast.error("Please enter valid minutes");
+    if (isPerMin && (isNaN(numMinutes) || numMinutes <= 0)) {
+      toast.error("Please enter valid minutes for per-minute pricing");
       return;
     }
     setSaving(true);
@@ -43,7 +44,7 @@ export default function NewDurationPage() {
         minutes: numMinutes,
         price: isNaN(numPrice) ? 0 : numPrice,
         unit: unit || "min",
-        sort_order: numMinutes,
+        sort_order: isPerMin ? numMinutes : 99,
       }),
     });
     setSaving(false);
@@ -77,18 +78,6 @@ export default function NewDurationPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="minutes">Duration (minutes)</Label>
-          <Input
-            id="minutes"
-            type="number"
-            min="1"
-            value={minutes}
-            onChange={(e) => setMinutes(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="unit">Pricing Unit / Format</Label>
           <Select value={unit} onValueChange={(v) => setUnit(v ?? "min")}>
             <SelectTrigger><SelectValue placeholder="Select unit" /></SelectTrigger>
@@ -98,6 +87,22 @@ export default function NewDurationPage() {
               <SelectItem value="per class">Per Class</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="minutes" className={unit !== "min" ? "opacity-60" : ""}>
+            Duration (minutes) {unit !== "min" && <span className="text-xs text-muted-foreground font-normal">(Locked for {unit})</span>}
+          </Label>
+          <Input
+            id="minutes"
+            type="number"
+            min="1"
+            disabled={unit !== "min"}
+            value={unit !== "min" ? "" : minutes}
+            onChange={(e) => setMinutes(e.target.value)}
+            placeholder={unit !== "min" ? `N/A (${unit === "per session" ? "Per Session" : "Per Class"})` : "60"}
+            required={unit === "min"}
+          />
         </div>
 
         <div className="space-y-2">

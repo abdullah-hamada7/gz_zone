@@ -207,12 +207,6 @@ export interface BlogPageContent {
   description?: string;
 }
 
-export interface NewsletterContent {
-  heading?: string;
-  subheading?: string;
-  privacyText?: string;
-}
-
 
 export interface ConversionEvent {
   id: string;
@@ -252,11 +246,5 @@ export interface BlogPost {
   updated_at?: string;
 }
 
-export interface NewsletterSubscriber {
-  id: string;
-  email: string;
-  source?: string;
-  created_at?: string;
-}
 
 

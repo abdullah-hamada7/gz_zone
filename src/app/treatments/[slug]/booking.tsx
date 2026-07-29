@@ -22,23 +22,34 @@ export function TreatmentBooking({
   treatmentName: string;
   durations: DurationOption[];
 }) {
-  const [selectedDuration, setSelectedDuration] = useState(
-    durations[0]?.minutes || 60
-  );
+  const [selectedId, setSelectedId] = useState(durations[0]?.id || "");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
   const { trackAndOpen } = useWhatsApp();
 
+  const activeId = selectedId || durations[0]?.id || "";
+  const selected = durations.find((d) => d.id === activeId) || durations[0];
+
   const handleBook = () => {
-    const selected = durations.find(
-      (d) => d.minutes === selectedDuration
-    );
     const isCupping = treatmentName.toLowerCase().includes("cupping");
     const isStretching = treatmentName.toLowerCase().includes("stretching");
     const unitLabel = selected?.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
-    const durationStr = selected ? `${selected.minutes} min (${unitLabel}) (€${selected.price})` : undefined;
+    
+    let durationStr: string | undefined = undefined;
+    if (selected) {
+      if (unitLabel === "min") {
+        durationStr = `${selected.minutes} min (€${selected.price})`;
+      } else if (unitLabel === "per session") {
+        durationStr = `Per Session (€${selected.price})`;
+      } else if (unitLabel === "per class") {
+        durationStr = `Per Class (€${selected.price})`;
+      } else {
+        durationStr = `${unitLabel} (€${selected.price})`;
+      }
+    }
+
     const url = buildWhatsAppUrl({
       phone: DEFAULT_WHATSAPP,
       treatment: treatmentName,
@@ -67,13 +78,27 @@ export function TreatmentBooking({
               const isCupping = treatmentName.toLowerCase().includes("cupping");
               const isStretching = treatmentName.toLowerCase().includes("stretching");
               const unitLabel = d.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
-              const label = unitLabel === "min" ? `${d.minutes} min — €${d.price.toFixed(0)}` : `${d.minutes} min (${unitLabel}) — €${d.price.toFixed(0)}`;
+              
+              let label = "";
+              if (unitLabel === "min") {
+                label = `${d.minutes} min — €${d.price.toFixed(0)}`;
+              } else if (unitLabel === "per session") {
+                label = `Per Session — €${d.price.toFixed(0)}`;
+              } else if (unitLabel === "per class") {
+                label = `Per Class — €${d.price.toFixed(0)}`;
+              } else {
+                label = `${unitLabel} — €${d.price.toFixed(0)}`;
+              }
+
+              const isSelected = activeId === d.id;
+
               return (
                 <button
                   key={d.id}
-                  onClick={() => setSelectedDuration(d.minutes)}
+                  type="button"
+                  onClick={() => setSelectedId(d.id)}
                   className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
-                    selectedDuration === d.minutes
+                    isSelected
                       ? "border-primary bg-primary text-primary-foreground"
                       : "hover:border-primary/50"
                   }`}
