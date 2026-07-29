@@ -25,7 +25,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <GZZoneBrandLogo href="/" size="md" />
-            <p className="pl-[44px] sm:pl-[56px] mt-1 text-sm text-muted-foreground leading-tight max-w-md">
+            <p className="pl-[44px] sm:pl-[56px] -mt-1 sm:-mt-1.5 text-sm text-muted-foreground leading-tight max-w-md">
               {description}
             </p>
           </div>
