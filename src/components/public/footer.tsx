@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MessageCircle, Globe } from "lucide-react";
-import { GZZoneBrandLogo } from "@/components/ui/gz-zone-brand-logo";
 
 export function Footer({ content }: { content?: Record<string, unknown> }) {
   const description = (content?.description as string) ?? "Professional mobile massage services in Porto and surrounding areas.";
@@ -24,10 +24,29 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <GZZoneBrandLogo href="/" size="md" />
-            <p className="pl-[44px] sm:pl-[56px] -mt-1 sm:-mt-1.5 text-sm text-muted-foreground leading-tight max-w-md">
-              {description}
-            </p>
+            <div className="flex items-start gap-2.5 sm:gap-3">
+              <Link href="/" className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-95">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Gz'zone Logo"
+                  width={42}
+                  height={42}
+                  className="h-9 sm:h-11 w-9 sm:w-11 shrink-0 rounded-full object-cover shadow-sm border border-border/50"
+                  priority
+                />
+              </Link>
+              <div className="flex flex-col justify-start min-w-0 max-w-md">
+                <Link href="/" className="inline-flex items-center gap-x-1 text-xs sm:text-base font-sans leading-tight text-foreground hover:opacity-95">
+                  <span className="font-bold tracking-tight shrink-0">Gz&apos;zone</span>
+                  <span className="font-medium text-muted-foreground truncate">
+                    - Massage &amp; Cupping Therapy | Porto
+                  </span>
+                </Link>
+                <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground leading-snug">
+                  {description}
+                </p>
+              </div>
+            </div>
           </div>
 
           <div>
