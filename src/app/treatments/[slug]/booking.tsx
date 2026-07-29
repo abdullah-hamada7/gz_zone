@@ -33,20 +33,17 @@ export function TreatmentBooking({
   const selected = durations.find((d) => d.id === activeId) || durations[0];
 
   const handleBook = () => {
-    const isCupping = treatmentName.toLowerCase().includes("cupping");
-    const isStretching = treatmentName.toLowerCase().includes("stretching");
-    const unitLabel = selected?.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
-    
+    const unit = selected?.unit || "min";
     let durationStr: string | undefined = undefined;
     if (selected) {
-      if (unitLabel === "min") {
-        durationStr = `${selected.minutes} min (€${selected.price})`;
-      } else if (unitLabel === "per session") {
+      if (unit === "per session") {
         durationStr = `Per Session (€${selected.price})`;
-      } else if (unitLabel === "per class") {
+      } else if (unit === "per class") {
         durationStr = `Per Class (€${selected.price})`;
+      } else if (unit.startsWith("per")) {
+        durationStr = `${unit.charAt(0).toUpperCase() + unit.slice(1)} (€${selected.price})`;
       } else {
-        durationStr = `${unitLabel} (€${selected.price})`;
+        durationStr = `${selected.minutes} min (€${selected.price})`;
       }
     }
 
@@ -75,19 +72,16 @@ export function TreatmentBooking({
           <Label>Option & Pricing</Label>
           <div className="mt-1.5 flex flex-wrap gap-2">
             {durations.map((d) => {
-              const isCupping = treatmentName.toLowerCase().includes("cupping");
-              const isStretching = treatmentName.toLowerCase().includes("stretching");
-              const unitLabel = d.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
-              
+              const unit = d.unit || "min";
               let label = "";
-              if (unitLabel === "min") {
-                label = `${d.minutes} min — €${d.price.toFixed(0)}`;
-              } else if (unitLabel === "per session") {
+              if (unit === "per session") {
                 label = `Per Session — €${d.price.toFixed(0)}`;
-              } else if (unitLabel === "per class") {
+              } else if (unit === "per class") {
                 label = `Per Class — €${d.price.toFixed(0)}`;
+              } else if (unit.startsWith("per")) {
+                label = `${unit.charAt(0).toUpperCase() + unit.slice(1)} — €${d.price.toFixed(0)}`;
               } else {
-                label = `${unitLabel} — €${d.price.toFixed(0)}`;
+                label = `${d.minutes} min — €${d.price.toFixed(0)}`;
               }
 
               const isSelected = activeId === d.id;

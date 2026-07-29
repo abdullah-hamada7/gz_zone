@@ -112,25 +112,22 @@ export default async function TreatmentPage({ params }: Props) {
                 <h2 className="mb-4 text-xl font-semibold">Pricing & Duration</h2>
                 <div className="divide-y rounded-lg border">
                   {durations.map((d) => {
-                    const isCupping = treatment.slug.includes("cupping");
-                    const isStretching = treatment.slug.includes("stretching");
-                    const unitLabel = d.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
-                    const displayLabel =
-                      unitLabel === "min"
-                        ? `${d.minutes} minutes session`
-                        : unitLabel === "per session"
-                        ? "Per Session"
-                        : unitLabel === "per class"
-                        ? "Per Class"
-                        : unitLabel;
+                    const unit = d.unit || "min";
+                    let displayLabel = "";
+                    if (unit === "per session") {
+                      displayLabel = "Per Session";
+                    } else if (unit === "per class") {
+                      displayLabel = "Per Class";
+                    } else if (unit.startsWith("per")) {
+                      displayLabel = unit.charAt(0).toUpperCase() + unit.slice(1);
+                    } else {
+                      displayLabel = `${d.minutes} minutes session`;
+                    }
                     return (
                       <div key={d.id} className="flex items-center justify-between px-5 py-4">
                         <span className="font-medium">{displayLabel}</span>
                         <span className="text-lg font-bold">
-                          €{Number(d.price).toFixed(0)}{" "}
-                          {unitLabel !== "min" && (
-                            <span className="text-xs font-normal text-muted-foreground">/ {unitLabel}</span>
-                          )}
+                          €{Number(d.price).toFixed(0)}
                         </span>
                       </div>
                     );
