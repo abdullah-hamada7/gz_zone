@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface BlogCategory {
   name: string;
@@ -33,6 +34,14 @@ export default function AdminBlogPage() {
   const [editCatName, setEditCatName] = useState("");
   const [editCatSlug, setEditCatSlug] = useState("");
   const [savingCategory, setSavingCategory] = useState(false);
+
+  // Confirm delete modal state
+  const [deleteTarget, setDeleteTarget] = useState<{
+    type: "article" | "category";
+    idOrSlug: string;
+    name: string;
+  } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function fetchItems() {
     try {
@@ -57,14 +66,36 @@ export default function AdminBlogPage() {
     fetchItems();
   }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this blog article?")) return;
-    const res = await fetch(`/api/admin/blog/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Article deleted");
-      fetchItems();
-    } else {
-      toast.error("Failed to delete article");
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      if (deleteTarget.type === "article") {
+        const res = await fetch(`/api/admin/blog/${deleteTarget.idOrSlug}`, { method: "DELETE" });
+        if (res.ok) {
+          toast.success(`Article "${deleteTarget.name}" deleted`);
+          fetchItems();
+        } else {
+          toast.error("Failed to delete article");
+        }
+      } else {
+        const res = await fetch(`/api/admin/blog/categories?slug=${encodeURIComponent(deleteTarget.idOrSlug)}`, {
+          method: "DELETE",
+        });
+        if (res.ok) {
+          toast.success(`Category "${deleteTarget.name}" deleted`);
+          const updated = await res.json();
+          setCategories(updated);
+        } else {
+          const err = await res.json();
+          toast.error(err.error || "Failed to delete category");
+        }
+      }
+    } catch {
+      toast.error("Failed to process deletion");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -117,25 +148,6 @@ export default function AdminBlogPage() {
       toast.error("Failed to update category");
     } finally {
       setSavingCategory(false);
-    }
-  }
-
-  async function handleDeleteCategory(slug: string, name: string) {
-    if (!confirm(`Are you sure you want to delete category "${name}"?`)) return;
-    try {
-      const res = await fetch(`/api/admin/blog/categories?slug=${encodeURIComponent(slug)}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        toast.success("Category deleted");
-        const updated = await res.json();
-        setCategories(updated);
-      } else {
-        const err = await res.json();
-        toast.error(err.error || "Failed to delete category");
-      }
-    } catch {
-      toast.error("Failed to delete category");
     }
   }
 
@@ -269,7 +281,7 @@ export default function AdminBlogPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => setDeleteTarget({ type: "article", idOrSlug: item.id, name: item.title })}
                         >
                           <Trash2 className="size-4 text-destructive" />
                         </Button>
@@ -380,12 +392,11 @@ export default function AdminBlogPage() {
                             <Pencil className="size-3.5 text-muted-foreground" />
                           </Button>
                           <Button
-                            size="icon"
                             variant="ghost"
-                            className="h-8 w-8"
-                            onClick={() => handleDeleteCategory(cat.slug, cat.name)}
+                            size="icon"
+                            onClick={() => setDeleteTarget({ type: "category", idOrSlug: cat.slug, name: cat.name })}
                           >
-                            <Trash2 className="size-3.5 text-destructive" />
+                            <Trash2 className="size-4 text-destructive" />
                           </Button>
                         </div>
                       </>
@@ -397,6 +408,21 @@ export default function AdminBlogPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation Window Panel */}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title={deleteTarget?.type === "category" ? `Delete Category "${deleteTarget.name}"?` : `Delete Blog Article "${deleteTarget?.name}"?`}
+        description={
+          deleteTarget?.type === "category"
+            ? `Are you sure you want to delete the category "${deleteTarget.name}"? Articles assigned to it will remain intact under Uncategorized.`
+            : `Are you sure you want to delete "${deleteTarget?.name}"? This action will permanently remove the article.`
+        }
+        confirmText="Delete"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

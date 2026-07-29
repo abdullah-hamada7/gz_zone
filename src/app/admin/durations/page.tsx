@@ -7,10 +7,14 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Duration, Treatment } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminDurationsPage() {
   const [items, setItems] = useState<Duration[]>([]);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function fetchItems() {
     const [durRes, treatRes] = await Promise.all([
@@ -24,14 +28,22 @@ export default function AdminDurationsPage() {
 
   useEffect(() => { fetchItems() }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this duration?")) return;
-    const res = await fetch(`/api/admin/durations/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Deleted");
-      fetchItems();
-    } else {
-      toast.error("Failed to delete");
+  async function confirmDelete() {
+    if (!deleteTargetId) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/durations/${deleteTargetId}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Duration deleted");
+        fetchItems();
+      } else {
+        toast.error("Failed to delete duration");
+      }
+    } catch {
+      toast.error("Failed to delete duration");
+    } finally {
+      setDeleting(false);
+      setDeleteTargetId(null);
     }
   }
 
@@ -86,7 +98,7 @@ export default function AdminDurationsPage() {
                         <Link href={`/admin/durations/${item.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
                           <Pencil className="size-4" />
                         </Link>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
+                        <Button variant="ghost" size="icon" onClick={() => setDeleteTargetId(item.id)}>
                           <Trash2 className="size-4 text-destructive" />
                         </Button>
                       </div>
@@ -98,6 +110,16 @@ export default function AdminDurationsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTargetId}
+        onOpenChange={(open) => !open && setDeleteTargetId(null)}
+        title="Delete Duration Option?"
+        description="Are you sure you want to delete this duration & pricing option?"
+        confirmText="Delete Duration"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

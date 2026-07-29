@@ -91,7 +91,7 @@ export function GZZoneBrandLogo({
         )}
 
         {subtitle && (
-          <div className="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-md">
+          <div className="mt-0.5 text-xs sm:text-sm text-muted-foreground leading-snug max-w-md">
             {subtitle}
           </div>
         )}

@@ -15,10 +15,14 @@ import { Award, Pencil, Trash2, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import type { Certification } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminCertificationsPage() {
   const [certs, setCerts] = useState<Certification[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Certification | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   // New cert state
   const [title, setTitle] = useState("");
@@ -162,14 +166,22 @@ export default function AdminCertificationsPage() {
     }
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this certification?")) return;
-    const res = await fetch(`/api/admin/certifications/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Certification deleted");
-      fetchCertifications();
-    } else {
-      toast.error("Failed to delete");
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/certifications/${deleteTarget.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Certification deleted");
+        fetchCertifications();
+      } else {
+        toast.error("Failed to delete certification");
+      }
+    } catch {
+      toast.error("Failed to delete certification");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -323,7 +335,7 @@ export default function AdminCertificationsPage() {
                     variant="ghost"
                     size="sm"
                     className="text-destructive hover:bg-destructive/10 hover:text-destructive gap-1.5"
-                    onClick={() => handleDelete(c.id)}
+                    onClick={() => setDeleteTarget(c)}
                   >
                     <Trash2 className="size-3.5" /> Delete
                   </Button>
@@ -415,6 +427,16 @@ export default function AdminCertificationsPage() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title={`Delete Certification "${deleteTarget?.title}"?`}
+        description={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
+        confirmText="Delete Certification"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

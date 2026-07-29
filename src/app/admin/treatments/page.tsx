@@ -8,9 +8,13 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Treatment } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminTreatmentsPage() {
   const [items, setItems] = useState<Treatment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<Treatment | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const router = useRouter();
 
   async function fetchItems() {
@@ -21,14 +25,22 @@ export default function AdminTreatmentsPage() {
 
   useEffect(() => { fetchItems() }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this treatment?")) return;
-    const res = await fetch(`/api/admin/treatments/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Deleted");
-      fetchItems();
-    } else {
-      toast.error("Failed to delete");
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/treatments/${deleteTarget.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Treatment deleted");
+        fetchItems();
+      } else {
+        toast.error("Failed to delete treatment");
+      }
+    } catch {
+      toast.error("Failed to delete treatment");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -81,7 +93,7 @@ export default function AdminTreatmentsPage() {
                         <Link href={`/admin/treatments/${item.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
                           <Pencil className="size-4" />
                         </Link>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
+                        <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(item)}>
                           <Trash2 className="size-4 text-destructive" />
                         </Button>
                       </div>
@@ -93,6 +105,16 @@ export default function AdminTreatmentsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title={`Delete Treatment "${deleteTarget?.name}"?`}
+        description={`Are you sure you want to delete "${deleteTarget?.name}"? This action will permanently remove the treatment and associated duration options.`}
+        confirmText="Delete Treatment"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

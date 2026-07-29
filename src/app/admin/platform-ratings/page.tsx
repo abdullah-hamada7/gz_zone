@@ -7,9 +7,13 @@ import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import type { PlatformRating } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminPlatformRatingsPage() {
   const [items, setItems] = useState<PlatformRating[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<PlatformRating | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function fetchItems() {
     const res = await fetch("/api/admin/platform-ratings");
@@ -19,14 +23,22 @@ export default function AdminPlatformRatingsPage() {
 
   useEffect(() => { fetchItems() }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this platform rating?")) return;
-    const res = await fetch(`/api/admin/platform-ratings/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Deleted");
-      fetchItems();
-    } else {
-      toast.error("Failed to delete");
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/platform-ratings/${deleteTarget.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Platform rating deleted");
+        fetchItems();
+      } else {
+        toast.error("Failed to delete platform rating");
+      }
+    } catch {
+      toast.error("Failed to delete platform rating");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -77,7 +89,7 @@ export default function AdminPlatformRatingsPage() {
                         <Link href={`/admin/platform-ratings/${item.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
                           <Pencil className="size-4" />
                         </Link>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
+                        <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(item)}>
                           <Trash2 className="size-4 text-destructive" />
                         </Button>
                       </div>
@@ -89,6 +101,16 @@ export default function AdminPlatformRatingsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete Platform Rating?"
+        description={`Are you sure you want to delete rating for "${deleteTarget?.platform}"?`}
+        confirmText="Delete Rating"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

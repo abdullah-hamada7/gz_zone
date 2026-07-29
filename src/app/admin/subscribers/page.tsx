@@ -6,9 +6,13 @@ import { Download, Mail, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import type { NewsletterSubscriber } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminSubscribersPage() {
   const [items, setItems] = useState<NewsletterSubscriber[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<NewsletterSubscriber | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function fetchItems() {
     try {
@@ -27,14 +31,22 @@ export default function AdminSubscribersPage() {
     fetchItems();
   }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Remove this subscriber from the list?")) return;
-    const res = await fetch(`/api/admin/subscribers?id=${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Subscriber removed");
-      fetchItems();
-    } else {
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/subscribers?id=${deleteTarget.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Subscriber removed");
+        fetchItems();
+      } else {
+        toast.error("Failed to delete subscriber");
+      }
+    } catch {
       toast.error("Failed to delete subscriber");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -133,7 +145,7 @@ export default function AdminSubscribersPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => setDeleteTarget(item)}
                       >
                         <Trash2 className="size-4 text-destructive" />
                       </Button>
@@ -145,6 +157,16 @@ export default function AdminSubscribersPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Remove Subscriber?"
+        description={`Are you sure you want to remove "${deleteTarget?.email}" from the subscriber list?`}
+        confirmText="Remove Subscriber"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

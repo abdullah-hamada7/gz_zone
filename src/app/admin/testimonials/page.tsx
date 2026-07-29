@@ -7,9 +7,13 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Testimonial } from "@/types";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function AdminTestimonialsPage() {
   const [items, setItems] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<Testimonial | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function fetchItems() {
     const res = await fetch("/api/admin/testimonials");
@@ -19,14 +23,22 @@ export default function AdminTestimonialsPage() {
 
   useEffect(() => { fetchItems() }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this testimonial?")) return;
-    const res = await fetch(`/api/admin/testimonials/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Deleted");
-      fetchItems();
-    } else {
-      toast.error("Failed to delete");
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/testimonials/${deleteTarget.id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Testimonial deleted");
+        fetchItems();
+      } else {
+        toast.error("Failed to delete testimonial");
+      }
+    } catch {
+      toast.error("Failed to delete testimonial");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -62,7 +74,7 @@ export default function AdminTestimonialsPage() {
                   <Link href={`/admin/testimonials/${item.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
                     <Pencil className="size-4" />
                   </Link>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
+                  <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(item)}>
                     <Trash2 className="size-4 text-destructive" />
                   </Button>
                 </div>
@@ -71,6 +83,16 @@ export default function AdminTestimonialsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete Testimonial?"
+        description={`Are you sure you want to delete testimonial by "${deleteTarget?.customer_name}"?`}
+        confirmText="Delete Testimonial"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

@@ -21,15 +21,15 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
 
   return (
     <footer className="border-t bg-muted/30">
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-start">
           <div className="lg:col-span-2">
             <GZZoneBrandLogo href="/" size="md" subtitle={description} />
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-foreground tracking-tight">{quickLinksHeading}</h3>
-            <ul className="space-y-1.5 text-sm text-muted-foreground">
+            <h3 className="mb-1.5 text-sm font-semibold text-foreground tracking-tight">{quickLinksHeading}</h3>
+            <ul className="space-y-1 text-sm text-muted-foreground">
               {quickLinks.map((link) => (
                 <li key={link.href + link.label}>
                   <Link href={link.href} className="inline-flex items-center hover:text-foreground transition-colors py-0.5">
@@ -41,8 +41,8 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
           </div>
 
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-foreground tracking-tight">{contactHeading}</h3>
-            <ul className="space-y-1.5 text-sm text-muted-foreground">
+            <h3 className="mb-1.5 text-sm font-semibold text-foreground tracking-tight">{contactHeading}</h3>
+            <ul className="space-y-1 text-sm text-muted-foreground">
               <li>
                 <a
                   href={phoneHref}
@@ -87,7 +87,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t pt-4 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
+        <div className="mt-3 flex flex-col items-center justify-between gap-3 border-t pt-3 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>&copy; {new Date().getFullYear()} {copyright}</p>
           <div className="flex gap-6">
             <Link

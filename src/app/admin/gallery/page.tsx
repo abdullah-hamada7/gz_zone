@@ -28,6 +28,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<GalleryImage[]>([]);
@@ -46,6 +47,10 @@ export default function AdminGalleryPage() {
   const [editTitle, setEditTitle] = useState("");
   const [editAltText, setEditAltText] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
+
+  // Deletion modal state
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -131,15 +136,23 @@ export default function AdminGalleryPage() {
     }
   };
 
-  async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this gallery image?")) return;
-    const res = await fetch(`/api/admin/gallery/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      toast.success("Image deleted");
-      if (lightboxImage?.id === id) setLightboxImage(null);
-      fetchImages();
-    } else {
+  async function confirmDelete() {
+    if (!deleteTargetId) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/gallery/${deleteTargetId}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Image deleted");
+        if (lightboxImage?.id === deleteTargetId) setLightboxImage(null);
+        fetchImages();
+      } else {
+        toast.error("Failed to delete image");
+      }
+    } catch {
       toast.error("Failed to delete image");
+    } finally {
+      setDeleting(false);
+      setDeleteTargetId(null);
     }
   }
 
@@ -388,7 +401,7 @@ export default function AdminGalleryPage() {
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7 text-destructive hover:bg-destructive/10"
-                      onClick={() => handleDelete(img.id)}
+                      onClick={() => setDeleteTargetId(img.id)}
                       title="Delete Image"
                     >
                       <Trash2 className="size-3.5" />
@@ -460,7 +473,7 @@ export default function AdminGalleryPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(img.id)}
+                          onClick={() => setDeleteTargetId(img.id)}
                         >
                           <Trash2 className="size-4 text-destructive" />
                         </Button>
@@ -507,7 +520,7 @@ export default function AdminGalleryPage() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => handleDelete(lightboxImage.id)}
+                  onClick={() => setDeleteTargetId(lightboxImage.id)}
                 >
                   <Trash2 className="mr-2 size-4" /> Delete Image
                 </Button>
@@ -578,6 +591,17 @@ export default function AdminGalleryPage() {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation Window Panel */}
+      <ConfirmDialog
+        open={!!deleteTargetId}
+        onOpenChange={(open) => !open && setDeleteTargetId(null)}
+        title="Delete Gallery Image?"
+        description="Are you sure you want to delete this gallery image? This action will remove it permanently."
+        confirmText="Delete Image"
+        loading={deleting}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
