@@ -110,19 +110,25 @@ export default async function TreatmentPage({ params }: Props) {
               <div className="mt-10">
                 <h2 className="mb-4 text-xl font-semibold">Pricing & Duration</h2>
                 <div className="divide-y rounded-lg border">
-                  {durations.map((d) => (
-                    <div key={d.id} className="flex items-center justify-between px-5 py-4">
-                      <span className="font-medium">{d.minutes} minutes session</span>
-                      <span className="text-lg font-bold">€{Number(d.price).toFixed(0)}</span>
-                    </div>
-                  ))}
+                  {durations.map((d) => {
+                    const isCupping = treatment.slug.includes("cupping");
+                    const isStretching = treatment.slug.includes("stretching");
+                    const unitLabel = d.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
+                    const displayLabel = unitLabel === "min" ? `${d.minutes} minutes session` : unitLabel.startsWith("per") ? `${d.minutes} min (${unitLabel})` : `${d.minutes} ${unitLabel}`;
+                    return (
+                      <div key={d.id} className="flex items-center justify-between px-5 py-4">
+                        <span className="font-medium">{displayLabel}</span>
+                        <span className="text-lg font-bold">€{Number(d.price).toFixed(0)} {unitLabel !== "min" && <span className="text-xs font-normal text-muted-foreground">/ {unitLabel}</span>}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             <TreatmentBooking
               treatmentName={treatment.name}
-              durations={durations.map((d) => ({ id: d.id, minutes: d.minutes, price: d.price }))}
+              durations={durations.map((d) => ({ id: d.id, minutes: d.minutes, price: d.price, unit: d.unit }))}
             />
           </div>
         </section>

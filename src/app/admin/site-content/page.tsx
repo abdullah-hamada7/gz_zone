@@ -23,6 +23,7 @@ const sections: SectionConfig[] = [
   { key: "why_mobile_massage", label: "Why Mobile Massage", description: "Benefits section with 4 cards", category: "homepage" },
   { key: "how_it_works", label: "How It Works", description: "3-step process section", category: "homepage" },
   { key: "about_section", label: "About Section", description: "About Omar / bio section", category: "homepage" },
+  { key: "certifications_section", label: "Certifications Header", description: "Badge, title, and description for qualifications & certifications", category: "homepage" },
   { key: "reputation_section", label: "Reputation Section", description: "Platform ratings heading", category: "homepage" },
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
@@ -500,6 +501,33 @@ function SectionEditor({
           <div className="space-y-2">
             <Label>Copyright</Label>
             <Input value={str("copyright")} onChange={(e) => set("copyright", e.target.value)} />
+          </div>
+        </div>
+      );
+
+    case "certifications_section":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Badge Text</Label>
+            <Input
+              value={str("badge", str("label", "Verified Professional Credentials"))}
+              onChange={(e) => set("badge", e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Heading</Label>
+            <Input
+              value={str("heading", "Qualifications & Certifications")}
+              onChange={(e) => set("heading", e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Description</Label>
+            <Textarea
+              value={str("description", "Fully certified practitioner with recognized qualifications in massage therapy, bodywork, and holistic wellness.")}
+              onChange={(e) => set("description", e.target.value)}
+            />
           </div>
         </div>
       );

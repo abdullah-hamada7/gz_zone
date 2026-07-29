@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -45,12 +45,28 @@ export default function NewBlogPostPage() {
     }));
   };
 
+  const [categories, setCategories] = useState<{ name: string; slug: string }[]>([
+    { name: "Cupping Therapy", slug: "cupping-therapy" },
+    { name: "Massage Therapy", slug: "massage-therapy" },
+    { name: "Pain Relief & Recovery", slug: "pain-relief-recovery" },
+    { name: "Wellness Tips", slug: "wellness-tips" },
+  ]);
+
+  useEffect(() => {
+    fetch("/api/admin/blog/categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) setCategories(data);
+      })
+      .catch(() => {});
+  }, []);
+
   const handleCategoryChange = (catName: string) => {
-    const catObj = BLOG_CATEGORIES.find((c) => c.name === catName);
+    const catObj = categories.find((c) => c.name === catName);
     setFormData((prev) => ({
       ...prev,
       category: catName,
-      categorySlug: catObj ? catObj.slug : "massage-therapy",
+      categorySlug: catObj ? catObj.slug : catName.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"),
     }));
   };
 
@@ -166,7 +182,7 @@ export default function NewBlogPostPage() {
               onChange={(e) => handleCategoryChange(e.target.value)}
               className="w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              {BLOG_CATEGORIES.filter((c) => c.slug !== "all").map((cat) => (
+              {categories.map((cat) => (
                 <option key={cat.slug} value={cat.name}>
                   {cat.name}
                 </option>

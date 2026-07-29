@@ -1,4 +1,5 @@
 import { createServiceClient } from "./server";
+import { BLOG_POSTS } from "@/data/blog-posts";
 import type {
   Treatment,
   Duration,
@@ -163,8 +164,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       .select("*")
       .order("sort_order");
 
-    if (error || !data) {
-      return [];
+    if (error || !data || data.length === 0) {
+      return BLOG_POSTS;
     }
 
     return data.map((row) => ({
@@ -209,9 +210,37 @@ export async function incrementBlogPostViews(slug: string): Promise<number> {
       const newCount = (data.views_count || 0) + 1;
       await supabase
         .from("blog_posts")
-        .update({ views_count: newCount })
+        .update({ views_count: newCount, updated_at: new Date().toISOString() })
         .eq("id", data.id);
       return newCount;
+    } else {
+      // If post exists in fallback array, insert it into Supabase with views_count = 1
+      const fallbackPost = BLOG_POSTS.find((p) => p.slug === slug);
+      if (fallbackPost) {
+        const { data: newRow } = await supabase
+          .from("blog_posts")
+          .insert({
+            title: fallbackPost.title,
+            slug: fallbackPost.slug,
+            excerpt: fallbackPost.excerpt,
+            content: fallbackPost.content,
+            category: fallbackPost.category,
+            category_slug: fallbackPost.categorySlug,
+            read_time: fallbackPost.readTime,
+            published_at: fallbackPost.publishedAt,
+            author_name: fallbackPost.author.name,
+            author_role: fallbackPost.author.role,
+            image_url: fallbackPost.imageUrl,
+            image_alt: fallbackPost.imageAlt,
+            tags: fallbackPost.tags,
+            featured: fallbackPost.featured || false,
+            related_treatment_slug: fallbackPost.relatedTreatmentSlug || null,
+            views_count: 1,
+          })
+          .select("views_count")
+          .single();
+        return newRow?.views_count || 1;
+      }
     }
   } catch {
     // Fail silently

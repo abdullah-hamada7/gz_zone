@@ -16,6 +16,7 @@ export interface Duration {
   treatment_id: string;
   minutes: number;
   price: number;
+  unit?: string;
   sort_order?: number;
   created_at?: string;
 }
@@ -172,6 +173,7 @@ export interface FinalCTAContent {
 }
 
 export interface CertificationsSectionContent {
+  badge?: string;
   label?: string;
   heading?: string;
   subheading?: string;

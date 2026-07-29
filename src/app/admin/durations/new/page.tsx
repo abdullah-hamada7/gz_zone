@@ -16,6 +16,7 @@ export default function NewDurationPage() {
   const [treatmentId, setTreatmentId] = useState("");
   const [minutes, setMinutes] = useState<number | string>(60);
   const [price, setPrice] = useState<number | string>(60);
+  const [unit, setUnit] = useState("min");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function NewDurationPage() {
         treatment_id: treatmentId,
         minutes: numMinutes,
         price: isNaN(numPrice) ? 0 : numPrice,
+        unit: unit || "min",
         sort_order: numMinutes,
       }),
     });
@@ -84,6 +86,18 @@ export default function NewDurationPage() {
             onChange={(e) => setMinutes(e.target.value)}
             required
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="unit">Pricing Unit / Format</Label>
+          <Select value={unit} onValueChange={(v) => setUnit(v ?? "min")}>
+            <SelectTrigger><SelectValue placeholder="Select unit" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="min">Minutes (min)</SelectItem>
+              <SelectItem value="per session">Per Session</SelectItem>
+              <SelectItem value="per class">Per Class</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">

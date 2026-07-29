@@ -21,6 +21,7 @@ export interface Duration {
   treatment_id: string;
   minutes: number;
   price: number;
+  unit?: string;
 }
 
 export interface FAQ {
@@ -196,13 +197,10 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     button_text: "Book via WhatsApp",
   },
   certifications_section: {
-    label: "Certified & Professional",
-    heading: "Your Wellbeing Is in Safe Hands",
-    subheading: "Trained & Certified Therapist",
+    badge: "Verified Professional Credentials",
+    heading: "Qualifications & Certifications",
     description:
-      "Omar Elgazzar is a professionally trained massage therapist with certified qualifications in massage therapy, cupping, and specialized bodywork. Every treatment is delivered with professionalism, care, and attention to your wellbeing.",
-    image_alt: "Professional massage certifications",
-    image_url: null,
+      "Fully certified practitioner with recognized qualifications in massage therapy, bodywork, and holistic wellness.",
   },
   hours_section: {
     heading: "Opening Hours",
@@ -404,20 +402,31 @@ export const TREATMENTS: Treatment[] = [
     ideal_for: "Those seeking holistic relaxation and natural healing through reflexology.",
     sort_order: 11,
   },
+  {
+    id: "stretching-class-1",
+    name: "Stretching Class \u2014 1-on-1 Assisted Mobility & Flexibility",
+    slug: "stretching-class",
+    category: "holistic-health",
+    short_description: "Guided 1-on-1 stretching session to improve mobility, flexibility, and muscle recovery.",
+    full_description: "A targeted 1-on-1 assisted stretching session focusing on full-body mobility, joint flexibility, and tension release. Ideal for athletes, desk workers, or anyone looking to improve range of motion.",
+    ideal_for: "Athletes, runners, desk workers, and anyone with tight hips, shoulders, or hamstrings.",
+    sort_order: 12,
+  },
 ];
 
 export const DURATIONS: Duration[] = [
-  { id: "d-massage-1", treatment_id: "massage-therapy-1", minutes: 60, price: 55 },
-  { id: "d-deep-1", treatment_id: "deep-tissue-1", minutes: 60, price: 40 },
-  { id: "d-facial-1", treatment_id: "facial-massage-1", minutes: 45, price: 40 },
-  { id: "d-reflex-massage-1", treatment_id: "reflexology-massage-1", minutes: 60, price: 55 },
-  { id: "d-back-1", treatment_id: "back-neck-1", minutes: 60, price: 55 },
-  { id: "d-sports-1", treatment_id: "sports-massage-1", minutes: 60, price: 55 },
-  { id: "d-cellulite-1", treatment_id: "cellulite-treatment-1", minutes: 60, price: 75 },
-  { id: "d-anticell-cupping-1", treatment_id: "anti-cellulite-cupping-1", minutes: 60, price: 55 },
-  { id: "d-anticell-massage-1", treatment_id: "anti-cellulite-massage-1", minutes: 60, price: 55 },
-  { id: "d-cupping-1", treatment_id: "dry-cupping-1", minutes: 45, price: 40 },
-  { id: "d-reflex-1", treatment_id: "reflexology-1", minutes: 60, price: 40 },
+  { id: "d-massage-1", treatment_id: "massage-therapy-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-deep-1", treatment_id: "deep-tissue-1", minutes: 60, price: 40, unit: "min" },
+  { id: "d-facial-1", treatment_id: "facial-massage-1", minutes: 45, price: 40, unit: "min" },
+  { id: "d-reflex-massage-1", treatment_id: "reflexology-massage-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-back-1", treatment_id: "back-neck-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-sports-1", treatment_id: "sports-massage-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-cellulite-1", treatment_id: "cellulite-treatment-1", minutes: 60, price: 75, unit: "min" },
+  { id: "d-anticell-cupping-1", treatment_id: "anti-cellulite-cupping-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-anticell-massage-1", treatment_id: "anti-cellulite-massage-1", minutes: 60, price: 55, unit: "min" },
+  { id: "d-cupping-1", treatment_id: "dry-cupping-1", minutes: 45, price: 40, unit: "per session" },
+  { id: "d-reflex-1", treatment_id: "reflexology-1", minutes: 60, price: 40, unit: "min" },
+  { id: "d-stretching-1", treatment_id: "stretching-class-1", minutes: 60, price: 55, unit: "per class" },
 ];
 
 export function getTreatmentPrices() {
@@ -435,6 +444,7 @@ export function getTreatmentPrices() {
       "anti-cellulite-massage-1": "anti-cellulite-massage",
       "dry-cupping-1": "dry-cupping",
       "reflexology-1": "reflexology",
+      "stretching-class-1": "stretching-class",
     };
     const slug = slugMap[d.treatment_id];
     if (slug && (!map[slug] || d.price < map[slug])) {

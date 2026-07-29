@@ -12,6 +12,7 @@ interface DurationOption {
   id: string;
   minutes: number;
   price: number;
+  unit?: string;
 }
 
 export function TreatmentBooking({
@@ -34,7 +35,10 @@ export function TreatmentBooking({
     const selected = durations.find(
       (d) => d.minutes === selectedDuration
     );
-    const durationStr = selected ? `${selected.minutes} min (€${selected.price})` : undefined;
+    const isCupping = treatmentName.toLowerCase().includes("cupping");
+    const isStretching = treatmentName.toLowerCase().includes("stretching");
+    const unitLabel = selected?.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
+    const durationStr = selected ? `${selected.minutes} min (${unitLabel}) (€${selected.price})` : undefined;
     const url = buildWhatsAppUrl({
       phone: DEFAULT_WHATSAPP,
       treatment: treatmentName,
@@ -57,21 +61,27 @@ export function TreatmentBooking({
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <Label>Duration</Label>
+          <Label>Option & Pricing</Label>
           <div className="mt-1.5 flex flex-wrap gap-2">
-            {durations.map((d) => (
-              <button
-                key={d.id}
-                onClick={() => setSelectedDuration(d.minutes)}
-                className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
-                  selectedDuration === d.minutes
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "hover:border-primary/50"
-                }`}
-              >
-                {d.minutes} min — €{d.price.toFixed(0)}
-              </button>
-            ))}
+            {durations.map((d) => {
+              const isCupping = treatmentName.toLowerCase().includes("cupping");
+              const isStretching = treatmentName.toLowerCase().includes("stretching");
+              const unitLabel = d.unit || (isCupping ? "per session" : isStretching ? "per class" : "min");
+              const label = unitLabel === "min" ? `${d.minutes} min — €${d.price.toFixed(0)}` : `${d.minutes} min (${unitLabel}) — €${d.price.toFixed(0)}`;
+              return (
+                <button
+                  key={d.id}
+                  onClick={() => setSelectedDuration(d.minutes)}
+                  className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                    selectedDuration === d.minutes
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "hover:border-primary/50"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
         </div>
 

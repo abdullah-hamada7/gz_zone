@@ -14,14 +14,20 @@ import type { Certification } from "@/types";
 
 export function CertificationsSection({
   certifications,
+  content,
 }: {
   certifications?: Certification[];
+  content?: Record<string, unknown>;
 }) {
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIdx, setActiveIdx] = useState(0);
+
+  const badge = (content?.badge as string) ?? (content?.label as string) ?? "Verified Professional Credentials";
+  const heading = (content?.heading as string) ?? "Qualifications & Certifications";
+  const description = (content?.description as string) ?? "Fully certified practitioner with recognized qualifications in massage therapy, bodywork, and holistic wellness.";
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -70,13 +76,13 @@ export function CertificationsSection({
         <div className="mx-auto max-w-2xl text-center mb-12">
           <div className="inline-flex items-center gap-1.5 rounded-full border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
             <CheckCircle2 className="size-3.5" />
-            <span>Verified Professional Credentials</span>
+            <span>{badge}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Qualifications &amp; Certifications
+            {heading}
           </h2>
           <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Fully certified practitioner with recognized qualifications in massage therapy, bodywork, and holistic wellness.
+            {description}
           </p>
         </div>
 

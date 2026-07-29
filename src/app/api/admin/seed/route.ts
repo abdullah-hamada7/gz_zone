@@ -82,6 +82,7 @@ export async function POST(request: Request) {
     "anti-cellulite-massage-1": treatmentIdMap["anti-cellulite-massage"] || "",
     "dry-cupping-1": treatmentIdMap["dry-cupping"] || "",
     "reflexology-1": treatmentIdMap["reflexology"] || "",
+    "stretching-class-1": treatmentIdMap["stretching-class"] || "",
   };
 
   const { data: existingDurations } = await supabase
@@ -96,6 +97,7 @@ export async function POST(request: Request) {
         treatment_id: tid,
         minutes: d.minutes,
         price: d.price,
+        unit: d.unit || "min",
         sort_order: d.minutes,
       });
       if (!error) count++;

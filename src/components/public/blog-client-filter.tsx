@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Sparkles } from "lucide-react";
 import type { BlogPost } from "@/types";
 import { BLOG_CATEGORIES } from "@/data/blog-posts";
@@ -14,10 +14,25 @@ interface BlogClientFilterProps {
 export function BlogClientFilter({ posts, featuredPost }: BlogClientFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [categories, setCategories] = useState<{ name: string; slug: string }[]>([
+    { name: "All", slug: "all" },
+    ...BLOG_CATEGORIES.filter((c) => c.slug !== "all"),
+  ]);
+
+  useEffect(() => {
+    fetch("/api/admin/blog/categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories([{ name: "All", slug: "all" }, ...data]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredPosts = posts.filter((post) => {
     const matchesCategory =
-      selectedCategory === "all" || post.categorySlug === selectedCategory;
+      selectedCategory === "all" || post.categorySlug === selectedCategory || post.category === categories.find(c => c.slug === selectedCategory)?.name;
     const matchesSearch =
       searchQuery.trim() === "" ||
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,7 +54,7 @@ export function BlogClientFilter({ posts, featuredPost }: BlogClientFilterProps)
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b pb-6">
         {/* Category Pills */}
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
-          {BLOG_CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = selectedCategory === cat.slug;
             return (
               <button

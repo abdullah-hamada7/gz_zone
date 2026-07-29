@@ -32,6 +32,7 @@ export async function GET() {
       tags: row.tags || [],
       featured: row.featured,
       relatedTreatmentSlug: row.related_treatment_slug,
+      views_count: row.views_count || 0,
       sort_order: row.sort_order,
       created_at: row.created_at,
     }))
