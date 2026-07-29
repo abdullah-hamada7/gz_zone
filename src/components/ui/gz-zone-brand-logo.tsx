@@ -6,7 +6,6 @@ interface GZZoneBrandLogoProps {
   href?: string;
   className?: string;
   showTagline?: boolean;
-  subtitle?: React.ReactNode;
 }
 
 /**
@@ -19,7 +18,6 @@ export function GZZoneBrandLogo({
   href,
   className = "",
   showTagline = true,
-  subtitle,
 }: GZZoneBrandLogoProps) {
   const sizeMap = {
     sm: {
@@ -41,62 +39,39 @@ export function GZZoneBrandLogo({
 
   const currentSize = sizeMap[size];
 
-  const logoImg = (
-    <Image
-      src="/images/logo.jpg"
-      alt="Gz'zone Logo"
-      width={currentSize.imgSize}
-      height={currentSize.imgSize}
-      className={`${currentSize.imgClass} shrink-0 rounded-full object-cover shadow-sm border border-border/50`}
-      priority
-    />
-  );
-
-  const brandText = (
-    <div className={`flex items-center gap-x-1 font-sans ${currentSize.textClass} leading-tight min-w-0 max-w-full`}>
-      <span className="font-bold tracking-tight text-foreground whitespace-nowrap shrink-0">
-        Gz&apos;zone
-      </span>
-      {showTagline && (
-        <span className="font-medium text-muted-foreground truncate">
-          - Massage &amp; Cupping Therapy | Porto
+  const content = (
+    <div className={`inline-flex items-center gap-1.5 sm:gap-3 ${className}`}>
+      <Image
+        src="/images/logo.jpg"
+        alt="Gz'zone Logo"
+        width={currentSize.imgSize}
+        height={currentSize.imgSize}
+        className={`${currentSize.imgClass} shrink-0 rounded-full object-cover shadow-sm border border-border/50`}
+        priority
+      />
+      <div className={`flex items-center gap-x-1 font-sans ${currentSize.textClass} leading-tight min-w-0 max-w-full`}>
+        <span className="font-bold tracking-tight text-foreground whitespace-nowrap shrink-0">
+          Gz&apos;zone
         </span>
-      )}
-    </div>
-  );
-
-  return (
-    <div className={`inline-flex items-start gap-2.5 sm:gap-3 ${className}`}>
-      {href ? (
-        <Link
-          href={href}
-          className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-95"
-        >
-          {logoImg}
-        </Link>
-      ) : (
-        logoImg
-      )}
-
-      <div className="flex flex-col justify-center min-w-0 max-w-full">
-        {href ? (
-          <Link
-            href={href}
-            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md transition-opacity hover:opacity-95"
-          >
-            {brandText}
-          </Link>
-        ) : (
-          brandText
-        )}
-
-        {subtitle && (
-          <div className="mt-0.5 text-xs sm:text-sm text-muted-foreground leading-snug max-w-md">
-            {subtitle}
-          </div>
+        {showTagline && (
+          <span className="font-medium text-muted-foreground truncate">
+            - Massage &amp; Cupping Therapy | Porto
+          </span>
         )}
       </div>
     </div>
   );
-}
 
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md transition-opacity hover:opacity-95"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
+}

@@ -23,8 +23,19 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
     <footer className="border-t bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-start">
-          <div className="lg:col-span-2">
-            <GZZoneBrandLogo href="/" size="md" subtitle={description} />
+          <div className="lg:col-span-2 space-y-1.5">
+            <GZZoneBrandLogo href="/" size="md" />
+            <p className="pl-[42px] sm:pl-[56px] text-xs sm:text-sm text-muted-foreground leading-snug max-w-md">
+              {description}
+            </p>
+            <div className="pl-[42px] sm:pl-[56px] pt-1 flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-background border px-3 py-1 text-[11px] font-semibold text-foreground/80 shadow-2xs">
+                ✓ Fully Certified Practitioner
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-background border px-3 py-1 text-[11px] font-semibold text-foreground/80 shadow-2xs">
+                📍 Porto &amp; Surrounding Areas
+              </span>
+            </div>
           </div>
 
           <div>
