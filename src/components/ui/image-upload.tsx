@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { ImageCropModal, type CropResultMetadata } from "@/components/ui/image-crop-modal";
 import { Button } from "@/components/ui/button";
 
+import { convertHeicToJpegIfNeeded, parseUploadResponse } from "@/lib/upload-utils";
+
 interface ImageUploadProps {
   value: string | null;
   onChange: (url: string | null, metadata?: CropResultMetadata) => void;
@@ -27,17 +29,32 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       /\.(jpg|jpeg|png|webp|heic|heif|gif|bmp|tiff|avif)$/i.test(file.name);
 
     if (!isImg) {
-      toast.error("Please select a valid image file");
+      toast.error(`Invalid file type (${file.type || file.name}). Please select a valid photo file.`);
       return;
     }
 
     if (file.size > 35 * 1024 * 1024) {
-      toast.error("Image must be under 35MB");
+      toast.error(`Photo is too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Max allowed size is 35MB.`);
       return;
     }
 
-    // Open cropper with selected file
-    setFileToCrop(file);
+    let processedFile = file;
+    const ext = file.name.split(".").pop()?.toLowerCase() || "";
+    const isHeic = ext === "heic" || ext === "heif" || file.type === "image/heic" || file.type === "image/heif";
+
+    if (isHeic) {
+      const toastId = toast.loading("Converting iPhone/MacOS HEIC photo to JPEG...");
+      try {
+        processedFile = await convertHeicToJpegIfNeeded(file);
+        toast.success("HEIC photo converted to JPEG!", { id: toastId });
+      } catch (heicErr: unknown) {
+        const msg = heicErr instanceof Error ? heicErr.message : String(heicErr);
+        toast.error(`HEIC conversion warning: ${msg}`, { id: toastId });
+      }
+    }
+
+    // Open cropper with selected/converted file
+    setFileToCrop(processedFile);
     setCropModalOpen(true);
     if (inputRef.current) inputRef.current.value = "";
   }
@@ -52,16 +69,18 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
         method: "POST",
         body: formData,
       });
-      if (!res.ok) {
-        const err = await res.json();
-        toast.error(err.error || "Upload failed");
+
+      const parsed = await parseUploadResponse(res, "Photo upload");
+      if (!parsed.ok) {
+        toast.error(`Upload Error: ${parsed.error}`, { duration: 6000 });
         return;
       }
-      const data = await res.json();
-      onChange(data.url, metadata);
-      toast.success("Cropped image uploaded successfully!");
-    } catch {
-      toast.error("Upload failed");
+
+      onChange(parsed.data.url, metadata);
+      toast.success("Photo uploaded successfully!");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Upload Network Failure: ${msg}`, { duration: 6000 });
     } finally {
       setUploading(false);
     }

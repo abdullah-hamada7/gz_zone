@@ -90,23 +90,40 @@ export function ImageCropModal({
       return;
     }
 
-    if (typeof imageSrc === "string") {
-      // Fetch as Blob to prevent canvas CORS tainting
-      fetch(imageSrc, { mode: "cors" })
-        .then((res) => res.blob())
-        .then((blob) => {
-          if (!isSubscribed) return;
-          createdUrl = URL.createObjectURL(blob);
-          setImgUrl(createdUrl);
-        })
-        .catch(() => {
-          if (!isSubscribed) return;
-          setImgUrl(imageSrc);
-        });
-    } else {
-      createdUrl = URL.createObjectURL(imageSrc);
-      setImgUrl(createdUrl);
-    }
+    const prepareImage = async () => {
+      let target: string | File = imageSrc;
+
+      if (typeof target === "object" && target instanceof File) {
+        try {
+          const { convertHeicToJpegIfNeeded } = await import("@/lib/upload-utils");
+          target = await convertHeicToJpegIfNeeded(target);
+        } catch (heicErr) {
+          console.warn("ImageCropModal HEIC conversion notice:", heicErr);
+        }
+      }
+
+      if (!isSubscribed) return;
+
+      if (typeof target === "string") {
+        fetch(target, { mode: "cors" })
+          .then((res) => res.blob())
+          .then((blob) => {
+            if (!isSubscribed) return;
+            createdUrl = URL.createObjectURL(blob);
+            setImgUrl(createdUrl);
+          })
+          .catch((err) => {
+            console.warn("Could not fetch remote image blob:", err);
+            if (!isSubscribed) return;
+            setImgUrl(target as string);
+          });
+      } else {
+        createdUrl = URL.createObjectURL(target);
+        setImgUrl(createdUrl);
+      }
+    };
+
+    prepareImage();
 
     return () => {
       isSubscribed = false;
@@ -276,7 +293,10 @@ export function ImageCropModal({
 
   // Perform canvas crop & export high quality image file
   const handleApplyCrop = async () => {
-    if (!imgRef.current || displaySize.width <= 0 || displaySize.height <= 0) return;
+    if (!imgRef.current || displaySize.width <= 0 || displaySize.height <= 0) {
+      toast.error("Image preview is still loading. Please wait a moment for the image to load and try again.");
+      return;
+    }
     setIsProcessing(true);
 
     try {
@@ -386,9 +406,10 @@ export function ImageCropModal({
         "image/webp",
         0.92
       );
-    } catch (err) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
       console.error("Cropping exception:", err);
-      toast.error("Error cropping image. Make sure the image is accessible.");
+      toast.error(`Image Crop Failed: ${msg}. Make sure the image is accessible and supported by your browser.`);
       setIsProcessing(false);
     }
   };

@@ -78,7 +78,7 @@ export default function AdminGalleryPage() {
     fetchImages();
   }, []);
 
-  const handleSelectFileToCrop = (file: File) => {
+  const handleSelectFileToCrop = async (file: File) => {
     if (!file) return;
     const isImg =
       !file.type ||
@@ -86,10 +86,27 @@ export default function AdminGalleryPage() {
       /\.(jpg|jpeg|png|webp|heic|heif|gif|bmp|tiff|avif)$/i.test(file.name);
 
     if (!isImg) {
-      toast.error("Please select a valid image file");
+      toast.error(`Invalid file format (${file.type || file.name}). Please select a valid photo.`);
       return;
     }
-    setCropImageTarget({ src: file });
+
+    let processedFile = file;
+    const ext = file.name.split(".").pop()?.toLowerCase() || "";
+    const isHeic = ext === "heic" || ext === "heif" || file.type === "image/heic" || file.type === "image/heif";
+
+    if (isHeic) {
+      const toastId = toast.loading("Converting iPhone/MacOS HEIC photo to JPEG...");
+      try {
+        const { convertHeicToJpegIfNeeded } = await import("@/lib/upload-utils");
+        processedFile = await convertHeicToJpegIfNeeded(file);
+        toast.success("HEIC photo converted to JPEG successfully!", { id: toastId });
+      } catch (heicErr: unknown) {
+        const msg = heicErr instanceof Error ? heicErr.message : String(heicErr);
+        toast.error(`HEIC conversion warning: ${msg}`, { id: toastId });
+      }
+    }
+
+    setCropImageTarget({ src: processedFile });
     setCropperOpen(true);
   };
 
@@ -104,13 +121,16 @@ export default function AdminGalleryPage() {
         body: formData,
       });
 
-      if (!uploadRes.ok) {
-        toast.error("Upload failed");
+      const { parseUploadResponse } = await import("@/lib/upload-utils");
+      const parsedUpload = await parseUploadResponse(uploadRes, "Gallery photo upload");
+
+      if (!parsedUpload.ok) {
+        toast.error(`Photo Upload Failed: ${parsedUpload.error}`, { duration: 7000 });
         setUploading(false);
         return;
       }
 
-      const { url } = await uploadRes.json();
+      const { url } = parsedUpload.data;
 
       if (cropImageTarget?.existingImageId) {
         // Update existing image public_url & ratio
@@ -124,11 +144,13 @@ export default function AdminGalleryPage() {
           }),
         });
 
-        if (updateRes.ok) {
+        const parsedUpdate = await parseUploadResponse(updateRes, "Update gallery photo record");
+
+        if (parsedUpdate.ok) {
           toast.success("Gallery photo re-cropped & updated!");
           fetchImages();
         } else {
-          toast.error("Failed to update cropped photo");
+          toast.error(`Gallery Record Update Failed: ${parsedUpdate.error}`, { duration: 7000 });
         }
       } else {
         // Save new gallery image record
@@ -145,19 +167,22 @@ export default function AdminGalleryPage() {
           }),
         });
 
+        const parsedCreate = await parseUploadResponse(createRes, "Save gallery photo record");
+
         setNewAltText("");
         setNewTitle("");
 
-        if (createRes.ok) {
-          toast.success("Cropped image uploaded & saved to gallery!");
+        if (parsedCreate.ok) {
+          toast.success("Cropped photo uploaded & saved to gallery!");
           if (fileInputRef.current) fileInputRef.current.value = "";
           fetchImages();
         } else {
-          toast.error("Failed to save image record");
+          toast.error(`Gallery Record Save Failed: ${parsedCreate.error}`, { duration: 7000 });
         }
       }
-    } catch {
-      toast.error("Image processing & upload failed");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Photo Upload Exception: ${msg}`, { duration: 7000 });
     } finally {
       setUploading(false);
       setCropImageTarget(null);

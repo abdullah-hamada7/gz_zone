@@ -60,48 +60,62 @@ export default function AdminCertificationsPage() {
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+    let processedFile = file;
 
-    const uploadRes = await fetch("/api/admin/upload", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const { convertHeicToJpegIfNeeded, parseUploadResponse } = await import("@/lib/upload-utils");
+      processedFile = await convertHeicToJpegIfNeeded(file);
 
-    if (!uploadRes.ok) {
-      toast.error("File upload failed");
+      const formData = new FormData();
+      formData.append("file", processedFile);
+
+      const uploadRes = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const parsedUpload = await parseUploadResponse(uploadRes, "Certificate upload");
+
+      if (!parsedUpload.ok) {
+        toast.error(`Upload Failed: ${parsedUpload.error}`, { duration: 6000 });
+        setUploading(false);
+        return;
+      }
+
+      const { url } = parsedUpload.data;
+
+      const createRes = await fetch("/api/admin/certifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          issuer: issuer || null,
+          issue_year: issueYear || null,
+          description: description || null,
+          public_url: url,
+          sort_order: certs.length,
+        }),
+      });
+
+      const parsedCreate = await parseUploadResponse(createRes, "Save certification record");
+
       setUploading(false);
-      return;
-    }
 
-    const { url } = await uploadRes.json();
-
-    const createRes = await fetch("/api/admin/certifications", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        issuer: issuer || null,
-        issue_year: issueYear || null,
-        description: description || null,
-        public_url: url,
-        sort_order: certs.length,
-      }),
-    });
-
-    setUploading(false);
-
-    if (createRes.ok) {
-      toast.success("Certification added");
-      setTitle("");
-      setIssuer("");
-      setIssueYear("");
-      setDescription("");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      fetchCertifications();
-    } else {
-      const err = await createRes.json().catch(() => null);
-      toast.error(err?.error ? `Error: ${err.error}` : "Failed to save certification record");
+      if (parsedCreate.ok) {
+        toast.success("Certification added");
+        setTitle("");
+        setIssuer("");
+        setIssueYear("");
+        setDescription("");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        fetchCertifications();
+      } else {
+        toast.error(`Certification Save Error: ${parsedCreate.error}`, { duration: 6000 });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Upload Exception: ${msg}`, { duration: 6000 });
+      setUploading(false);
     }
   }
 
@@ -117,21 +131,32 @@ export default function AdminCertificationsPage() {
   async function handleEditImageUpload(file: File) {
     if (!file) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
 
-    const uploadRes = await fetch("/api/admin/upload", {
-      method: "POST",
-      body: formData,
-    });
-    setUploading(false);
+    try {
+      const { convertHeicToJpegIfNeeded, parseUploadResponse } = await import("@/lib/upload-utils");
+      const processedFile = await convertHeicToJpegIfNeeded(file);
 
-    if (uploadRes.ok) {
-      const { url } = await uploadRes.json();
-      setEditImageUrl(url);
-      toast.success("New certificate photo uploaded");
-    } else {
-      toast.error("Image upload failed");
+      const formData = new FormData();
+      formData.append("file", processedFile);
+
+      const uploadRes = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const parsed = await parseUploadResponse(uploadRes, "Certificate edit upload");
+      setUploading(false);
+
+      if (parsed.ok) {
+        setEditImageUrl(parsed.data.url);
+        toast.success("New certificate photo uploaded");
+      } else {
+        toast.error(`Upload Failed: ${parsed.error}`, { duration: 6000 });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Upload Error: ${msg}`, { duration: 6000 });
+      setUploading(false);
     }
   }
 
