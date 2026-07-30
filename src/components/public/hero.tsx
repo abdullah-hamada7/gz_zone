@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { MapPin, MessageCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+
 import { buttonVariants, Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -196,44 +197,87 @@ export function Hero({
 
           {images.length > 0 && (
             <div className="relative w-full max-w-md mx-auto lg:max-w-none transition-all duration-300">
-              <div
-                style={{ aspectRatio: activeRatio }}
-                className="relative w-full max-h-[520px] flex items-center justify-center transition-all duration-500"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  key={images[index]?.src}
-                  src={images[index]?.src}
-                  alt={images[index]?.alt || ""}
-                  className="max-h-full max-w-full object-contain mx-auto transition-opacity duration-300"
-                  onLoad={(e) => {
-                    const img = e.currentTarget;
-                    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-                      const natRatio = img.naturalWidth / img.naturalHeight;
-                      setAutoAspectRatios((prev) => ({ ...prev, [img.src]: natRatio }));
-                    }
-                  }}
-                  onError={() => {
-                    if (images.length > 1) {
-                      setIndex((i) => (i + 1) % images.length);
-                    }
-                  }}
-                />
-              </div>
-              <div className="mt-3 flex items-center justify-center gap-1.5 py-1">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setIndex(i)}
-                    className={cn(
-                      "size-1.5 rounded-full transition-all cursor-pointer",
-                      i === index
-                        ? "bg-primary w-3.5"
-                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
-                    )}
-                    aria-label={`Go to slide ${i + 1}`}
+              {/* Decorative Ambient Background Glow */}
+              <div className="absolute -inset-2 rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-tr from-primary/25 via-emerald-500/15 to-primary/10 blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+              {/* Main Rounded Frame */}
+              <div className="group relative w-full overflow-hidden rounded-3xl sm:rounded-[2.5rem] border border-border/80 bg-card/90 p-2 sm:p-3 shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-sm transition-all duration-500 hover:shadow-[0_25px_60px_rgba(0,0,0,0.22)] hover:border-primary/40">
+                {/* Image Container with Custom Aspect Ratio */}
+                <div
+                  style={{ aspectRatio: activeRatio }}
+                  className="relative w-full max-h-[520px] overflow-hidden rounded-2xl sm:rounded-[1.8rem] bg-black/80 flex items-center justify-center transition-all duration-500 shadow-inner"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    key={images[index]?.src}
+                    src={images[index]?.src}
+                    alt={images[index]?.alt || "Gallery image"}
+                    className="size-full max-h-full max-w-full object-cover rounded-2xl sm:rounded-[1.8rem] transition-all duration-700 ease-in-out transform group-hover:scale-[1.02]"
+                    onLoad={(e) => {
+                      const img = e.currentTarget;
+                      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                        const natRatio = img.naturalWidth / img.naturalHeight;
+                        setAutoAspectRatios((prev) => ({ ...prev, [img.src]: natRatio }));
+                      }
+                    }}
+                    onError={() => {
+                      if (images.length > 1) {
+                        setIndex((i) => (i + 1) % images.length);
+                      }
+                    }}
                   />
-                ))}
+
+                  {/* Gradient Overlay for Visual Depth */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 rounded-2xl sm:rounded-[1.8rem]" />
+
+                  {/* Slide Counter Badge */}
+                  {images.length > 1 && (
+                    <div className="absolute top-3 right-3 rounded-full bg-black/60 px-3 py-1 text-[11px] font-semibold text-white/90 backdrop-blur-md border border-white/10 shadow-sm pointer-events-none">
+                      {index + 1} / {images.length}
+                    </div>
+                  )}
+
+                  {/* Navigation Arrows (visible on hover or touch) */}
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:scale-110 shadow-md backdrop-blur-md cursor-pointer"
+                        aria-label="Previous photo"
+                      >
+                        <ChevronLeft className="size-5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIndex((i) => (i + 1) % images.length)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:scale-110 shadow-md backdrop-blur-md cursor-pointer"
+                        aria-label="Next photo"
+                      >
+                        <ChevronRight className="size-5" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Sleek Pill Pagination Indicators */}
+                {images.length > 1 && (
+                  <div className="mt-3 flex items-center justify-center gap-2 py-1">
+                    {images.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setIndex(i)}
+                        className={cn(
+                          "h-2 rounded-full transition-all duration-500 cursor-pointer",
+                          i === index
+                            ? "bg-primary w-7 shadow-xs"
+                            : "bg-muted-foreground/30 hover:bg-muted-foreground/60 w-2"
+                        )}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}
