@@ -61,6 +61,7 @@ export default async function HomePage() {
         <TestimonialsSection testimonials={testimonials} />
 
         <section id="treatments" className="py-20 scroll-mt-20">
+          <div id="booking" className="-mt-20 pt-20" />
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <h2 className="mb-2 text-center text-sm font-semibold tracking-wider text-muted-foreground uppercase">
               Our Services

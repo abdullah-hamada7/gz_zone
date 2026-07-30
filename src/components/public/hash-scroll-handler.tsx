@@ -13,7 +13,10 @@ export function HashScrollHandler() {
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
-      const el = document.getElementById(id);
+      let el = document.getElementById(id);
+      if (!el && id === "booking") {
+        el = document.getElementById("treatments");
+      }
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
@@ -64,7 +67,7 @@ export function HashScrollHandler() {
       }
 
       if (targetHash && isSamePage) {
-        const element = document.getElementById(targetHash);
+        const element = document.getElementById(targetHash) || (targetHash === "booking" ? document.getElementById("treatments") : null);
         if (element) {
           e.preventDefault();
           element.scrollIntoView({ behavior: "smooth" });
