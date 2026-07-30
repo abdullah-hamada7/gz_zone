@@ -83,19 +83,40 @@ export function ImageCropModal({
     cropH: 0,
   });
 
-  // Convert File/string to image URL
+  // Convert File/string to clean local Blob URL to guarantee untainted canvas
   useEffect(() => {
+    let createdUrl: string | null = null;
+    let isSubscribed = true;
+
     if (!imageSrc) {
       setImgUrl(null);
       return;
     }
+
     if (typeof imageSrc === "string") {
-      setImgUrl(imageSrc);
+      // Fetch as Blob to prevent canvas CORS tainting
+      fetch(imageSrc, { mode: "cors" })
+        .then((res) => res.blob())
+        .then((blob) => {
+          if (!isSubscribed) return;
+          createdUrl = URL.createObjectURL(blob);
+          setImgUrl(createdUrl);
+        })
+        .catch(() => {
+          if (!isSubscribed) return;
+          setImgUrl(imageSrc);
+        });
     } else {
-      const url = URL.createObjectURL(imageSrc);
-      setImgUrl(url);
-      return () => URL.revokeObjectURL(url);
+      createdUrl = URL.createObjectURL(imageSrc);
+      setImgUrl(createdUrl);
     }
+
+    return () => {
+      isSubscribed = false;
+      if (createdUrl) {
+        URL.revokeObjectURL(createdUrl);
+      }
+    };
   }, [imageSrc]);
 
   // Calculate current numerical ratio
@@ -266,10 +287,16 @@ export function ImageCropModal({
       const scaleX = naturalSize.width / displaySize.width;
       const scaleY = naturalSize.height / displaySize.height;
 
-      const sourceX = crop.x * scaleX;
-      const sourceY = crop.y * scaleY;
-      const sourceWidth = crop.width * scaleX;
-      const sourceHeight = crop.height * scaleY;
+      const sourceX = Math.max(0, Math.floor(crop.x * scaleX));
+      const sourceY = Math.max(0, Math.floor(crop.y * scaleY));
+      const sourceWidth = Math.min(naturalSize.width - sourceX, Math.ceil(crop.width * scaleX));
+      const sourceHeight = Math.min(naturalSize.height - sourceY, Math.ceil(crop.height * scaleY));
+
+      if (sourceWidth <= 0 || sourceHeight <= 0) {
+        toast.error("Invalid crop area dimensions");
+        setIsProcessing(false);
+        return;
+      }
 
       const canvas = document.createElement("canvas");
       canvas.width = Math.round(sourceWidth);
@@ -297,41 +324,61 @@ export function ImageCropModal({
         canvas.height
       );
 
+      const processBlob = (blob: Blob | null) => {
+        if (!blob) {
+          toast.error("Failed to export cropped image blob");
+          setIsProcessing(false);
+          return;
+        }
+
+        const filename = typeof imageSrc === "object" && imageSrc instanceof File
+          ? `cropped-${imageSrc.name}`
+          : `cropped-image-${Date.now()}.webp`;
+
+        const croppedFile = new File([blob], filename, { type: blob.type || "image/webp" });
+        const currentRatioVal = (crop.width / crop.height).toFixed(3);
+        const ratioMetaString = selectedPreset === "custom"
+          ? customRatioInput
+          : selectedPreset === "freeform"
+          ? currentRatioVal
+          : selectedPreset;
+
+        onCropComplete(croppedFile, {
+          aspectRatio: ratioMetaString,
+          fitMode,
+          numericRatio: parseFloat(currentRatioVal),
+        });
+
+        setIsProcessing(false);
+        onOpenChange(false);
+        toast.success("Image cropped & formatted successfully!");
+      };
+
+      // Attempt to export webp, fallback to jpeg then png
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
-            toast.error("Failed to generate cropped image");
-            setIsProcessing(false);
-            return;
+          if (blob) {
+            processBlob(blob);
+          } else {
+            canvas.toBlob(
+              (jpegBlob) => {
+                if (jpegBlob) {
+                  processBlob(jpegBlob);
+                } else {
+                  canvas.toBlob(processBlob, "image/png");
+                }
+              },
+              "image/jpeg",
+              0.92
+            );
           }
-
-          const filename = typeof imageSrc === "object" && imageSrc instanceof File
-            ? `cropped-${imageSrc.name}`
-            : `cropped-image-${Date.now()}.webp`;
-
-          const croppedFile = new File([blob], filename, { type: "image/webp" });
-          const currentRatioVal = (crop.width / crop.height).toFixed(3);
-          const ratioMetaString = selectedPreset === "custom"
-            ? customRatioInput
-            : selectedPreset === "freeform"
-            ? currentRatioVal
-            : selectedPreset;
-
-          onCropComplete(croppedFile, {
-            aspectRatio: ratioMetaString,
-            fitMode,
-            numericRatio: parseFloat(currentRatioVal),
-          });
-
-          setIsProcessing(false);
-          onOpenChange(false);
-          toast.success("Image cropped & formatted successfully!");
         },
         "image/webp",
         0.92
       );
-    } catch {
-      toast.error("Error cropping image");
+    } catch (err) {
+      console.error("Cropping exception:", err);
+      toast.error("Error cropping image. Make sure the image is accessible.");
       setIsProcessing(false);
     }
   };
@@ -438,6 +485,7 @@ export function ImageCropModal({
               <img
                 ref={imgRef}
                 src={imgUrl}
+                crossOrigin="anonymous"
                 alt="Source image for cropping"
                 onLoad={handleImageLoad}
                 className="block max-h-[50vh] max-w-full object-contain mx-auto"
