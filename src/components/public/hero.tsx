@@ -67,9 +67,28 @@ export function Hero({
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Helper to resolve numerical ratio for image
+  useEffect(() => {
+    images.forEach((img) => {
+      if (!img.src) return;
+      const i = new Image();
+      i.src = img.src;
+      i.onload = () => {
+        if (i.naturalWidth > 0 && i.naturalHeight > 0) {
+          const ratio = i.naturalWidth / i.naturalHeight;
+          setAutoAspectRatios((prev) => ({ ...prev, [img.src]: ratio }));
+        }
+      };
+    });
+  }, [images]);
+
+  // Helper to resolve numerical ratio for image (prioritizes actual natural image ratio)
   const getNumericRatio = (img?: typeof images[0]): number => {
     if (!img) return 1;
+    // 1. Natural ratio of the actual image asset
+    if (autoAspectRatios[img.src]) {
+      return autoAspectRatios[img.src];
+    }
+    // 2. Preset ratio if specified
     const str = img.aspectRatioStr;
     if (str === "1:1") return 1;
     if (str === "4:3") return 4 / 3;
@@ -79,13 +98,11 @@ export function Hero({
     if (str === "9:16") return 9 / 16;
     const parsed = parseFloat(str);
     if (!isNaN(parsed) && parsed > 0) return parsed;
-    // Fallback to loaded natural ratio if freeform or auto
-    return autoAspectRatios[img.src] || 1;
+    return 1;
   };
 
   const currentImg = images[index];
   const activeRatio = getNumericRatio(currentImg);
-  const activeFitMode = currentImg?.fitMode || "cover";
 
   return (
     <section className="relative overflow-hidden w-full">
@@ -181,15 +198,14 @@ export function Hero({
             <div className="relative w-full max-w-md mx-auto lg:max-w-none transition-all duration-300">
               <div
                 style={{ aspectRatio: activeRatio }}
-                className="relative w-full overflow-hidden rounded-2xl bg-muted/20 shadow-md transition-all duration-500 max-h-[500px]"
+                className="relative w-full overflow-hidden rounded-2xl bg-muted/30 shadow-md transition-all duration-500 max-h-[520px] flex items-center justify-center border"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={images[index]?.src}
                   src={images[index]?.src}
                   alt={images[index]?.alt || ""}
-                  style={{ objectFit: activeFitMode as React.CSSProperties["objectFit"] }}
-                  className="absolute inset-0 size-full transition-opacity duration-300"
+                  className="max-h-full max-w-full object-contain mx-auto transition-opacity duration-300"
                   onLoad={(e) => {
                     const img = e.currentTarget;
                     if (img.naturalWidth > 0 && img.naturalHeight > 0) {
