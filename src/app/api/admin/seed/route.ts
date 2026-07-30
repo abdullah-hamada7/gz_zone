@@ -8,7 +8,6 @@ import {
   TESTIMONIALS,
   SITE_CONTENT_SEED,
 } from "@/data";
-import { BLOG_POSTS } from "@/data/blog-posts";
 import type { SiteContentKey } from "@/data";
 
 export async function POST(request: Request) {
@@ -128,37 +127,6 @@ export async function POST(request: Request) {
     results.testimonials = count;
   } else {
     results.testimonials = `skipped (${existingTestimonials.length} exist)`;
-  }
-
-  const { data: existingBlog } = await supabase.from("blog_posts").select("id");
-  if (!existingBlog || existingBlog.length === 0) {
-    let count = 0;
-    for (let i = 0; i < BLOG_POSTS.length; i++) {
-      const b = BLOG_POSTS[i];
-      const { error } = await supabase.from("blog_posts").insert({
-        title: b.title,
-        slug: b.slug,
-        excerpt: b.excerpt,
-        content: b.content,
-        category: b.category,
-        category_slug: b.categorySlug,
-        read_time: b.readTime,
-        published_at: b.publishedAt,
-        author_name: b.author.name,
-        author_role: b.author.role,
-        image_url: b.imageUrl,
-        image_alt: b.imageAlt,
-        tags: b.tags,
-        featured: b.featured || false,
-        related_treatment_slug: b.relatedTreatmentSlug || null,
-        views_count: b.views_count || 0,
-        sort_order: i,
-      });
-      if (!error) count++;
-    }
-    results.blog_posts = count;
-  } else {
-    results.blog_posts = `skipped (${existingBlog.length} exist)`;
   }
 
   const { data: existingSiteContent } = await supabase.from("site_content").select("section_key");

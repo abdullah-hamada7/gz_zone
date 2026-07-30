@@ -288,12 +288,12 @@ export default function AdminCertificationsPage() {
             {certs.map((c) => (
               <div key={c.id} className="group relative flex flex-col justify-between overflow-hidden rounded-xl border bg-background p-4 shadow-sm hover:border-primary/50 transition-colors">
                 <div>
-                  <div className="relative mb-3 h-48 w-full overflow-hidden rounded-lg bg-muted/40 border p-2 flex items-center justify-center">
+                  <div className="relative mb-3 aspect-4/3 w-full overflow-hidden rounded-lg bg-muted border">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={c.public_url}
                       alt={c.title}
-                      className="max-h-full max-w-full object-contain mx-auto transition-transform group-hover:scale-105"
+                      className="size-full object-cover transition-transform group-hover:scale-105"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
                       }}
@@ -399,9 +399,9 @@ export default function AdminCertificationsPage() {
             <div className="space-y-2 pt-1">
               <Label className="block text-sm font-medium">Replace Certificate Photo (Optional)</Label>
               {editImageUrl && (
-                <div className="relative h-28 w-36 overflow-hidden rounded-lg border bg-muted/40 p-1 mb-2 flex items-center justify-center">
+                <div className="relative aspect-4/3 w-32 overflow-hidden rounded-lg border bg-muted mb-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={editImageUrl} alt="Certificate preview" className="max-h-full max-w-full object-contain mx-auto" />
+                  <img src={editImageUrl} alt="Certificate preview" className="size-full object-cover" />
                 </div>
               )}
               <input

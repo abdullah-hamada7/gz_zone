@@ -203,13 +203,6 @@ export interface LegalPageContent {
   body_html?: string;
 }
 
-export interface BlogPageContent {
-  badge?: string;
-  heading?: string;
-  description?: string;
-}
-
-
 export interface ConversionEvent {
   id: string;
   event_name: string;
@@ -220,32 +213,6 @@ export interface ConversionEvent {
   user_agent: string | null;
   referrer: string | null;
   created_at?: string;
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  category: "Cupping Therapy" | "Massage Therapy" | "Pain Relief & Recovery" | "Wellness Tips";
-  categorySlug: string;
-  readTime: string;
-  publishedAt: string;
-  author: {
-    name: string;
-    role: string;
-    avatar?: string;
-  };
-  imageUrl: string;
-  imageAlt: string;
-  tags: string[];
-  featured?: boolean;
-  relatedTreatmentSlug?: string;
-  views_count?: number;
-  sort_order?: number;
-  created_at?: string;
-  updated_at?: string;
 }
 
 

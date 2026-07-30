@@ -14,7 +14,7 @@ interface SectionConfig {
   key: string;
   label: string;
   description: string;
-  category: "homepage" | "treatments" | "legal" | "blog";
+  category: "homepage" | "treatments" | "legal";
 }
 
 const sections: SectionConfig[] = [
@@ -28,7 +28,6 @@ const sections: SectionConfig[] = [
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
-  { key: "blog_page", label: "Blog Page Header", description: "Header badge, title and description on /blog", category: "blog" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
 ];
@@ -627,23 +626,7 @@ function SectionEditor({
         </div>
       );
 
-    case "blog_page":
-      return (
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Badge Text</Label>
-            <Input value={str("badge", "🌿 GZ'ZONE Wellness & Recovery Journal")} onChange={(e) => set("badge", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Heading</Label>
-            <Input value={str("heading", "Massage & Cupping Insights")} onChange={(e) => set("heading", e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Description</Label>
-            <Textarea value={str("description", "Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.")} onChange={(e) => set("description", e.target.value)} />
-          </div>
-        </div>
-      );
+
 
 
     case "privacy_policy":
@@ -733,7 +716,7 @@ export default function AdminSiteContentPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {["all", "homepage", "treatments", "blog", "legal"].map((cat) => (
+        {["all", "homepage", "treatments", "legal"].map((cat) => (
           <Button
             key={cat}
             variant={activeCategory === cat ? "default" : "outline"}

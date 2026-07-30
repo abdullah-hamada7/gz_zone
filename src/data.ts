@@ -55,15 +55,9 @@ export type SiteContentKey =
   | "service_areas_section"
   | "gallery_section"
   | "privacy_policy"
-  | "terms"
-  | "blog_page";
+  | "terms";
 
 export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> = {
-  blog_page: {
-    badge: "🌿 GZ'ZONE Wellness & Recovery Journal",
-    heading: "Massage & Cupping Insights",
-    description: "Discover professional tips on myofascial release, posture correction, stress management, and the science behind our mobile wellness treatments in Porto.",
-  },
   hero: {
     title: "Professional Massage. Delivered to You.",
     subtitle: "Gz'zone - a zone without boundaries",

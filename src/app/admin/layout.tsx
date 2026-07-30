@@ -26,7 +26,6 @@ import { toast } from "sonner";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Blog Posts", href: "/admin/blog", icon: BookOpen },
   { label: "Analytics & Conversions", href: "/admin/analytics", icon: MousePointerClick },
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },

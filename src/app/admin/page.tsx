@@ -5,7 +5,6 @@ export default async function AdminDashboardPage() {
   const supabase = createServiceClient();
 
   const tables = [
-    "blog_posts",
     "conversion_events",
     "treatments",
     "durations",
@@ -31,7 +30,6 @@ export default async function AdminDashboardPage() {
   }
 
   const labels: Record<string, string> = {
-    blog_posts: "Blog Posts",
     conversion_events: "Conversion Events",
     treatments: "Treatments",
     durations: "Durations",
