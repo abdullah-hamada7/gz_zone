@@ -35,7 +35,7 @@ export function AboutSection({
   const imageUrl = (content?.image_url as string) ?? null;
 
   return (
-    <section id="about" className="py-20">
+    <section id="about" className="py-20 scroll-mt-20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="mb-2 text-center text-sm font-semibold tracking-wider text-muted-foreground uppercase">{heading}</h2>
         <h3 className="mb-12 text-center text-3xl font-bold tracking-tight">{subheading}</h3>

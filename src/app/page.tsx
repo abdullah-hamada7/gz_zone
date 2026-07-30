@@ -60,7 +60,7 @@ export default async function HomePage() {
         />
         <TestimonialsSection testimonials={testimonials} />
 
-        <section id="treatments" className="py-20">
+        <section id="treatments" className="py-20 scroll-mt-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <h2 className="mb-2 text-center text-sm font-semibold tracking-wider text-muted-foreground uppercase">
               Our Services
@@ -85,7 +85,7 @@ export default async function HomePage() {
         <HowItWorks content={siteContent.how_it_works} />
         <AboutSection content={siteContent.about_section} certContent={siteContent.certifications_section} />
         <CertificationsSection certifications={certifications} content={siteContent.certifications_section} />
-        <section id="faq">
+        <section id="faq" className="scroll-mt-20">
           <FAQSection faqs={faqs} content={siteContent.faq_section} />
         </section>
       </main>

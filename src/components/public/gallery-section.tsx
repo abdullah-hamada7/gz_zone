@@ -22,7 +22,7 @@ export function GallerySection({
   }
 
   return (
-    <section id="gallery" className="w-full py-16 sm:py-24">
+    <section id="gallery" className="w-full py-16 sm:py-24 scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center mb-12">
           <div className="inline-flex items-center gap-1.5 rounded-full border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">

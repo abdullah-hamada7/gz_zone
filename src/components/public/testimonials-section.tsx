@@ -32,7 +32,7 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
   const t = testimonials[current];
 
   return (
-    <section id="testimonials" className="py-20">
+    <section id="testimonials" className="py-20 scroll-mt-20">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
           <p className="mb-2 text-sm font-semibold tracking-wider text-muted-foreground uppercase">

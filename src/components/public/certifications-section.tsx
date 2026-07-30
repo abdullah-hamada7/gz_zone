@@ -71,7 +71,7 @@ export function CertificationsSection({
   }
 
   return (
-    <section id="certifications" className="w-full bg-muted/20 py-16 sm:py-24 border-t border-b border-border/50">
+    <section id="certifications" className="w-full bg-muted/20 py-16 sm:py-24 border-t border-b border-border/50 scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center mb-12">
           <div className="inline-flex items-center gap-1.5 rounded-full border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">

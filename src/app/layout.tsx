@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Orbitron } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { HashScrollHandler } from "@/components/public/hash-scroll-handler";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -135,6 +136,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <HashScrollHandler />
         {children}
         <Toaster />
       </body>
