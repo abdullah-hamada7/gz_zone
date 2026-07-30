@@ -12,6 +12,7 @@ export function AnimatedCounter({
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    let animationFrameId: number;
     let startTimestamp: number | null = null;
     const startValue = 0;
     const endValue = Number(value) || 0;
@@ -28,13 +29,19 @@ export function AnimatedCounter({
       setCount(Math.floor(easeOutQuad * (endValue - startValue) + startValue));
 
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        animationFrameId = window.requestAnimationFrame(step);
       } else {
         setCount(endValue);
       }
     };
 
-    window.requestAnimationFrame(step);
+    animationFrameId = window.requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [value, duration]);
 
   return <span>{count}</span>;

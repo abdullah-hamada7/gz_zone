@@ -20,15 +20,19 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
   const [lat, setLat] = useState<number | null>(null);
   const [lng, setLng] = useState<number | null>(null);
 
+  const onChangeRef = useRef(onChange);
   useEffect(() => {
-    if (leafletLoaded.current) return;
-    leafletLoaded.current = true;
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  useEffect(() => {
+    let isSubscribed = true;
 
     const initMap = async () => {
       const L = await import("leaflet");
       await import("leaflet/dist/leaflet.css");
 
-      if (!mapRef.current || mapInstanceRef.current) return;
+      if (!mapRef.current || mapInstanceRef.current || !isSubscribed) return;
 
       const map = L.map(mapRef.current, {
         center: PORTO,
@@ -63,9 +67,9 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
           );
           const data = await res.json();
           const addr = data.display_name?.split(",").slice(0, 3).join(",") || `${y.toFixed(4)}, ${x.toFixed(4)}`;
-          onChange(addr);
+          onChangeRef.current(addr);
         } catch {
-          onChange(`${y.toFixed(4)}, ${x.toFixed(4)}`);
+          onChangeRef.current(`${y.toFixed(4)}, ${x.toFixed(4)}`);
         }
       });
 
@@ -73,7 +77,15 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
     };
 
     initMap();
-  }, [onChange]);
+
+    return () => {
+      isSubscribed = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div className="space-y-2">

@@ -41,12 +41,19 @@ export function HashScrollHandler() {
       const href = anchor.getAttribute("href");
       if (!href) return;
 
-      // Case A: Clicking Home Logo or "/" link while on the Homepage
-      if ((href === "/" || href === "/#") && pathname === "/") {
-        if (window.scrollY > 0 || window.location.hash) {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          window.history.pushState(null, "", "/");
+      // Case A: Clicking Home Logo or "/" link
+      if (href === "/" || href === "/#") {
+        if (pathname === "/") {
+          if (window.scrollY > 0 || window.location.hash) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.history.pushState(null, "", "/");
+          }
+        } else {
+          // Navigating to home from another page: ensure hash is cleared from history state
+          if (typeof window !== "undefined" && window.location.hash) {
+            window.history.replaceState(null, "", window.location.pathname);
+          }
         }
         return;
       }

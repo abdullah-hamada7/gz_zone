@@ -18,9 +18,10 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
   const prev = useCallback(() => setCurrent((c) => (c - 1 + len) % len), [len]);
 
   useEffect(() => {
+    if (len < 2) return;
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, len]);
 
   if (len === 0) return null;
 
