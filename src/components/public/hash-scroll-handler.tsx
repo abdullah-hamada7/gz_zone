@@ -25,7 +25,10 @@ export function HashScrollHandler() {
     // 1. Initial page load or route change with hash in URL
     if (typeof window !== "undefined" && window.location.hash) {
       const timer = setTimeout(() => {
-        scrollToHash(window.location.hash);
+        // Only scroll if location still has a hash
+        if (window.location.hash) {
+          scrollToHash(window.location.hash);
+        }
       }, 150);
       return () => clearTimeout(timer);
     }
@@ -44,14 +47,14 @@ export function HashScrollHandler() {
       // Case A: Clicking Home Logo or "/" link
       if (href === "/" || href === "/#") {
         if (pathname === "/") {
-          if (window.scrollY > 0 || window.location.hash) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          if (window.location.hash) {
             window.history.pushState(null, "", "/");
           }
         } else {
-          // Navigating to home from another page: ensure hash is cleared from history state
-          if (typeof window !== "undefined" && window.location.hash) {
+          // Clear hash state when navigating to home from another page
+          if (typeof window !== "undefined") {
             window.history.replaceState(null, "", window.location.pathname);
           }
         }
@@ -80,6 +83,9 @@ export function HashScrollHandler() {
           element.scrollIntoView({ behavior: "smooth" });
           window.history.pushState(null, "", href.startsWith("/") ? href : `${pathname}${href}`);
         }
+      } else if (!href.includes("#") && typeof window !== "undefined" && window.location.hash) {
+        // Clear hash state when navigating to any non-hash route (e.g., /treatments/slug)
+        window.history.replaceState(null, "", window.location.pathname);
       }
     };
 
