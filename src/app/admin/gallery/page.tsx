@@ -80,7 +80,12 @@ export default function AdminGalleryPage() {
 
   const handleSelectFileToCrop = (file: File) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
+    const isImg =
+      !file.type ||
+      file.type.startsWith("image/") ||
+      /\.(jpg|jpeg|png|webp|heic|heif|gif|bmp|tiff|avif)$/i.test(file.name);
+
+    if (!isImg) {
       toast.error("Please select a valid image file");
       return;
     }
@@ -291,7 +296,7 @@ export default function AdminGalleryPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif,image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];

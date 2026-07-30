@@ -295,9 +295,22 @@ export function ImageCropModal({
         return;
       }
 
+      let targetW = Math.round(sourceWidth);
+      let targetH = Math.round(sourceHeight);
+      const MAX_DIM = 2560;
+      if (targetW > MAX_DIM || targetH > MAX_DIM) {
+        if (targetW > targetH) {
+          targetH = Math.round((targetH * MAX_DIM) / targetW);
+          targetW = MAX_DIM;
+        } else {
+          targetW = Math.round((targetW * MAX_DIM) / targetH);
+          targetH = MAX_DIM;
+        }
+      }
+
       const canvas = document.createElement("canvas");
-      canvas.width = Math.round(sourceWidth);
-      canvas.height = Math.round(sourceHeight);
+      canvas.width = targetW;
+      canvas.height = targetH;
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {

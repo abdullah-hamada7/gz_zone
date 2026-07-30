@@ -21,13 +21,18 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
+    const isImg =
+      !file.type ||
+      file.type.startsWith("image/") ||
+      /\.(jpg|jpeg|png|webp|heic|heif|gif|bmp|tiff|avif)$/i.test(file.name);
+
+    if (!isImg) {
+      toast.error("Please select a valid image file");
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("Image must be under 10MB");
+    if (file.size > 35 * 1024 * 1024) {
+      toast.error("Image must be under 35MB");
       return;
     }
 
@@ -70,7 +75,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
             <input
               ref={inputRef}
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif,image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
               onChange={handleFile}
               disabled={uploading}
               className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary hover:file:bg-primary/20 cursor-pointer"
