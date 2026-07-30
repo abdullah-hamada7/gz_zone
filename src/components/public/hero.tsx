@@ -171,7 +171,7 @@ export function Hero({
 
                   <div className="mt-2 flex flex-col gap-2">
                     <Link
-                      href="/#treatments"
+                      href="/treatments"
                       onClick={() => setDialogOpen(false)}
                       className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full text-center min-h-[44px]")}
                     >
