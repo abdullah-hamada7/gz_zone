@@ -167,7 +167,7 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
     description: "Professional mobile massage services in Porto and surrounding areas.",
     quickLinksHeading: "Quick Links",
     quickLinks: [
-      { label: "Treatments & Prices", href: "/treatments" },
+      { label: "Treatments & Prices", href: "/#treatments" },
       { label: "About", href: "/#about" },
       { label: "FAQ", href: "/#faq" },
     ],

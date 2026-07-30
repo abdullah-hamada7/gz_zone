@@ -12,11 +12,14 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
   const instagramHandle = (content?.instagramHandle as string) ?? "@gz.zone";
   const instagramUrl = (content?.instagramUrl as string) ?? "https://www.instagram.com/gz.zone/";
   const copyright = (content?.copyright as string) ?? "GZ'ZONE. All rights reserved.";
-  const quickLinks = (content?.quickLinks as Array<{ label: string; href: string }> | undefined) ?? [
+  const rawQuickLinks = (content?.quickLinks as Array<{ label: string; href: string }> | undefined) ?? [
     { label: "Treatments & Prices", href: "/#treatments" },
     { label: "About", href: "/#about" },
     { label: "FAQ", href: "/#faq" },
   ];
+  const quickLinks = rawQuickLinks.map((link) =>
+    link.href === "/treatments" ? { ...link, href: "/#treatments" } : link
+  );
 
   return (
     <footer className="border-t bg-muted/30">
