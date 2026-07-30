@@ -120,12 +120,12 @@ export function CertificationsSection({
                   className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 shadow-xs hover:shadow-md hover:border-primary/50 transition-all cursor-pointer"
                 >
                   <div>
-                    <div className="relative mb-4 aspect-4/3 w-full overflow-hidden rounded-xl bg-muted border border-border/60">
+                    <div className="relative mb-4 h-[220px] w-full overflow-hidden rounded-xl bg-muted/40 border border-border/60 p-2.5 flex items-center justify-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={cert.public_url}
                         alt={cert.title}
-                        className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="max-h-full max-w-full object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = "/images/logo.jpg";
                         }}
@@ -211,12 +211,12 @@ export function CertificationsSection({
                 )}
               </DialogHeader>
 
-              <div className="relative my-4 w-full overflow-hidden rounded-xl border bg-muted p-2">
+              <div className="relative my-4 w-full overflow-hidden rounded-xl border bg-black/90 p-3 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={selectedCert.public_url}
                   alt={selectedCert.title}
-                  className="mx-auto max-h-[60vh] w-full object-contain rounded-lg shadow-xs"
+                  className="mx-auto max-h-[70vh] w-auto max-w-full object-contain rounded-md shadow-md"
                 />
               </div>
 
