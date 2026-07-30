@@ -13,7 +13,7 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
   const instagramUrl = (content?.instagramUrl as string) ?? "https://www.instagram.com/gz.zone/";
   const copyright = (content?.copyright as string) ?? "GZ'ZONE. All rights reserved.";
   const quickLinks = (content?.quickLinks as Array<{ label: string; href: string }> | undefined) ?? [
-    { label: "Treatments & Prices", href: "/treatments" },
+    { label: "Treatments & Prices", href: "/#treatments" },
     { label: "About", href: "/#about" },
     { label: "FAQ", href: "/#faq" },
   ];

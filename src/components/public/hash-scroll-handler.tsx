@@ -9,7 +9,10 @@ export function HashScrollHandler() {
   useEffect(() => {
     const scrollToHash = (hashStr: string) => {
       const id = hashStr.replace("#", "");
-      if (!id) return;
+      if (!id) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
       const el = document.getElementById(id);
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
@@ -26,7 +29,7 @@ export function HashScrollHandler() {
   }, [pathname]);
 
   useEffect(() => {
-    // 2. Click listener for all anchor tags targeting hashes on the current page
+    // 2. Click listener for all anchor tags targeting hashes or home on current page
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
@@ -35,6 +38,17 @@ export function HashScrollHandler() {
       const href = anchor.getAttribute("href");
       if (!href) return;
 
+      // Case A: Clicking Home Logo or "/" link while on the Homepage
+      if ((href === "/" || href === "/#") && pathname === "/") {
+        if (window.scrollY > 0 || window.location.hash) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.history.pushState(null, "", "/");
+        }
+        return;
+      }
+
+      // Case B: Clicking hash anchor link
       let targetHash = "";
       let isSamePage = false;
 
