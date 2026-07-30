@@ -9,10 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Crop, Sparkles, Check, RotateCcw, Sliders, Maximize2, Move } from "lucide-react";
+import { Crop, Check, Move } from "lucide-react";
 import { toast } from "sonner";
 
 export interface CropResultMetadata {
@@ -388,90 +385,19 @@ export function ImageCropModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-4xl max-h-[92vh] flex flex-col p-4 sm:p-6 bg-card text-card-foreground overflow-hidden shadow-2xl border">
-        <DialogHeader className="shrink-0 pb-2 border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Crop className="size-4" />
-              </div>
-              <div>
-                <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
-                <DialogDescription className="text-xs text-muted-foreground">
-                  Canva / Instagram-style visual crop editor. Drag corner &amp; side handles to adjust.
-                </DialogDescription>
-              </div>
+        <DialogHeader className="shrink-0 pb-3 border-b">
+          <div className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Crop className="size-4" />
             </div>
-            <div className="hidden sm:flex items-center gap-2 text-xs font-mono bg-muted px-2.5 py-1 rounded-md">
-              <Sparkles className="size-3.5 text-primary" />
-              <span>Ratio: {calculatedRatio}:1 ({selectedPreset === "freeform" ? "Freeform" : selectedPreset})</span>
+            <div>
+              <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
+                Drag corner &amp; side handles to adjust the crop area.
+              </DialogDescription>
             </div>
           </div>
         </DialogHeader>
-
-        {/* Toolbar & Ratio Options */}
-        <div className="shrink-0 py-3 grid gap-3 sm:grid-cols-3 border-b bg-muted/30 -mx-6 px-6">
-          <div className="space-y-1">
-            <Label className="text-xs font-semibold flex items-center gap-1.5">
-              <Sliders className="size-3.5 text-primary" /> Preset / Aspect Ratio
-            </Label>
-            <Select value={selectedPreset} onValueChange={(val) => val && setSelectedPreset(val)}>
-              <SelectTrigger className="h-8 text-xs bg-background">
-                <SelectValue placeholder="Select ratio" />
-              </SelectTrigger>
-              <SelectContent>
-                {CROP_PRESETS.map((p) => (
-                  <SelectItem key={p.id} value={p.id} className="text-xs">
-                    {p.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {selectedPreset === "custom" ? (
-            <div className="space-y-1">
-              <Label className="text-xs font-semibold">Custom Ratio Value (W/H)</Label>
-              <Input
-                type="number"
-                step="0.01"
-                min="0.1"
-                max="10"
-                value={customRatioInput}
-                onChange={(e) => setCustomRatioInput(e.target.value)}
-                placeholder="e.g. 1.65"
-                className="h-8 text-xs bg-background"
-              />
-            </div>
-          ) : (
-            <div className="space-y-1">
-              <Label className="text-xs font-semibold flex items-center gap-1.5">
-                <Maximize2 className="size-3.5 text-primary" /> Fit Mode (Hero Display)
-              </Label>
-              <Select value={fitMode} onValueChange={(val) => val && setFitMode(val)}>
-                <SelectTrigger className="h-8 text-xs bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cover" className="text-xs">Cover (Fill container seamlessly)</SelectItem>
-                  <SelectItem value="contain" className="text-xs">Contain (Preserve exact boundaries)</SelectItem>
-                  <SelectItem value="fill" className="text-xs">Stretch Fill</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-
-          <div className="flex items-end justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs"
-              onClick={() => displaySize.width > 0 && initCropBox(displaySize.width, displaySize.height)}
-            >
-              <RotateCcw className="mr-1.5 size-3.5" /> Reset Box
-            </Button>
-          </div>
-        </div>
 
         {/* Visual Interactive Workspace */}
         <div

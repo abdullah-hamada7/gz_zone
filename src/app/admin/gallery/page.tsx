@@ -649,7 +649,7 @@ export default function AdminGalleryPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Edit Image Details</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
-              Update title, alt text, aspect ratio preset, and fit mode.
+              Update the title and alt text for this gallery photo.
             </DialogDescription>
           </DialogHeader>
 
@@ -672,38 +672,6 @@ export default function AdminGalleryPage() {
                 onChange={(e) => setEditAltText(e.target.value)}
                 placeholder="e.g. Certified therapist placing cupping glass on client's back"
               />
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="space-y-1">
-                <Label className="text-xs font-semibold">Aspect Ratio Preset / Value</Label>
-                <Select value={editAspectRatio} onValueChange={(val) => setEditAspectRatio(val || "freeform")}>
-                  <SelectTrigger className="h-9 text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CROP_PRESETS.map((p) => (
-                      <SelectItem key={p.id} value={p.id} className="text-xs">
-                        {p.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-1">
-                <Label className="text-xs font-semibold">Fit Mode</Label>
-                <Select value={editFitMode} onValueChange={(val) => setEditFitMode(val || "cover")}>
-                  <SelectTrigger className="h-9 text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="cover" className="text-xs">Cover</SelectItem>
-                    <SelectItem value="contain" className="text-xs">Contain</SelectItem>
-                    <SelectItem value="fill" className="text-xs">Fill</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
