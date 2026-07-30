@@ -90,8 +90,26 @@ export function HashScrollHandler() {
     };
 
     document.addEventListener("click", handleAnchorClick, true);
+
+    const handlePopState = () => {
+      if (typeof window !== "undefined") {
+        if (window.location.hash) {
+          const id = window.location.hash.replace("#", "");
+          const element = document.getElementById(id) || (id === "booking" ? document.getElementById("treatments") : null);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        } else if (pathname === "/") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
     return () => {
       document.removeEventListener("click", handleAnchorClick, true);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, [pathname]);
 
