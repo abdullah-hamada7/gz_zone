@@ -67,6 +67,8 @@ export interface GalleryImage {
   public_url: string;
   alt_text: string | null;
   title: string | null;
+  aspect_ratio?: string | null;
+  fit_mode?: string | null;
   sort_order?: number;
   created_at?: string;
 }

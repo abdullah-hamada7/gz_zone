@@ -18,6 +18,7 @@ import {
   Check,
   ExternalLink,
   Sparkles,
+  Crop,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { GalleryImage } from "@/types";
@@ -29,6 +30,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { ImageCropModal, type CropResultMetadata, CROP_PRESETS } from "@/components/ui/image-crop-modal";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<GalleryImage[]>([]);
@@ -41,11 +44,17 @@ export default function AdminGalleryPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // Cropper state
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [cropImageTarget, setCropImageTarget] = useState<{ src: File | string; existingImageId?: string } | null>(null);
+
   // Modals state
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
   const [editingImage, setEditingImage] = useState<GalleryImage | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editAltText, setEditAltText] = useState("");
+  const [editAspectRatio, setEditAspectRatio] = useState("freeform");
+  const [editFitMode, setEditFitMode] = useState("cover");
   const [savingEdit, setSavingEdit] = useState(false);
 
   // Deletion modal state
@@ -69,12 +78,21 @@ export default function AdminGalleryPage() {
     fetchImages();
   }, []);
 
-  async function handleUpload(file: File) {
+  const handleSelectFileToCrop = (file: File) => {
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      return;
+    }
+    setCropImageTarget({ src: file });
+    setCropperOpen(true);
+  };
+
+  async function handleCropCompleted(croppedFile: File, metadata: CropResultMetadata) {
     setUploading(true);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", croppedFile);
 
       const uploadRes = await fetch("/api/admin/upload", {
         method: "POST",
@@ -89,31 +107,55 @@ export default function AdminGalleryPage() {
 
       const { url } = await uploadRes.json();
 
-      const createRes = await fetch("/api/admin/gallery", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          public_url: url,
-          alt_text: newAltText || null,
-          title: newTitle || null,
-          sort_order: images.length,
-        }),
-      });
+      if (cropImageTarget?.existingImageId) {
+        // Update existing image public_url & ratio
+        const updateRes = await fetch(`/api/admin/gallery/${cropImageTarget.existingImageId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            public_url: url,
+            aspect_ratio: metadata.aspectRatio,
+            fit_mode: metadata.fitMode,
+          }),
+        });
 
-      setNewAltText("");
-      setNewTitle("");
-
-      if (createRes.ok) {
-        toast.success("Image uploaded & saved to gallery!");
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        fetchImages();
+        if (updateRes.ok) {
+          toast.success("Gallery photo re-cropped & updated!");
+          fetchImages();
+        } else {
+          toast.error("Failed to update cropped photo");
+        }
       } else {
-        toast.error("Failed to save image record");
+        // Save new gallery image record
+        const createRes = await fetch("/api/admin/gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            public_url: url,
+            alt_text: newAltText || null,
+            title: newTitle || null,
+            aspect_ratio: metadata.aspectRatio,
+            fit_mode: metadata.fitMode,
+            sort_order: images.length,
+          }),
+        });
+
+        setNewAltText("");
+        setNewTitle("");
+
+        if (createRes.ok) {
+          toast.success("Cropped image uploaded & saved to gallery!");
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          fetchImages();
+        } else {
+          toast.error("Failed to save image record");
+        }
       }
     } catch {
-      toast.error("Image upload failed");
+      toast.error("Image processing & upload failed");
     } finally {
       setUploading(false);
+      setCropImageTarget(null);
     }
   }
 
@@ -132,7 +174,7 @@ export default function AdminGalleryPage() {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleUpload(e.dataTransfer.files[0]);
+      handleSelectFileToCrop(e.dataTransfer.files[0]);
     }
   };
 
@@ -167,6 +209,8 @@ export default function AdminGalleryPage() {
         body: JSON.stringify({
           title: editTitle.trim() || null,
           alt_text: editAltText.trim() || null,
+          aspect_ratio: editAspectRatio || null,
+          fit_mode: editFitMode || "cover",
         }),
       });
 
@@ -251,7 +295,7 @@ export default function AdminGalleryPage() {
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) handleUpload(file);
+            if (file) handleSelectFileToCrop(file);
           }}
         />
 
@@ -353,6 +397,18 @@ export default function AdminGalleryPage() {
                       size="icon"
                       variant="secondary"
                       className="size-8 rounded-full shadow-sm"
+                      title="Visual Crop & Format"
+                      onClick={() => {
+                        setCropImageTarget({ src: img.public_url, existingImageId: img.id });
+                        setCropperOpen(true);
+                      }}
+                    >
+                      <Crop className="size-4 text-primary" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="size-8 rounded-full shadow-sm"
                       title="Preview Fullscreen"
                       onClick={() => setLightboxImage(img)}
                     >
@@ -367,6 +423,8 @@ export default function AdminGalleryPage() {
                         setEditingImage(img);
                         setEditTitle(img.title || "");
                         setEditAltText(img.alt_text || "");
+                        setEditAspectRatio(img.aspect_ratio || "freeform");
+                        setEditFitMode(img.fit_mode || "cover");
                       }}
                     >
                       <Pencil className="size-4 text-foreground" />
@@ -384,9 +442,14 @@ export default function AdminGalleryPage() {
                 </div>
 
                 <div className="p-3 border-t bg-card space-y-1">
-                  <p className="text-xs font-semibold text-foreground truncate">
-                    {img.title || <span className="italic text-muted-foreground font-normal">Untitled Photo</span>}
-                  </p>
+                  <div className="flex items-center justify-between gap-1">
+                    <p className="text-xs font-semibold text-foreground truncate">
+                      {img.title || <span className="italic text-muted-foreground font-normal">Untitled Photo</span>}
+                    </p>
+                    <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary shrink-0">
+                      {img.aspect_ratio || "Freeform"}
+                    </span>
+                  </div>
                   {img.alt_text && (
                     <p className="text-[11px] text-muted-foreground truncate">{img.alt_text}</p>
                   )}
@@ -418,6 +481,7 @@ export default function AdminGalleryPage() {
                 <tr className="border-b bg-muted/50 text-xs">
                   <th className="px-4 py-3 text-left font-medium">Image Preview</th>
                   <th className="px-4 py-3 text-left font-medium">Title</th>
+                  <th className="px-4 py-3 text-left font-medium">Aspect &amp; Fit</th>
                   <th className="px-4 py-3 text-left font-medium">Alt Text (SEO)</th>
                   <th className="px-4 py-3 text-left font-medium">Public Link</th>
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
@@ -442,6 +506,11 @@ export default function AdminGalleryPage() {
                     <td className="px-4 py-2 font-medium text-foreground">
                       {img.title || <span className="text-muted-foreground italic font-normal">Untitled</span>}
                     </td>
+                    <td className="px-4 py-2 text-xs">
+                      <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] font-mono text-foreground font-semibold">
+                        {img.aspect_ratio || "Freeform"} ({img.fit_mode || "cover"})
+                      </span>
+                    </td>
                     <td className="px-4 py-2 text-xs text-muted-foreground max-w-xs truncate">
                       {img.alt_text || "—"}
                     </td>
@@ -455,10 +524,23 @@ export default function AdminGalleryPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          title="Crop Image"
+                          onClick={() => {
+                            setCropImageTarget({ src: img.public_url, existingImageId: img.id });
+                            setCropperOpen(true);
+                          }}
+                        >
+                          <Crop className="size-4 text-primary" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => {
                             setEditingImage(img);
                             setEditTitle(img.title || "");
                             setEditAltText(img.alt_text || "");
+                            setEditAspectRatio(img.aspect_ratio || "freeform");
+                            setEditFitMode(img.fit_mode || "cover");
                           }}
                         >
                           <Pencil className="size-4" />
@@ -529,6 +611,18 @@ export default function AdminGalleryPage() {
                   <Button
                     variant="outline"
                     size="sm"
+                    onClick={() => {
+                      setCropImageTarget({ src: lightboxImage.public_url, existingImageId: lightboxImage.id });
+                      setCropperOpen(true);
+                      setLightboxImage(null);
+                    }}
+                  >
+                    <Crop className="mr-2 size-3.5 text-primary" /> Crop Photo
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => copyToClipboard(lightboxImage.public_url, lightboxImage.id)}
                   >
                     <Copy className="mr-2 size-3.5" /> Copy Image URL
@@ -555,7 +649,7 @@ export default function AdminGalleryPage() {
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">Edit Image Details</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
-              Update the title and alt text for this gallery photo.
+              Update title, alt text, aspect ratio preset, and fit mode.
             </DialogDescription>
           </DialogHeader>
 
@@ -571,13 +665,45 @@ export default function AdminGalleryPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="edit_alt" className="text-xs font-semibold">Alt Text (Accessibility & SEO)</Label>
+              <Label htmlFor="edit_alt" className="text-xs font-semibold">Alt Text (Accessibility &amp; SEO)</Label>
               <Input
                 id="edit_alt"
                 value={editAltText}
                 onChange={(e) => setEditAltText(e.target.value)}
                 placeholder="e.g. Certified therapist placing cupping glass on client's back"
               />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold">Aspect Ratio Preset / Value</Label>
+                <Select value={editAspectRatio} onValueChange={(val) => setEditAspectRatio(val || "freeform")}>
+                  <SelectTrigger className="h-9 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CROP_PRESETS.map((p) => (
+                      <SelectItem key={p.id} value={p.id} className="text-xs">
+                        {p.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold">Fit Mode</Label>
+                <Select value={editFitMode} onValueChange={(val) => setEditFitMode(val || "cover")}>
+                  <SelectTrigger className="h-9 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cover" className="text-xs">Cover</SelectItem>
+                    <SelectItem value="contain" className="text-xs">Contain</SelectItem>
+                    <SelectItem value="fill" className="text-xs">Fill</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
@@ -601,6 +727,14 @@ export default function AdminGalleryPage() {
         confirmText="Delete Image"
         loading={deleting}
         onConfirm={confirmDelete}
+      />
+
+      {/* Interactive Freeform Crop Modal */}
+      <ImageCropModal
+        open={cropperOpen}
+        onOpenChange={setCropperOpen}
+        imageSrc={cropImageTarget?.src || null}
+        onCropComplete={handleCropCompleted}
       />
     </div>
   );

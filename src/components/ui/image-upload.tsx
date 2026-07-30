@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, X, Loader2 } from "lucide-react";
+import { Upload, X, Loader2, Crop } from "lucide-react";
 import { toast } from "sonner";
+import { ImageCropModal, type CropResultMetadata } from "@/components/ui/image-crop-modal";
+import { Button } from "@/components/ui/button";
 
 interface ImageUploadProps {
   value: string | null;
-  onChange: (url: string | null) => void;
+  onChange: (url: string | null, metadata?: CropResultMetadata) => void;
 }
 
 export function ImageUpload({ value, onChange }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
+  const [fileToCrop, setFileToCrop] = useState<File | string | null>(null);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -22,14 +26,21 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image must be under 5MB");
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image must be under 10MB");
       return;
     }
 
+    // Open cropper with selected file
+    setFileToCrop(file);
+    setCropModalOpen(true);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
+  async function uploadCroppedFile(croppedFile: File, metadata: CropResultMetadata) {
     setUploading(true);
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", croppedFile);
 
     try {
       const res = await fetch("/api/admin/upload", {
@@ -42,13 +53,12 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
         return;
       }
       const data = await res.json();
-      onChange(data.url);
-      toast.success("Image uploaded");
+      onChange(data.url, metadata);
+      toast.success("Cropped image uploaded successfully!");
     } catch {
       toast.error("Upload failed");
     } finally {
       setUploading(false);
-      if (inputRef.current) inputRef.current.value = "";
     }
   }
 
@@ -63,11 +73,11 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               accept="image/*"
               onChange={handleFile}
               disabled={uploading}
-              className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary hover:file:bg-primary/20"
+              className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary hover:file:bg-primary/20 cursor-pointer"
             />
             {uploading && <Loader2 className="size-4 animate-spin text-muted-foreground shrink-0" />}
           </div>
-          <p className="text-xs text-muted-foreground">Upload a photo or paste a URL below</p>
+          <p className="text-xs text-muted-foreground">Select an image to crop with freeform handles or paste a URL below</p>
           <div className="flex gap-2">
             <input
               type="url"
@@ -77,19 +87,35 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             />
             {value && (
-              <button
-                type="button"
-                onClick={() => onChange(null)}
-                className="flex size-9 shrink-0 items-center justify-center rounded-md border border-input hover:bg-muted cursor-pointer"
-                title="Remove photo"
-              >
-                <X className="size-4" />
-              </button>
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="size-9 shrink-0"
+                  title="Crop Current Image"
+                  onClick={() => {
+                    setFileToCrop(value);
+                    setCropModalOpen(true);
+                  }}
+                >
+                  <Crop className="size-4 text-primary" />
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => onChange(null)}
+                  className="flex size-9 shrink-0 items-center justify-center rounded-md border border-input hover:bg-muted cursor-pointer"
+                  title="Remove photo"
+                >
+                  <X className="size-4" />
+                </button>
+              </>
             )}
           </div>
         </div>
         {value && (
-          <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg border bg-muted/30 p-1 flex items-center justify-center">
+          <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg border bg-muted/30 p-1 flex items-center justify-center group">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={value}
               alt="Preview"
@@ -98,10 +124,23 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
               }}
             />
+            <button
+              type="button"
+              onClick={() => {
+                setFileToCrop(value);
+                setCropModalOpen(true);
+              }}
+              className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1 text-xs font-semibold"
+            >
+              <Crop className="size-3.5" /> Crop
+            </button>
           </div>
         )}
         {!value && !uploading && (
-          <div className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed text-muted-foreground bg-muted/10">
+          <div
+            onClick={() => inputRef.current?.click()}
+            className="flex h-20 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed text-muted-foreground bg-muted/10 hover:border-primary cursor-pointer transition-colors"
+          >
             <Upload className="size-6" />
           </div>
         )}
@@ -111,6 +150,14 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           </div>
         )}
       </div>
+
+      <ImageCropModal
+        open={cropModalOpen}
+        onOpenChange={setCropModalOpen}
+        imageSrc={fileToCrop}
+        onCropComplete={uploadCroppedFile}
+      />
     </div>
   );
 }
+

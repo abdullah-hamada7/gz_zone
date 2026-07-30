@@ -41,12 +41,15 @@ export function Hero({
     ? galleryImages.map((img) => ({
         src: img.public_url,
         alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
+        aspectRatioStr: img.aspect_ratio || "freeform",
+        fitMode: img.fit_mode || "cover",
       }))
     : [];
 
   const [index, setIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const [autoAspectRatios, setAutoAspectRatios] = useState<Record<string, number>>({});
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -63,6 +66,26 @@ export function Hero({
     const timer = setInterval(() => setIndex((i) => (i + 1) % images.length), 4500);
     return () => clearInterval(timer);
   }, [images.length]);
+
+  // Helper to resolve numerical ratio for image
+  const getNumericRatio = (img?: typeof images[0]): number => {
+    if (!img) return 1;
+    const str = img.aspectRatioStr;
+    if (str === "1:1") return 1;
+    if (str === "4:3") return 4 / 3;
+    if (str === "16:9") return 16 / 9;
+    if (str === "4:5") return 4 / 5;
+    if (str === "3:2") return 3 / 2;
+    if (str === "9:16") return 9 / 16;
+    const parsed = parseFloat(str);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+    // Fallback to loaded natural ratio if freeform or auto
+    return autoAspectRatios[img.src] || 1;
+  };
+
+  const currentImg = images[index];
+  const activeRatio = getNumericRatio(currentImg);
+  const activeFitMode = currentImg?.fitMode || "cover";
 
   return (
     <section className="relative overflow-hidden w-full">
@@ -155,13 +178,25 @@ export function Hero({
           </div>
 
           {images.length > 0 && (
-            <div className="relative w-full max-w-md mx-auto lg:max-w-none">
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/20">
+            <div className="relative w-full max-w-md mx-auto lg:max-w-none transition-all duration-300">
+              <div
+                style={{ aspectRatio: activeRatio }}
+                className="relative w-full overflow-hidden rounded-2xl bg-muted/20 shadow-md transition-all duration-500 max-h-[500px]"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={images[index]?.src}
                   src={images[index]?.src}
                   alt={images[index]?.alt || ""}
-                  className="absolute inset-0 size-full object-cover"
+                  style={{ objectFit: activeFitMode as React.CSSProperties["objectFit"] }}
+                  className="absolute inset-0 size-full transition-opacity duration-300"
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                      const natRatio = img.naturalWidth / img.naturalHeight;
+                      setAutoAspectRatios((prev) => ({ ...prev, [img.src]: natRatio }));
+                    }
+                  }}
                   onError={() => {
                     if (images.length > 1) {
                       setIndex((i) => (i + 1) % images.length);
