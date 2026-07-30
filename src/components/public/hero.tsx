@@ -198,7 +198,7 @@ export function Hero({
             <div className="relative w-full max-w-md mx-auto lg:max-w-none transition-all duration-300">
               <div
                 style={{ aspectRatio: activeRatio }}
-                className="relative w-full overflow-hidden rounded-2xl bg-muted/30 shadow-md transition-all duration-500 max-h-[520px] flex items-center justify-center border"
+                className="relative w-full max-h-[520px] flex items-center justify-center transition-all duration-500"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
