@@ -7,12 +7,12 @@ interface PlatformRating {
   profile_url: string | null;
 }
 
-function PlatformLogo({ name }: { name: string }) {
+function PlatformLogo({ name, className = "size-7 shrink-0" }: { name: string; className?: string }) {
   const normalized = name.toLowerCase();
 
   if (normalized.includes("google")) {
     return (
-      <svg viewBox="0 0 24 24" className="size-6 shrink-0" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
@@ -23,18 +23,20 @@ function PlatformLogo({ name }: { name: string }) {
 
   if (normalized.includes("tripadvisor")) {
     return (
-      <svg viewBox="0 0 24 24" className="size-6 shrink-0 fill-[#00AF87]" aria-hidden="true">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-5.5 13.5a2.5 2.5 0 1 1 2.5-2.5 2.503 2.503 0 0 1-2.5 2.5zm5.5-2a1.5 1.5 0 1 1 1.5-1.5 1.502 1.502 0 0 1-1.5 1.5zm5.5 2a2.5 2.5 0 1 1 2.5-2.5 2.503 2.503 0 0 1-2.5 2.5z"/>
-        <circle cx="6.5" cy="13" r="1" fill="#ffffff" />
-        <circle cx="17.5" cy="13" r="1" fill="#ffffff" />
+      <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
+        <circle cx="16" cy="16" r="16" fill="#34E0A1" />
+        <path fill="#000000" d="M16 8.5a7.5 7.5 0 0 0-7.5 7.5c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5A7.5 7.5 0 0 0 16 8.5zm-4.2 9.4a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zm8.4 0a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4z"/>
+        <circle cx="11.8" cy="16.3" r="1" fill="#FFFFFF"/>
+        <circle cx="20.2" cy="16.3" r="1" fill="#FFFFFF"/>
       </svg>
     );
   }
 
   if (normalized.includes("whatclinic")) {
     return (
-      <svg viewBox="0 0 24 24" className="size-6 shrink-0 fill-[#00A99D]" aria-hidden="true">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-3H8v-2h3V8h2v3h3v2h-3v3z"/>
+      <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#00A99D" />
+        <path fill="#FFFFFF" d="M18 10h-4v4h-4v4h4v4h4v-4h4v-4h-4v-4z"/>
       </svg>
     );
   }
@@ -60,9 +62,9 @@ export function ReputationSection({
         <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
           {ratings.map((r) => (
             <div key={r.platform} className="flex flex-col items-center text-center">
-              <div className="flex items-center justify-center gap-2">
-                <PlatformLogo name={r.platform} />
-                <p className="text-2xl font-bold text-foreground">{r.platform}</p>
+              <div className="inline-flex items-center justify-center gap-2.5">
+                <PlatformLogo name={r.platform} className="size-7 shrink-0" />
+                <span className="text-2xl font-bold text-foreground">{r.platform}</span>
               </div>
               <div className="mt-2 flex items-center justify-center gap-1">
                 <div className="flex items-center gap-0.5" aria-hidden="true">
@@ -81,7 +83,7 @@ export function ReputationSection({
                   aria-label={`Read reviews on ${r.platform}`}
                   className="mt-3 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-primary underline-offset-2 hover:bg-muted/80 hover:underline border border-primary/20 shadow-xs transition-colors"
                 >
-                  <PlatformLogo name={r.platform} />
+                  <PlatformLogo name={r.platform} className="size-5 shrink-0" />
                   <span>{reviewLabel} {r.platform} →</span>
                 </a>
               )}
