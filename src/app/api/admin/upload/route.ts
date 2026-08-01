@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       .from("gallery")
       .upload(fileName, buffer, {
         contentType: mimeType,
-        cacheControl: "3600",
+        cacheControl: "31536000, public, immutable",
         upsert: true,
       });
 

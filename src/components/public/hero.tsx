@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 import type { GalleryImage } from "@/types";
 
@@ -40,7 +41,7 @@ export function Hero({
 }) {
   const images = (galleryImages && galleryImages.length > 0)
     ? galleryImages.map((img) => ({
-        src: img.public_url,
+        src: getOptimizedImageUrl(img.public_url),
         alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
         aspectRatioStr: img.aspect_ratio || "freeform",
         fitMode: img.fit_mode || "cover",

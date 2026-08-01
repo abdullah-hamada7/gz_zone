@@ -21,6 +21,7 @@ import {
   Crop,
 } from "lucide-react";
 import { toast } from "sonner";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 import type { GalleryImage } from "@/types";
 import {
   Dialog,
@@ -417,7 +418,7 @@ export default function AdminGalleryPage() {
                 <div className="relative aspect-4/3 w-full overflow-hidden bg-muted">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={img.public_url}
+                    src={getOptimizedImageUrl(img.public_url)}
                     alt={img.alt_text || img.title || "Gallery photo"}
                     className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -527,7 +528,7 @@ export default function AdminGalleryPage() {
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={img.public_url}
+                          src={getOptimizedImageUrl(img.public_url)}
                           alt={img.alt_text || ""}
                           className="size-full object-cover"
                         />
@@ -622,7 +623,7 @@ export default function AdminGalleryPage() {
               <div className="relative my-2 w-full overflow-hidden rounded-xl border bg-black/90 p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={lightboxImage.public_url}
+                  src={getOptimizedImageUrl(lightboxImage.public_url)}
                   alt={lightboxImage.alt_text || ""}
                   className="mx-auto max-h-[65vh] w-full object-contain rounded-lg shadow-md"
                 />

@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 import type { GalleryImage } from "@/types";
 
 export function GallerySection({
@@ -46,7 +47,7 @@ export function GallerySection({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={img.public_url}
+                src={getOptimizedImageUrl(img.public_url)}
                 alt={img.title || "Gz'zone Treatment Session Photo"}
                 className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
@@ -80,7 +81,7 @@ export function GallerySection({
               <div className="relative w-full overflow-hidden rounded-xl bg-black flex items-center justify-center min-h-[300px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={selectedImg.public_url}
+                  src={getOptimizedImageUrl(selectedImg.public_url)}
                   alt={selectedImg.title || "Gz'zone Gallery Image"}
                   className="max-h-[75vh] w-auto max-w-full object-contain"
                 />

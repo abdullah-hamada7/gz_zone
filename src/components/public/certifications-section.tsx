@@ -10,6 +10,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 import type { Certification } from "@/types";
 
 export function CertificationsSection({
@@ -123,7 +124,7 @@ export function CertificationsSection({
                     <div className="relative mb-4 aspect-4/3 w-full overflow-hidden rounded-xl bg-muted border border-border/60">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={cert.public_url}
+                        src={getOptimizedImageUrl(cert.public_url)}
                         alt={cert.title}
                         className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
@@ -214,7 +215,7 @@ export function CertificationsSection({
               <div className="relative my-4 w-full overflow-hidden rounded-xl border bg-muted p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={selectedCert.public_url}
+                  src={getOptimizedImageUrl(selectedCert.public_url)}
                   alt={selectedCert.title}
                   className="mx-auto max-h-[60vh] w-full object-contain rounded-lg shadow-xs"
                 />
