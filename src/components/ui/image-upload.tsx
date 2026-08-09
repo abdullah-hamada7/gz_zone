@@ -7,6 +7,7 @@ import { ImageCropModal, type CropResultMetadata } from "@/components/ui/image-c
 import { Button } from "@/components/ui/button";
 
 import { convertHeicToJpegIfNeeded, parseUploadResponse } from "@/lib/upload-utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 interface ImageUploadProps {
   value: string | null;
@@ -141,7 +142,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
           <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg border bg-muted/30 p-1 flex items-center justify-center group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={value}
+              src={getOptimizedImageUrl(value)}
               alt="Preview"
               className="h-full w-full object-contain"
               onError={(e) => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Shield, Heart, Award, Lock } from "lucide-react";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 const defaultTrustPoints = [
   { icon: Shield, title: "Professional Approach", description: "Every treatment is delivered with the highest standards of professionalism and care." },
@@ -43,7 +44,7 @@ export function AboutSection({
         {imageUrl && (
           <div className="mx-auto mb-8 size-28 overflow-hidden rounded-full border-4 border-muted shadow-sm">
             <img
-              src={imageUrl}
+              src={getOptimizedImageUrl(imageUrl)}
               alt={imageAlt}
               className="size-full object-cover"
               onError={(e) => {

@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import type { Certification } from "@/types";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 export default function AdminCertificationsPage() {
   const [certs, setCerts] = useState<Certification[]>([]);
@@ -316,7 +317,7 @@ export default function AdminCertificationsPage() {
                   <div className="relative mb-3 aspect-4/3 w-full overflow-hidden rounded-lg bg-muted border">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={c.public_url}
+                      src={getOptimizedImageUrl(c.public_url)}
                       alt={c.title}
                       className="size-full object-cover transition-transform group-hover:scale-105"
                       onError={(e) => {
@@ -426,7 +427,7 @@ export default function AdminCertificationsPage() {
               {editImageUrl && (
                 <div className="relative aspect-4/3 w-32 overflow-hidden rounded-lg border bg-muted mb-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={editImageUrl} alt="Certificate preview" className="size-full object-cover" />
+                  <img src={getOptimizedImageUrl(editImageUrl)} alt="Certificate preview" className="size-full object-cover" />
                 </div>
               )}
               <input

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import type { Testimonial } from "@/types";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 function getInitials(name: string) {
   return name
@@ -52,7 +53,7 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
             {t.customer_photo_url && !imgError[t.id] ? (
               <div className="-mt-16 mb-4 flex justify-center">
                 <img
-                  src={t.customer_photo_url}
+                  src={getOptimizedImageUrl(t.customer_photo_url)}
                   alt={t.customer_name}
                   className="size-16 rounded-full border-4 border-background object-cover"
                   onError={() => setImgError((prev) => ({ ...prev, [t.id]: true }))}
