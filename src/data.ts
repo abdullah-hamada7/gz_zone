@@ -500,10 +500,10 @@ export const FAQS: FAQ[] = [
 ];
 
 export const PLATFORM_RATINGS: PlatformRating[] = [
-  { platform: "Google", rating: 5.0, review_count: 41, profile_url: "https://g.page/r/CeTmnPuZR9q3EBM/review" },
-  { platform: "Tripadvisor", rating: 5.0, review_count: 50, profile_url: "https://www.tripadvisor.com/UserReviewEdit-g189180-d34355172-Gz_zone_Massage_Cupping_Therpay_Porto-Porto_Porto_District_Northern_Portugal.html" },
-  { platform: "Wanderlog", rating: 5.0, review_count: 129, profile_url: "https://wanderlog.com/place/details/12672638/gzzone-massage--cupping-therapy-istanbul" },
-  { platform: "WhatClinic", rating: 5.0, review_count: 15, profile_url: "https://www.whatclinic.com/consumer/reviewslead.aspx?clinicid=302529" },
+  { platform: "Google", rating: 5.0, review_count: 50, profile_url: "https://g.page/r/CeTmnPuZR9q3EBM/review" },
+  { platform: "Airbnb", rating: 5.0, review_count: 25, profile_url: "https://www.airbnb.com/services/7229352?s=67&unique_share_id=f587f0d4-2a22-4b34-b1ab-a58ceff40f4d" },
+  { platform: "Tripadvisor", rating: 5.0, review_count: 33, profile_url: "https://www.tripadvisor.com/UserReviewEdit-g189180-d34355172-Gz_zone_Massage_Cupping_Therpay_Porto-Porto_Porto_District_Northern_Portugal.html" },
+  { platform: "WhatClinic", rating: 5.0, review_count: 19, profile_url: "https://www.whatclinic.com/consumer/reviewslead.aspx?clinicid=302529" },
 ];
 
 
