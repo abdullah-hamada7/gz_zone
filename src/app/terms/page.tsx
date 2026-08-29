@@ -38,6 +38,8 @@ export default async function TermsPage() {
               <p>It is your responsibility to inform the therapist of any medical conditions, injuries, or allergies prior to treatment.</p>
               <h2>Liability</h2>
               <p>The therapist reserves the right to refuse or modify treatment if there are health concerns that make massage inadvisable.</p>
+              <h2>Payment Terms</h2>
+              <p>Payment is completed on-site following your treatment session. We accept Cash (EUR), Wise Transfer (@omarmohammede6), Bank Transfer (SEPA/IBAN), and MB Way. Transportation is complimentary within 10 km of Porto city center. No upfront deposit is required for standard bookings.</p>
               <h2>Contact</h2>
               <p>For questions about these terms, contact us via WhatsApp at{" "}
                 <a href="https://wa.me/351913675810" className="text-primary underline">
