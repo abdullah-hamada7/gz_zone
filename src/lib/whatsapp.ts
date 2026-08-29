@@ -48,7 +48,7 @@ export function buildWhatsAppUrl(params: WhatsAppParams): string {
 export function buildGenericWhatsAppUrl(phone: string): string {
   const cleanPhone = phone.replace(/[^0-9]/g, "");
   const message = encodeURIComponent(
-    "Hello! I would like to know more about your mobile massage services."
+    "Hello! I would like to book / inquire about a mobile massage session in Porto."
   );
   return `https://wa.me/${cleanPhone}?text=${message}`;
 }

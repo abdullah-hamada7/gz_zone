@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
 
 import { buttonVariants, Button } from "@/components/ui/button";
+import { WhatsAppButton } from "@/components/public/cta-button";
 import {
   Dialog,
   DialogContent,
@@ -126,16 +127,24 @@ export function Hero({
                 "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you."}
             </p>
 
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-col lg:items-start">
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 lg:items-start w-full sm:w-auto">
+              <WhatsAppButton
+                size="lg"
+                source="hero_main_cta"
+                className="w-full sm:w-auto px-8 py-6 text-base shadow-md min-h-[48px]"
+              >
+                Book via WhatsApp
+              </WhatsAppButton>
+
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger
                   render={
                     <Button
+                      variant="outline"
                       size="lg"
-                      className="w-full sm:w-auto bg-[#157347] hover:bg-[#13633B] text-white font-semibold px-8 py-6 text-base shadow-md gap-2 cursor-pointer min-h-[48px]"
+                      className="w-full sm:w-auto px-8 py-6 text-base min-h-[48px] cursor-pointer"
                     >
-                      <MessageCircle className="size-5 shrink-0" />
-                      <span>Book via WhatsApp</span>
+                      <span>Choose Treatment & Prices</span>
                     </Button>
                   }
                 />
@@ -145,10 +154,10 @@ export function Hero({
                       <MessageCircle className="size-6" />
                     </div>
                     <DialogTitle className="text-center text-xl font-bold">
-                      Please Select Your Treatment First
+                      Select Your Treatment
                     </DialogTitle>
                     <DialogDescription className="text-center text-sm">
-                      Choose your required treatment below to view duration, pricing, and book your personalized session directly via WhatsApp.
+                      Choose a treatment below to view pricing, details, and book your session directly via WhatsApp.
                     </DialogDescription>
                   </DialogHeader>
 
@@ -181,13 +190,6 @@ export function Hero({
                   </div>
                 </DialogContent>
               </Dialog>
-
-              <Link
-                href="/#treatments"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto px-8 py-6 text-base min-h-[48px]")}
-              >
-                Explore Treatments
-              </Link>
             </div>
 
             <p className="mt-6 flex items-center justify-center gap-1.5 text-sm text-muted-foreground lg:justify-start">

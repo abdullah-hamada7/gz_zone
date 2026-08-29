@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { MessageCircle, Globe } from "lucide-react";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
 
 export function Footer({ content }: { content?: Record<string, unknown> }) {
+  const { trackAndOpen } = useWhatsApp();
   const description = (content?.description as string) ?? "Professional mobile massage services in Porto and surrounding areas.";
   const quickLinksHeading = (content?.quickLinksHeading as string) ?? "Quick Links";
   const contactHeading = (content?.contactHeading as string) ?? "Contact";
@@ -68,16 +72,15 @@ export function Footer({ content }: { content?: Record<string, unknown> }) {
             <h3 className="mb-2 text-sm font-semibold text-foreground tracking-tight">{contactHeading}</h3>
             <ul className="space-y-1.5 text-sm text-muted-foreground">
               <li>
-                <a
-                  href={phoneHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => trackAndOpen(phoneHref, { source_component: "footer_phone_link" })}
                   aria-label={`Contact GZ ZONE via WhatsApp at ${phone}`}
-                  className="inline-flex items-center gap-2 hover:text-foreground transition-colors py-0.5"
+                  className="inline-flex items-center gap-2 hover:text-foreground transition-colors py-0.5 text-left cursor-pointer"
                 >
                   <MessageCircle className="size-4 shrink-0 text-primary" />
                   <span>{phone}</span>
-                </a>
+                </button>
               </li>
               <li className="flex items-center gap-2 py-0.5">
                 <Globe className="size-4 shrink-0 text-primary" />
