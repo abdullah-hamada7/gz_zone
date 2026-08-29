@@ -43,9 +43,9 @@ export function useWhatsApp() {
         if (typeof window !== "undefined") {
           const win = window as any;
           if (win.gtag) {
-            // Google Ads Conversion Event
+            // Google Ads Conversion Event (WhatsApp Booking Lead)
             win.gtag("event", "conversion", {
-              send_to: "AW-18331543340",
+              send_to: "AW-18331543340/F1pnCOTo7ekcEKzOlKVE",
               event_category: "Booking",
               event_label: meta?.treatment || "WhatsApp Inquiry",
               value: 50.0,
