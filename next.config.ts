@@ -60,7 +60,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/deep-tissue-massage",
+        destination: "/treatments/deep-tissue-massage",
+        permanent: true,
+      },
+      {
         source: "/sports-massage",
+        destination: "/treatments/sports-massage",
+        permanent: true,
+      },
+      {
+        source: "/treatments/sports",
         destination: "/treatments/sports-massage",
         permanent: true,
       },
@@ -75,13 +85,68 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/treatments/facial",
+        destination: "/treatments/facial-massage",
+        permanent: true,
+      },
+      {
         source: "/anti-cellulite-cupping",
+        destination: "/treatments/anti-cellulite-cupping",
+        permanent: true,
+      },
+      {
+        source: "/treatments/anti-cellulite",
         destination: "/treatments/anti-cellulite-cupping",
         permanent: true,
       },
       {
         source: "/stretching-class",
         destination: "/treatments/stretching-class",
+        permanent: true,
+      },
+      {
+        source: "/treatments/stretching",
+        destination: "/treatments/stretching-class",
+        permanent: true,
+      },
+      {
+        source: "/treatments/back-neck",
+        destination: "/treatments/back-neck-shoulders-head-massage",
+        permanent: true,
+      },
+      {
+        source: "/treatments/back-massage",
+        destination: "/treatments/back-neck-shoulders-head-massage",
+        permanent: true,
+      },
+      {
+        source: "/prices",
+        destination: "/treatments",
+        permanent: true,
+      },
+      {
+        source: "/pricing",
+        destination: "/treatments",
+        permanent: true,
+      },
+      {
+        source: "/services",
+        destination: "/treatments",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/#contact",
+        permanent: true,
+      },
+      {
+        source: "/book",
+        destination: "/#booking",
+        permanent: true,
+      },
+      {
+        source: "/about",
+        destination: "/#about",
         permanent: true,
       },
     ];
