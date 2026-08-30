@@ -17,6 +17,75 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/treatments/cupping-therapy",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/cupping-therapy",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/cupping",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/treatments/cupping",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/hijama",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hijama",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/treatments/deep-tissue",
+        destination: "/treatments/deep-tissue-massage",
+        permanent: true,
+      },
+      {
+        source: "/deep-tissue",
+        destination: "/treatments/deep-tissue-massage",
+        permanent: true,
+      },
+      {
+        source: "/sports-massage",
+        destination: "/treatments/sports-massage",
+        permanent: true,
+      },
+      {
+        source: "/dry-cupping",
+        destination: "/treatments/dry-cupping",
+        permanent: true,
+      },
+      {
+        source: "/facial-massage",
+        destination: "/treatments/facial-massage",
+        permanent: true,
+      },
+      {
+        source: "/anti-cellulite-cupping",
+        destination: "/treatments/anti-cellulite-cupping",
+        permanent: true,
+      },
+      {
+        source: "/stretching-class",
+        destination: "/treatments/stretching-class",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
