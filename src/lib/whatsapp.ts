@@ -11,6 +11,10 @@ interface WhatsAppParams {
 export function buildWhatsAppUrl(params: WhatsAppParams): string {
   const { phone, treatment, duration, date, time, location, notes } = params;
 
+  if (!treatment && !duration && !date && !time && !location && !notes) {
+    return buildGenericWhatsAppUrl(phone);
+  }
+
   const lines = ["Hello! I would like to book a treatment session.", ""];
 
   if (treatment) {
@@ -48,7 +52,7 @@ export function buildWhatsAppUrl(params: WhatsAppParams): string {
 export function buildGenericWhatsAppUrl(phone: string): string {
   const cleanPhone = phone.replace(/[^0-9]/g, "");
   const message = encodeURIComponent(
-    "Hello! I would like to book / inquire about a mobile massage session in Porto."
+    "Hello! I would like to book a treatment session.\nCould you give me more details about treatments and prices?"
   );
   return `https://wa.me/${cleanPhone}?text=${message}`;
 }

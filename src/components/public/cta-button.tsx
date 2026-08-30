@@ -18,13 +18,16 @@ export function WhatsAppButton({
   className,
   children,
   source = "general_cta_button",
-  treatment = "General inquiry",
+  treatment,
 }: CTAButtonProps) {
   const { getUrl, trackAndOpen } = useWhatsApp();
 
   const handleClick = () => {
-    const url = getUrl({ treatment });
-    trackAndOpen(url, { treatment, source_component: source });
+    const url = treatment ? getUrl({ treatment }) : getUrl();
+    trackAndOpen(url, {
+      treatment: treatment || "General inquiry",
+      source_component: source,
+    });
   };
 
   return (
