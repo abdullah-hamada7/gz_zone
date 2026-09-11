@@ -53,8 +53,12 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
             {t.customer_photo_url && !imgError[t.id] ? (
               <div className="-mt-16 mb-4 flex justify-center">
                 <img
-                  src={getOptimizedImageUrl(t.customer_photo_url)}
+                  src={getOptimizedImageUrl(t.customer_photo_url, { w: 128, q: 65 })}
                   alt={t.customer_name}
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
                   className="size-16 rounded-full border-4 border-background object-cover"
                   onError={() => setImgError((prev) => ({ ...prev, [t.id]: true }))}
                 />
@@ -101,16 +105,20 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
                 <ChevronRight className="size-5" />
               </button>
 
-              <div className="mt-6 flex justify-center gap-2">
+              <div className="mt-6 flex justify-center gap-0">
                 {testimonials.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrent(i)}
-                    className={`size-2 rounded-full transition-colors cursor-pointer ${
-                      i === current ? "bg-primary" : "bg-muted-foreground/30"
-                    }`}
+                    className="flex min-h-[24px] min-w-[24px] items-center justify-center cursor-pointer"
                     aria-label={`Go to testimonial ${i + 1}`}
-                  />
+                  >
+                    <span
+                      className={`size-2 rounded-full transition-colors ${
+                        i === current ? "bg-primary" : "bg-muted-foreground/30"
+                      }`}
+                    />
+                  </button>
                 ))}
               </div>
             </>

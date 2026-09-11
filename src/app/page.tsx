@@ -1,4 +1,5 @@
 import dynamicImport from "next/dynamic";
+import { preload } from "react-dom";
 import { Header } from "@/components/public/header";
 import { Hero } from "@/components/public/hero";
 import { TrustBar } from "@/components/public/trust-bar";
@@ -21,6 +22,7 @@ import {
   getCertifications,
 } from "@/lib/supabase/queries";
 import { CATEGORY_LABELS } from "@/data";
+import { getOptimizedImageUrl, getOptimizedSrcSet } from "@/lib/cdn-utils";
 
 const FAQSection = dynamicImport(() => import("@/components/public/faq-section").then((m) => m.FAQSection), {
   ssr: true,
@@ -41,6 +43,18 @@ export default async function HomePage() {
     getTestimonials(),
     getCertifications(),
   ]);
+
+  // LCP fast path: hint the browser to fetch the hero image ASAP with the
+  // right responsive candidate, instead of discovering it mid-parse.
+  const lcpUrl = galleryImages?.[0]?.public_url;
+  if (lcpUrl) {
+    preload(getOptimizedImageUrl(lcpUrl, { w: 800, q: 72 }), {
+      as: "image",
+      imageSrcSet: getOptimizedSrcSet(lcpUrl, [480, 800, 1200], 72),
+      imageSizes: "(max-width: 1024px) 100vw, 560px",
+      fetchPriority: "high",
+    });
+  }
 
   return (
     <>
