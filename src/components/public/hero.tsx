@@ -70,20 +70,19 @@ export function Hero({
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Quota guard: preload only first slide (was: all slides = N x bandwidth per view).
   useEffect(() => {
-    const first = images[0];
-    if (!first?.src) return;
-    const i = new Image();
-    i.src = first.src;
-    i.onload = () => {
-      if (i.naturalWidth > 0 && i.naturalHeight > 0) {
-        const ratio = i.naturalWidth / i.naturalHeight;
-        setAutoAspectRatios((prev) => ({ ...prev, [first.src]: ratio }));
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [images.length]);
+    images.forEach((img) => {
+      if (!img.src) return;
+      const i = new Image();
+      i.src = img.src;
+      i.onload = () => {
+        if (i.naturalWidth > 0 && i.naturalHeight > 0) {
+          const ratio = i.naturalWidth / i.naturalHeight;
+          setAutoAspectRatios((prev) => ({ ...prev, [img.src]: ratio }));
+        }
+      };
+    });
+  }, [images]);
 
   // Helper to resolve numerical ratio for image (prioritizes actual natural image ratio)
   const getNumericRatio = (img?: typeof images[0]): number => {
