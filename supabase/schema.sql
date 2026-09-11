@@ -99,6 +99,14 @@ CREATE TABLE IF NOT EXISTS conversion_events (
   path TEXT,
   user_agent TEXT,
   referrer TEXT,
+  gclid TEXT,
+  gbraid TEXT,
+  wbraid TEXT,
+  utm_source TEXT,
+  utm_medium TEXT,
+  utm_campaign TEXT,
+  utm_term TEXT,
+  utm_content TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 

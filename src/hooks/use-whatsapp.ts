@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { buildWhatsAppUrl, buildGenericWhatsAppUrl } from "@/lib/whatsapp";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
+import { getAttribution, trackWhatsAppConversion } from "@/lib/analytics";
 
 export function useWhatsApp() {
   const getUrl = useCallback(
@@ -38,40 +39,13 @@ export function useWhatsApp() {
         source_component?: string;
       }
     ) => {
-      // 1. Dispatch Google Ads & Analytics Conversion Events
-      try {
-        if (typeof window !== "undefined") {
-          const win = window as any;
-          if (win.gtag) {
-            // Google Ads Conversion Event (WhatsApp Booking Lead)
-            win.gtag("event", "conversion", {
-              send_to: "AW-18331543340/F1pnCOTo7ekcEKzOlKVE",
-              event_category: "Booking",
-              event_label: meta?.treatment || "WhatsApp Inquiry",
-              value: 50.0,
-              currency: "EUR",
-            });
-            // GA4 Lead Generation Event
-            win.gtag("event", "generate_lead", {
-              currency: "EUR",
-              value: 50.0,
-              treatment_name: meta?.treatment || "General",
-              source_component: meta?.source_component || "whatsapp_button",
-            });
-          }
-
-          // Meta Pixel Event (if active)
-          if (win.fbq) {
-            win.fbq("track", "Contact", {
-              content_name: meta?.treatment || "WhatsApp Inquiry",
-              currency: "EUR",
-              value: 50.0,
-            });
-          }
-        }
-      } catch (gtagErr) {
-        console.warn("[Tracking Warning] Conversion dispatch error:", gtagErr);
-      }
+      // 1. Google Ads + GA4 + GTM (single dataLayer event + gtag fallback)
+      trackWhatsAppConversion({
+        treatment: meta?.treatment,
+        duration: meta?.duration,
+        source_component: meta?.source_component,
+        value: 50.0,
+      });
 
       // 2. Log to internal Supabase with UTMs
       try {
@@ -83,6 +57,8 @@ export function useWhatsApp() {
           fullReferrer = (fullReferrer ? fullReferrer + " | " : "") + "URL Params: " + window.location.search;
         }
 
+        const attribution =
+          typeof window !== "undefined" ? getAttribution() : {};
         const payload = JSON.stringify({
           event_name: "whatsapp_click",
           treatment: meta?.treatment || null,
@@ -90,6 +66,14 @@ export function useWhatsApp() {
           source_component: meta?.source_component || "general_cta",
           path: typeof window !== "undefined" ? window.location.pathname : null,
           referrer: fullReferrer || null,
+          gclid: attribution.gclid || null,
+          gbraid: attribution.gbraid || null,
+          wbraid: attribution.wbraid || null,
+          utm_source: attribution.utm_source || null,
+          utm_medium: attribution.utm_medium || null,
+          utm_campaign: attribution.utm_campaign || null,
+          utm_term: attribution.utm_term || null,
+          utm_content: attribution.utm_content || null,
         });
 
         if (typeof navigator !== "undefined" && navigator.sendBeacon) {

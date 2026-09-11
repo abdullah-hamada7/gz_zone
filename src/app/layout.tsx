@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { HashScrollHandler } from "@/components/public/hash-scroll-handler";
+import { AnalyticsListener } from "@/components/analytics/analytics-listener";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -119,6 +120,10 @@ const jsonLd = {
   },
 };
 
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "";
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || "";
+const ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || "AW-18331543340";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -127,17 +132,42 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased ${orbitron.variable}`}>
       <head>
+        {/* GTM container — loads GA4 + Ads tags once you add the IDs below */}
+        {GTM_ID ? (
+          <Script id="google-tag-manager" strategy="afterInteractive">
+            {`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${GTM_ID}');
+            `}
+          </Script>
+        ) : null}
+        {/* Direct gtag.js: Ads base + GA4 (fallback that works before GTM is configured) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-18331543340"
+          src={`https://www.googletagmanager.com/gtag/js?id=${ADS_ID}`}
           strategy="afterInteractive"
         />
         <Script id="google-gtag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
+            window.gtag = window.gtag || gtag;
             gtag('js', new Date());
 
-            gtag('config', 'AW-18331543340');
+            // Consent Mode v2 defaults (EU). Switch to 'denied' + banner for full GDPR.
+            gtag('consent', 'default', {
+              'ad_storage': 'granted',
+              'ad_user_data': 'granted',
+              'ad_personalization': 'granted',
+              'analytics_storage': 'granted'
+            });
+
+            gtag('config', '${ADS_ID}', {
+              'allow_enhanced_conversions': true
+            });
+            ${GA4_ID ? `gtag('config', '${GA4_ID}', { 'send_page_view': true });` : ""}
           `}
         </Script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -146,6 +176,17 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
       <body className="flex min-h-full flex-col font-sans overflow-x-hidden" suppressHydrationWarning>
+        {GTM_ID ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        ) : null}
+        <AnalyticsListener />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

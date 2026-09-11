@@ -26,8 +26,9 @@ const FAQSection = dynamicImport(() => import("@/components/public/faq-section")
   ssr: true,
 });
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// ISR for free quotas: cache HTML on Vercel CDN for 1h.
+// Cuts Vercel function runs + Supabase DB hits from every view to ~24/day.
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const [treatments, faqs, ratings, prices, siteContent, galleryImages, testimonials, certifications] = await Promise.all([
