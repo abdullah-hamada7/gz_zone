@@ -44,12 +44,8 @@ export function AboutSection({
         {imageUrl && (
           <div className="mx-auto mb-8 size-28 overflow-hidden rounded-full border-4 border-muted shadow-sm">
             <img
-              src={getOptimizedImageUrl(imageUrl, { w: 224, q: 65 })}
+              src={getOptimizedImageUrl(imageUrl)}
               alt={imageAlt}
-              width={112}
-              height={112}
-              loading="lazy"
-              decoding="async"
               className="size-full object-cover"
               onError={(e) => {
                 const parent = (e.currentTarget as HTMLImageElement).parentElement;

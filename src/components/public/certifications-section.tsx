@@ -10,14 +10,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { getOptimizedImageUrl, getOptimizedSrcSet } from "@/lib/cdn-utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 import type { Certification } from "@/types";
-
-// Below-fold cards render at 280–350px wide: 320/480/640w covers 1x–2x DPR.
-// (Full-res originals here were ~5MB of the PageSpeed payload.)
-const CERT_WIDTHS = [320, 480, 640];
-const CERT_SIZES = "(max-width: 640px) 280px, 350px";
-const CERT_Q = 68;
 
 export function CertificationsSection({
   certifications,
@@ -130,13 +124,7 @@ export function CertificationsSection({
                     <div className="relative mb-4 aspect-4/3 w-full overflow-hidden rounded-xl bg-muted border border-border/60">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={getOptimizedImageUrl(cert.public_url, { w: 480, q: CERT_Q })}
-                        srcSet={getOptimizedSrcSet(cert.public_url, CERT_WIDTHS, CERT_Q)}
-                        sizes={CERT_SIZES}
-                        width={480}
-                        height={360}
-                        loading="lazy"
-                        decoding="async"
+                        src={getOptimizedImageUrl(cert.public_url)}
                         alt={cert.title}
                         className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
@@ -190,18 +178,14 @@ export function CertificationsSection({
                 <button
                   key={i}
                   onClick={() => scrollToIndex(i)}
-                  className="flex min-h-[24px] min-w-[24px] items-center justify-center cursor-pointer"
+                  className={cn(
+                    "size-1.5 rounded-full transition-all cursor-pointer",
+                    i === activeIdx
+                      ? "bg-primary w-3.5"
+                      : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                  )}
                   aria-label={`Go to slide ${i + 1}`}
-                >
-                  <span
-                    className={cn(
-                      "size-1.5 rounded-full transition-all",
-                      i === activeIdx
-                        ? "bg-primary w-3.5"
-                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
-                    )}
-                  />
-                </button>
+                />
               ))}
             </div>
           )}
@@ -231,13 +215,7 @@ export function CertificationsSection({
               <div className="relative my-4 w-full overflow-hidden rounded-xl border bg-muted p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={getOptimizedImageUrl(selectedCert.public_url, { w: 1024, q: 75 })}
-                  srcSet={getOptimizedSrcSet(selectedCert.public_url, [640, 1024, 1600], 75)}
-                  sizes="(max-width: 640px) 100vw, 672px"
-                  width={1024}
-                  height={768}
-                  loading="lazy"
-                  decoding="async"
+                  src={getOptimizedImageUrl(selectedCert.public_url)}
                   alt={selectedCert.title}
                   className="mx-auto max-h-[60vh] w-full object-contain rounded-lg shadow-xs"
                 />

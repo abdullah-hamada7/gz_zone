@@ -95,23 +95,19 @@ export function TreatmentSlider({ treatments }: { treatments: Treatment[] }) {
       </div>
 
       {treatments.length > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-0 py-1 sm:hidden">
+        <div className="mt-4 flex items-center justify-center gap-1.5 py-1 sm:hidden">
           {treatments.map((_, i) => (
             <button
               key={i}
               onClick={() => scrollToIndex(i)}
-              className="flex min-h-[24px] min-w-[24px] items-center justify-center cursor-pointer"
+              className={cn(
+                "size-1.5 rounded-full transition-all cursor-pointer",
+                i === activeIdx
+                  ? "bg-primary w-3.5"
+                  : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+              )}
               aria-label={`Go to slide ${i + 1}`}
-            >
-              <span
-                className={cn(
-                  "size-1.5 rounded-full transition-all",
-                  i === activeIdx
-                    ? "bg-primary w-3.5"
-                    : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
-                )}
-              />
-            </button>
+            />
           ))}
         </div>
       )}

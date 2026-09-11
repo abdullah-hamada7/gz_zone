@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { getOptimizedImageUrl, getOptimizedSrcSet } from "@/lib/cdn-utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 
 import type { GalleryImage } from "@/types";
 
@@ -40,14 +40,9 @@ export function Hero({
   content?: HeroContent;
   galleryImages?: GalleryImage[];
 }) {
-  // Responsive variants: hero slot is ≤560px wide, so 480/800/1200 covers 1x–2x DPR.
-  // q=72 WebP ≈ 85–92% smaller than the full-res originals flagged by PageSpeed.
-  const HERO_WIDTHS = [480, 800, 1200];
-  const HERO_SIZES = "(max-width: 1024px) 100vw, 560px";
   const images = (galleryImages && galleryImages.length > 0)
     ? galleryImages.map((img) => ({
-        src: getOptimizedImageUrl(img.public_url, { w: 800, q: 72 }),
-        srcSet: getOptimizedSrcSet(img.public_url, HERO_WIDTHS, 72),
+        src: getOptimizedImageUrl(img.public_url),
         alt: img.alt_text || img.title || "GZ'ZONE mobile massage setup in Porto",
         aspectRatioStr: img.aspect_ratio || "freeform",
         fitMode: img.fit_mode || "cover",
@@ -210,20 +205,10 @@ export function Hero({
                 style={{ aspectRatio: activeRatio }}
                 className="relative w-full max-h-[520px] flex items-center justify-center transition-all duration-500 overflow-hidden rounded-2xl sm:rounded-3xl"
               >
-                {/* LCP image: eager + high priority so the browser discovers it in
-                    the initial HTML. Explicit dims reserve layout space (CLS).
-                    Non-first slides load on demand as the carousel advances. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={images[index]?.src}
                   src={images[index]?.src}
-                  srcSet={images[index]?.srcSet}
-                  sizes={HERO_SIZES}
-                  width={800}
-                  height={Math.round(800 / (activeRatio || 1))}
-                  loading="eager"
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  decoding="async"
                   alt={images[index]?.alt || ""}
                   className="max-h-full max-w-full object-contain mx-auto transition-opacity duration-300 rounded-2xl sm:rounded-3xl"
                   onLoad={(e) => {
@@ -240,23 +225,19 @@ export function Hero({
                   }}
                 />
               </div>
-              <div className="mt-3 flex items-center justify-center gap-1 py-1">
+              <div className="mt-3 flex items-center justify-center gap-1.5 py-1">
                 {images.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setIndex(i)}
-                    className="flex min-h-[24px] min-w-[24px] items-center justify-center cursor-pointer"
+                    className={cn(
+                      "size-1.5 rounded-full transition-all cursor-pointer",
+                      i === index
+                        ? "bg-primary w-3.5"
+                        : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                    )}
                     aria-label={`Go to slide ${i + 1}`}
-                  >
-                    <span
-                      className={cn(
-                        "size-1.5 rounded-full transition-all",
-                        i === index
-                          ? "bg-primary w-3.5"
-                          : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
-                      )}
-                    />
-                  </button>
+                  />
                 ))}
               </div>
             </div>

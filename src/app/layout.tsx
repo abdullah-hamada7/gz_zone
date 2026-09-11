@@ -132,12 +132,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased ${orbitron.variable}`}>
       <head>
-        {/* Pre-resolve the tag host early; the scripts themselves load lazily (see below). */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         {/* GTM container — loads GA4 + Ads tags once you add the IDs below */}
         {GTM_ID ? (
-          <Script id="google-tag-manager" strategy="lazyOnload">
+          <Script id="google-tag-manager" strategy="afterInteractive">
             {`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -147,13 +144,12 @@ export default function RootLayout({
             `}
           </Script>
         ) : null}
-        {/* Direct gtag.js: Ads base + GA4 (fallback that works before GTM is configured).
-            lazyOnload keeps third-party JS off the critical path (PageSpeed TBT). */}
+        {/* Direct gtag.js: Ads base + GA4 (fallback that works before GTM is configured) */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${ADS_ID}`}
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
-        <Script id="google-gtag" strategy="lazyOnload">
+        <Script id="google-gtag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

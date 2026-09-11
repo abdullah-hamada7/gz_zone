@@ -8,12 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getOptimizedImageUrl, getOptimizedSrcSet } from "@/lib/cdn-utils";
+import { getOptimizedImageUrl } from "@/lib/cdn-utils";
 import type { GalleryImage } from "@/types";
-
-// Grid cards render at ~380–560px wide: 480/768w covers 1x–2x DPR.
-const CARD_WIDTHS = [480, 768];
-const CARD_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 
 export function GallerySection({
   images,
@@ -51,13 +47,7 @@ export function GallerySection({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={getOptimizedImageUrl(img.public_url, { w: 768, q: 70 })}
-                srcSet={getOptimizedSrcSet(img.public_url, CARD_WIDTHS, 70)}
-                sizes={CARD_SIZES}
-                width={768}
-                height={576}
-                loading="lazy"
-                decoding="async"
+                src={getOptimizedImageUrl(img.public_url)}
                 alt={img.title || "Gz'zone Treatment Session Photo"}
                 className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
@@ -91,13 +81,7 @@ export function GallerySection({
               <div className="relative w-full overflow-hidden rounded-xl bg-black flex items-center justify-center min-h-[300px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={getOptimizedImageUrl(selectedImg.public_url, { w: 1200, q: 75 })}
-                  srcSet={getOptimizedSrcSet(selectedImg.public_url, [768, 1200, 1600], 75)}
-                  sizes="(max-width: 1024px) 100vw, 896px"
-                  width={1200}
-                  height={900}
-                  loading="lazy"
-                  decoding="async"
+                  src={getOptimizedImageUrl(selectedImg.public_url)}
                   alt={selectedImg.title || "Gz'zone Gallery Image"}
                   className="max-h-[75vh] w-auto max-w-full object-contain"
                 />
