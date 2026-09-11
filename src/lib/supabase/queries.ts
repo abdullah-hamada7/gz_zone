@@ -82,12 +82,13 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 export async function getGalleryImages(): Promise<GalleryImage[]> {
   return safeQuery(async () => {
     const supabase = await db();
-    // Quota guard: hero needs max 4, select only used columns to cut DB egress.
+    // No row limit: the hero slider cycles through ALL gallery images.
+    // Cheap: 20 rows ≈ 4KB of DB text. Image bytes stay small because the
+    // hero renders only the current slide, at a resized ?w=800 WebP variant.
     return supabase
       .from("gallery_images")
       .select("id,public_url,alt_text,title,sort_order,aspect_ratio,fit_mode")
-      .order("sort_order")
-      .limit(4);
+      .order("sort_order");
   });
 }
 
