@@ -49,6 +49,35 @@ export function buildWhatsAppUrl(params: WhatsAppParams): string {
   return `https://wa.me/${cleanPhone}?text=${encoded}`;
 }
 
+export function buildWhatsAppMessageUrl(phone: string, message: string): string {
+  const cleanPhone = phone.replace(/[^0-9]/g, "");
+  const encoded = encodeURIComponent(message.trim());
+
+  return `https://wa.me/${cleanPhone}?text=${encoded}`;
+}
+
+export function buildGiftCardWhatsAppUrl(params: {
+  phone: string;
+  optionTitle: string;
+  whatsappLabel: string;
+  price: number;
+  giverName: string;
+  recipientName?: string;
+}): string {
+  const { phone, optionTitle, whatsappLabel, price, giverName, recipientName } = params;
+  const lines = [
+    `Hello, I would like to purchase a gift card for a ${whatsappLabel} for someone special. My name is ${giverName.trim()}.`,
+    "",
+    `Gift card: ${optionTitle} (€${price})`,
+  ];
+
+  if (recipientName && recipientName.trim()) {
+    lines.push(`Gift for: ${recipientName.trim()}`);
+  }
+
+  return buildWhatsAppMessageUrl(phone, lines.join("\n"));
+}
+
 export function buildGenericWhatsAppUrl(phone: string): string {
   const cleanPhone = phone.replace(/[^0-9]/g, "");
   const message = encodeURIComponent(

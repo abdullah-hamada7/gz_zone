@@ -8,7 +8,6 @@ import {
   Sparkles,
   Clock,
   HelpCircle,
-  Star,
   BarChart3,
   Quote,
   FileText,
@@ -18,7 +17,7 @@ import {
   X,
   LogOut,
   MousePointerClick,
-  BookOpen,
+  Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -29,6 +28,7 @@ const navItems = [
   { label: "Analytics & Conversions", href: "/admin/analytics", icon: MousePointerClick },
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },
+  { label: "Gift Certificates", href: "/admin/gift-certificates", icon: Gift },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
   { label: "Certifications", href: "/admin/certifications", icon: Award },
   { label: "Platform Ratings", href: "/admin/platform-ratings", icon: BarChart3 },
@@ -42,7 +42,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (pathname === "/admin/login") return <>{children}</>;
+  if (pathname === "/admin/login" || pathname.endsWith("/print")) {
+    return <>{children}</>;
+  }
 
   async function handleLogout() {
     await fetch("/api/admin/auth/logout", { method: "POST" });

@@ -5,6 +5,7 @@ export const DEFAULT_WHATSAPP = "+351913675810";
 
 export const NAV_LINKS = [
   { label: "Treatments", href: "/#treatments" },
+  { label: "Gift Cards", href: "/gift-cards" },
   { label: "About", href: "/#about" },
   { label: "Certifications", href: "/#certifications" },
   { label: "Testimonials", href: "/#testimonials" },

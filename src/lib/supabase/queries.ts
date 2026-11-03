@@ -51,6 +51,13 @@ export async function getDurationsForTreatment(treatmentId: string): Promise<Dur
   });
 }
 
+export async function getAllDurations(): Promise<Duration[]> {
+  return safeQuery(async () => {
+    const supabase = await db();
+    return supabase.from("durations").select("*").order("minutes");
+  });
+}
+
 export async function getFAQs(): Promise<FAQ[]> {
   return safeQuery(async () => {
     const supabase = await db();
