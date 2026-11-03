@@ -105,7 +105,7 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
                 setGiverName(event.target.value);
                 if (error) setError("");
               }}
-              placeholder="e.g. Maria Silva"
+              placeholder="Who is giving the gift"
               className="mt-1.5"
               aria-invalid={Boolean(error)}
             />
@@ -117,7 +117,7 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
               id="recipient-name"
               value={recipientName}
               onChange={(event) => setRecipientName(event.target.value)}
-              placeholder="e.g. João Pereira"
+              placeholder="Who is receiving the gift"
               className="mt-1.5"
             />
           </div>
