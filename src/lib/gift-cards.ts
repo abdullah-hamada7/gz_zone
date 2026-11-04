@@ -335,11 +335,11 @@ export function getGiftCardPaymentMethods(): GiftCardPaymentMethod[] {
     {
       id: "revolut",
       label: "Revolut",
-      description: "Pay instantly by card or from your Revolut balance.",
+      description: "",
       details: `Revolut tag: ${DEFAULT_REVOLUT_TAG}`,
       href: revolut || DEFAULT_REVOLUT_PAYMENT_LINK,
       qrCodeSrc: DEFAULT_REVOLUT_QR,
-      qrCodeCaption: "Scan to pay with Revolut",
+      qrCodeCaption: "QR code for Revolut",
     },
     {
       id: "mb-way",
@@ -350,7 +350,7 @@ export function getGiftCardPaymentMethods(): GiftCardPaymentMethod[] {
     {
       id: "wise",
       label: "Wise Transfer",
-      description: "Pay by card or Wise balance from anywhere.",
+      description: "",
       details: `Wise tag: ${DEFAULT_WISE_TAG}`,
       href: wise || DEFAULT_WISE_PAYMENT_LINK,
       qrCodeSrc: DEFAULT_WISE_QR,

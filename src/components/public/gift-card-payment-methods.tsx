@@ -23,6 +23,10 @@ const methodIcons = {
   "bank-transfer": Landmark,
 };
 
+const methodLogos: Record<string, string> = {
+  "mb-way": "/images/mb_way_forWebsite.png",
+};
+
 export function GiftCardPaymentMethods({
   methods,
 }: {
@@ -63,15 +67,33 @@ export function GiftCardPaymentMethods({
             className="flex h-full flex-col rounded-2xl border bg-card p-5 shadow-sm"
           >
             <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Icon className="size-5" />
-              </span>
-              <h3 className="text-lg font-semibold">{method.label}</h3>
+              {methodLogos[method.id] ? (
+                <span className="flex h-10 shrink-0 items-center justify-center rounded-xl bg-white px-2 ring-1 ring-border">
+                  <Image
+                    src={methodLogos[method.id]}
+                    alt={`${method.label} logo`}
+                    width={160}
+                    height={80}
+                    className="h-6 w-auto object-contain"
+                  />
+                </span>
+              ) : (
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="size-5" />
+                </span>
+              )}
+              {methodLogos[method.id] ? (
+                <span className="sr-only">{method.label}</span>
+              ) : (
+                <h3 className="text-lg font-semibold">{method.label}</h3>
+              )}
             </div>
 
-            <p className="mt-3 text-sm text-muted-foreground">
-              {method.description}
-            </p>
+            {method.description && (
+              <p className="mt-3 text-sm text-muted-foreground">
+                {method.description}
+              </p>
+            )}
 
             {method.qrCodeSrc ? (
               <div className="mt-4 flex items-start gap-4">
