@@ -149,7 +149,7 @@ export const GIFT_CARD_PAGE_DEFAULTS: GiftCardPageContent = {
   eyebrow: "Gift Cards",
   heading: "Gift Someone a Massage Session",
   intro:
-    "Choose a session, send your gift in a few taps, and we will issue a personalised gift certificate. The recipient can book at the studio or at home.",
+    "Choose a session, send your gift in a few taps, and we will issue a personalised gift certificate. The recipient can book at home.",
   picker_heading: "Choose a gift",
   picker_description:
     "All options include professional equipment and everything needed for the session.",
@@ -193,7 +193,7 @@ export const GIFT_CARD_PAGE_DEFAULTS: GiftCardPageContent = {
   travel_primary: "Free home visits within a 10-kilometer radius of Porto.",
   travel_secondary:
     "For distances beyond 10 km, additional transportation fees apply. Send the recipient's address on WhatsApp and we will confirm the fee before the appointment is booked.",
-  usage_title: "Studio or at home",
+  usage_title: "At home",
   usage_text:
     "The recipient can schedule their session at the studio or at their home. They simply contact us with their gift card code and preferred date and time.",
   certificate_note:
@@ -319,10 +319,10 @@ const DEFAULT_REVOLUT_TAG = "@omarelgazzar";
 const DEFAULT_REVOLUT_QR = "/images/revolut_qr.jpg";
 const DEFAULT_MBWAY_PHONE = "+351 913 675 810";
 const DEFAULT_BANK_TRANSFER_DETAILS = [
-  "Name: Omar Mohammed Elgazzar",
+  "Name: Omar Mohammed Ismail Elgazzar",
   "Email: omarelgazzar8@gmail.com",
-  "IBAN: BE05905451212075",
-  "SWIFT/BIC: TRWIBEB1XXX",
+  "IBAN: PT50356000019001886417644",
+  "BIC/SWIFT: REVOPTP2",
 ].join("\n");
 
 export function getGiftCardPaymentMethods(): GiftCardPaymentMethod[] {
