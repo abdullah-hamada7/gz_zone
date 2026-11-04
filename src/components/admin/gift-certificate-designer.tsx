@@ -31,18 +31,6 @@ export function GiftCertificateDesigner({
 
   if (!option) return null;
 
-  const groupedOptions = options.reduce<
-    Array<{ name: string; items: CertificateOption[] }>
-  >((groups, item) => {
-    const last = groups[groups.length - 1];
-    if (last?.name === item.groupName) {
-      last.items.push(item);
-    } else {
-      groups.push({ name: item.groupName, items: [item] });
-    }
-    return groups;
-  }, []);
-
   function openPrintView() {
     if (!ready) return;
 
@@ -105,18 +93,14 @@ export function GiftCertificateDesigner({
               onChange={(event) => setOptionId(event.target.value)}
               className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
             >
-              {groupedOptions.map((group) => (
-                <optgroup key={group.name} label={group.name}>
-                  {group.items.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.durationLabel} — €{item.price}
-                    </option>
-                  ))}
-                </optgroup>
+              {options.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.title} — {item.durationLabel}
+                </option>
               ))}
             </select>
             <p className="text-xs text-muted-foreground">
-              {option.title} · {option.durationLabel} · €{option.price}
+              {option.title} · {option.durationLabel}
             </p>
           </div>
 

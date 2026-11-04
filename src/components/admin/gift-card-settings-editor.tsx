@@ -393,12 +393,12 @@ export function GiftCardSettingsEditor({
         <div>
           <h2 className="text-lg font-semibold">Payment method cards</h2>
           <p className="text-sm text-muted-foreground">
-            These are the three accepted methods. Edit the text, transfer details
-            and Wise QR code shown on the gift page.
+            These are the accepted methods. Edit the text, transfer details and
+            payment QR codes shown on the gift page.
           </p>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-3">
+        <div className="grid gap-4 xl:grid-cols-2">
           {settings.payment_methods.map((method, index) => (
             <div key={method.id} className="rounded-xl border bg-card p-5">
               <div className="flex items-center justify-between gap-2">
@@ -431,19 +431,6 @@ export function GiftCardSettingsEditor({
                   />
                 </div>
 
-                {method.id === "cash" && (
-                  <div className="space-y-2">
-                    <Label>Footer badge</Label>
-                    <Input
-                      value={method.badge ?? ""}
-                      onChange={(event) =>
-                        updatePaymentMethod(index, { badge: event.target.value })
-                      }
-                      placeholder="Pay on site"
-                    />
-                  </div>
-                )}
-
                 <div className="space-y-2">
                   <Label>Payment details</Label>
                   <Textarea
@@ -462,7 +449,7 @@ export function GiftCardSettingsEditor({
                   />
                 </div>
 
-                {method.id === "wise" && (
+                {(method.id === "wise" || method.id === "revolut") && (
                   <>
                     <div className="space-y-2">
                       <Label>Payment link</Label>
@@ -471,7 +458,11 @@ export function GiftCardSettingsEditor({
                         onChange={(event) =>
                           updatePaymentMethod(index, { href: event.target.value })
                         }
-                        placeholder="https://wise.com/pay/me/..."
+                        placeholder={
+                          method.id === "wise"
+                            ? "https://wise.com/pay/me/..."
+                            : "https://revolut.me/..."
+                        }
                       />
                     </div>
                     <div className="space-y-2">
@@ -483,7 +474,7 @@ export function GiftCardSettingsEditor({
                             qrCodeSrc: event.target.value,
                           })
                         }
-                        placeholder="/images/wise-qr.png"
+                        placeholder={`/images/${method.id}-qr.png`}
                       />
                     </div>
                     <div className="space-y-2">
@@ -495,7 +486,7 @@ export function GiftCardSettingsEditor({
                             qrCodeCaption: event.target.value,
                           })
                         }
-                        placeholder="QR code for Wise"
+                        placeholder="Scan to pay"
                       />
                     </div>
                   </>

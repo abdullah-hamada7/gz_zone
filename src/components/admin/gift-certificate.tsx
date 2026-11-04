@@ -10,8 +10,7 @@ export interface GiftCertificateProps {
   note?: string;
 }
 
-const WHATSAPP_QR =
-  "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F351913675810";
+const INSTAGRAM_QR = "/images/instagram-qr.png";
 const WEBSITE_QR =
   "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fgzzone.vercel.app";
 
@@ -47,12 +46,7 @@ export function GiftCertificate({
       <section className={styles.session}>
         <p className={styles.sessionLabel}>This certificate is for</p>
         <h2 className={styles.sessionTitle}>{option.title}</h2>
-        {option.description ? (
-          <p className={styles.sessionDescription}>{option.description}</p>
-        ) : null}
-        <p className={styles.sessionMeta}>
-          {option.durationLabel} &nbsp;&bull;&nbsp; €{option.price}
-        </p>
+        <p className={styles.sessionMeta}>{option.durationLabel}</p>
       </section>
 
       <div className={styles.names}>
@@ -71,10 +65,6 @@ export function GiftCertificate({
           <p className={styles.codeLabel}>Gift code</p>
           <p className={styles.codeValue}>{code}</p>
         </div>
-        <div className={styles.value}>
-          <p className={styles.codeLabel}>Value</p>
-          <p className={styles.valueAmount}>€{option.price}</p>
-        </div>
       </div>
 
       {note ? <p className={styles.note}>&ldquo;{note}&rdquo;</p> : null}
@@ -82,16 +72,15 @@ export function GiftCertificate({
       <p className={styles.terms}>
         Valid for one session
         {option.minutes > 0 ? ` (${option.durationLabel.toLowerCase()})` : ""}.
-        Studio or at home. Free home visits within 10 km of Porto; additional
-        transport fees apply beyond 10 km. Cannot be exchanged for cash.
+        Cannot be exchanged for cash.
       </p>
 
       <footer className={styles.footer}>
         <div className={styles.qr}>
           <div className={styles.qrBox}>
-            <Image src={WHATSAPP_QR} alt="" width={160} height={160} />
+            <Image src={INSTAGRAM_QR} alt="" width={160} height={160} />
           </div>
-          <span className={styles.qrLabel}>WhatsApp</span>
+          <span className={styles.qrLabel}>Instagram</span>
         </div>
 
         <div className={styles.contact}>

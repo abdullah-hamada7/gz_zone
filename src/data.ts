@@ -498,7 +498,7 @@ export const FAQS: FAQ[] = [
   },
   {
     question: "What payment methods do you accept?",
-    answer: "Payment is accepted by cash, Wise transfer, or bank transfer. Details will be confirmed when booking.",
+    answer: "Payment is accepted by cash, Wise transfer, Revolut, MB Way and bank transfer. Details will be confirmed when booking.",
     category: "Booking",
   },
 ];

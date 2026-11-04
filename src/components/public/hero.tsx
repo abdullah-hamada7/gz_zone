@@ -199,7 +199,7 @@ export function Hero({
                 )}
               >
                 <Gift className="size-5" />
-                Gift Cards
+                Gift Certificates
               </Link>
             </div>
 

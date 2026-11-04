@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import {
-  Banknote,
   ExternalLink,
   Landmark,
   MessageCircle,
   Send,
+  Smartphone,
+  Wallet,
 } from "lucide-react";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { buildWhatsAppMessageUrl } from "@/lib/whatsapp";
@@ -16,7 +17,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const methodIcons = {
-  cash: Banknote,
+  revolut: Wallet,
+  "mb-way": Smartphone,
   wise: Send,
   "bank-transfer": Landmark,
 };
@@ -51,7 +53,7 @@ export function GiftCardPaymentMethods({
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2">
       {methods.map((method) => {
         const Icon = methodIcons[method.id];
 
@@ -100,12 +102,7 @@ export function GiftCardPaymentMethods({
             ) : null}
 
             <div className="mt-auto pt-5">
-              {method.id === "cash" ? (
-                <p className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-muted/60 px-3 py-2 text-center text-sm font-semibold text-muted-foreground">
-                  <Banknote className="size-4" />
-                  {method.badge || "Pay on site"}
-                </p>
-              ) : method.href ? (
+              {method.href ? (
                 <a
                   href={method.href}
                   target="_blank"

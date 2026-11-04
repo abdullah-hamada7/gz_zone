@@ -27,7 +27,8 @@ export default async function AdminGiftCertificatesPage() {
         <h1 className="text-2xl font-bold tracking-tight">Gift Certificates</h1>
         <p className="text-sm text-muted-foreground">
           Create the personalised A5 certificate after a gift card payment is
-          confirmed. Prices follow the live treatment catalog.
+          confirmed. Choose one of the five fixed sessions; the certificate does
+          not print a price or treatment description.
         </p>
       </div>
 

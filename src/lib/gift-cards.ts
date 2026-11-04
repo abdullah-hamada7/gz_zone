@@ -176,7 +176,8 @@ export const GIFT_CARD_PAGE_DEFAULTS: GiftCardPageContent = {
     },
     {
       title: "Pay securely",
-      description: "Complete payment by cash, Wise transfer or bank transfer.",
+      description:
+        "Complete payment by Revolut, MB Way, Wise transfer or bank transfer.",
     },
     {
       title: "Receive the certificate",
@@ -203,6 +204,9 @@ function text(value: unknown, fallback: string): string {
   return typeof value === "string" ? value : fallback;
 }
 
+const LEGACY_CASH_STEP =
+  "Complete payment by cash, Wise transfer or bank transfer.";
+
 /** Merge a saved `gift_cards` Site Content section with the safe defaults. */
 export function resolveGiftCardPageContent(
   content?: Record<string, unknown> | null
@@ -223,7 +227,10 @@ export function resolveGiftCardPageContent(
         )
         .map((step) => ({
           title: text(step.title, ""),
-          description: text(step.description, ""),
+          description:
+            text(step.description, "") === LEGACY_CASH_STEP
+              ? GIFT_CARD_PAGE_DEFAULTS.steps[2].description
+              : text(step.description, ""),
         }))
     : GIFT_CARD_PAGE_DEFAULTS.steps;
 
@@ -293,7 +300,7 @@ export function resolveGiftCardPageContent(
 }
 
 export interface GiftCardPaymentMethod {
-  id: "cash" | "wise" | "bank-transfer";
+  id: "revolut" | "mb-way" | "wise" | "bank-transfer";
   label: string;
   description: string;
   badge?: string;
@@ -307,6 +314,10 @@ export interface GiftCardPaymentMethod {
 const DEFAULT_WISE_PAYMENT_LINK = "https://wise.com/pay/me/omarmohammede6";
 const DEFAULT_WISE_TAG = "@omarmohammede6";
 const DEFAULT_WISE_QR = "/images/wise-qr.png";
+const DEFAULT_REVOLUT_PAYMENT_LINK = "https://revolut.me/omarelgazzar";
+const DEFAULT_REVOLUT_TAG = "@omarelgazzar";
+const DEFAULT_REVOLUT_QR = "/images/revolut_qr.jpg";
+const DEFAULT_MBWAY_PHONE = "+351 913 675 810";
 const DEFAULT_BANK_TRANSFER_DETAILS = [
   "Name: Omar Mohammed Elgazzar",
   "Email: omarelgazzar8@gmail.com",
@@ -317,13 +328,24 @@ const DEFAULT_BANK_TRANSFER_DETAILS = [
 export function getGiftCardPaymentMethods(): GiftCardPaymentMethod[] {
   const wise = process.env.NEXT_PUBLIC_WISE_PAYMENT_LINK?.trim();
   const bankDetails = process.env.NEXT_PUBLIC_BANK_TRANSFER_DETAILS?.trim();
+  const revolut = process.env.NEXT_PUBLIC_REVOLUT_PAYMENT_LINK?.trim();
+  const mbwayPhone = process.env.NEXT_PUBLIC_MBWAY_PHONE?.trim();
 
   return [
     {
-      id: "cash",
-      label: "Cash",
-      description: "Accepted on site.",
-      badge: "Pay on site",
+      id: "revolut",
+      label: "Revolut",
+      description: "Pay instantly by card or from your Revolut balance.",
+      details: `Revolut tag: ${DEFAULT_REVOLUT_TAG}`,
+      href: revolut || DEFAULT_REVOLUT_PAYMENT_LINK,
+      qrCodeSrc: DEFAULT_REVOLUT_QR,
+      qrCodeCaption: "Scan to pay with Revolut",
+    },
+    {
+      id: "mb-way",
+      label: "MB Way",
+      description: "Send the payment to the phone number below.",
+      details: `Phone: ${mbwayPhone || DEFAULT_MBWAY_PHONE}`,
     },
     {
       id: "wise",
@@ -469,75 +491,43 @@ export interface CertificateOption extends GiftCardOption {
 const CERTIFICATE_TREATMENTS = [
   {
     slug: "deep-tissue-massage",
-    title: "Deep Tissue Massage",
-    description: "Focused treatment for deeper muscular tension.",
+    title: "60-Minute Massage",
+    description: "",
     fallbackMinutes: 60,
     fallbackUnit: "min",
     fallbackPrice: 55,
   },
   {
+    slug: "deep-tissue-massage",
+    title: "90-Minute Massage",
+    description: "",
+    fallbackMinutes: 90,
+    fallbackUnit: "min",
+    fallbackPrice: 80,
+  },
+  {
+    slug: "deep-tissue-massage",
+    title: "120-Minute Massage",
+    description: "",
+    fallbackMinutes: 120,
+    fallbackUnit: "min",
+    fallbackPrice: 100,
+  },
+  {
     slug: "facial-massage",
-    title: "Facial Massage",
-    description: "Face, neck and head massage.",
+    title: "Facial / Head Massage",
+    description: "",
     fallbackMinutes: 45,
     fallbackUnit: "min",
     fallbackPrice: 40,
   },
   {
     slug: "reflexology-massage",
-    title: "Reflexology",
-    description: "Hands, feet and ears reflexology.",
+    title: "Reflexology Session",
+    description: "",
     fallbackMinutes: 45,
     fallbackUnit: "min",
     fallbackPrice: 40,
-  },
-  {
-    slug: "back-neck-shoulders-head-massage",
-    title: "Back Neck Shoulders and Head Massage",
-    description: "Focused relief for the back, neck, shoulders and head.",
-    fallbackMinutes: 60,
-    fallbackUnit: "min",
-    fallbackPrice: 55,
-  },
-  {
-    slug: "sports-massage",
-    title: "Sports Massage",
-    description: "Deep tissue, trigger points and stretching.",
-    fallbackMinutes: 60,
-    fallbackUnit: "min",
-    fallbackPrice: 55,
-  },
-  {
-    slug: "anti-cellulite-massage",
-    title: "Anti-Cellulite Massage",
-    description: "Targeted massage for smoother, firmer-looking skin.",
-    fallbackMinutes: 60,
-    fallbackUnit: "min",
-    fallbackPrice: 55,
-  },
-  {
-    slug: "anti-cellulite-cupping",
-    title: "Anti-Cellulite Treatment",
-    description: "Massage + dry, running cupping.",
-    fallbackMinutes: 90,
-    fallbackUnit: "min",
-    fallbackPrice: 75,
-  },
-  {
-    slug: "dry-cupping",
-    title: "Cupping Therapy",
-    description: "Dry cupping session.",
-    fallbackMinutes: 0,
-    fallbackUnit: "per session",
-    fallbackPrice: 40,
-  },
-  {
-    slug: "stretching-class",
-    title: "Stretching Class",
-    description: "Guided stretching class.",
-    fallbackMinutes: 0,
-    fallbackUnit: "per class",
-    fallbackPrice: 60,
   },
 ] as const;
 
@@ -565,7 +555,11 @@ export function resolveCertificateOptions(
     const treatment = treatmentBySlug.get(config.slug);
     const liveDurations = treatment
       ? durations
-          .filter((duration) => duration.treatment_id === treatment.id)
+          .filter(
+            (duration) =>
+              duration.treatment_id === treatment.id &&
+              Number(duration.minutes) === config.fallbackMinutes
+          )
           .sort((a, b) => Number(a.minutes) - Number(b.minutes))
       : [];
 
