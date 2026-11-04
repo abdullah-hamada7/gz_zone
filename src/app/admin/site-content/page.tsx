@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,12 +10,13 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Save, Plus, Trash2, GripVertical } from "lucide-react";
 import type { SiteContent } from "@/types";
+import { resolveGiftCardPageContent } from "@/lib/gift-cards";
 
 interface SectionConfig {
   key: string;
   label: string;
   description: string;
-  category: "homepage" | "treatments" | "legal";
+  category: "homepage" | "treatments" | "gift-cards" | "legal";
 }
 
 const sections: SectionConfig[] = [
@@ -27,6 +29,7 @@ const sections: SectionConfig[] = [
   { key: "reputation_section", label: "Reputation Section", description: "Platform ratings heading", category: "homepage" },
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
+  { key: "gift_cards", label: "Gift Cards Page", description: "All text on the gift cards page", category: "gift-cards" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
@@ -629,6 +632,202 @@ function SectionEditor({
 
 
 
+    case "gift_cards": {
+      const steps = (content.steps as Array<{ title: string; description: string }>) ?? [];
+
+      return (
+        <div className="space-y-6">
+          <div className="rounded-lg border bg-muted/30 p-4 text-sm">
+            Gift names, prices, included treatments and payment card details are
+            managed separately in{" "}
+            <Link href="/admin/gift-cards" className="font-medium text-primary underline">
+              Gift Cards settings
+            </Link>
+            . This section controls the text around them.
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Page header
+            </h3>
+            <div className="space-y-2">
+              <Label>Eyebrow</Label>
+              <Input value={str("eyebrow")} onChange={(e) => set("eyebrow", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Heading</Label>
+              <Input value={str("heading")} onChange={(e) => set("heading", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Intro text</Label>
+              <Textarea value={str("intro")} onChange={(e) => set("intro", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-5">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Gift picker
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>Section heading</Label>
+                <Input value={str("picker_heading")} onChange={(e) => set("picker_heading", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Personalise heading</Label>
+                <Input value={str("picker_personalise_heading")} onChange={(e) => set("picker_personalise_heading", e.target.value)} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Section description</Label>
+              <Textarea value={str("picker_description")} onChange={(e) => set("picker_description", e.target.value)} />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>Giver label</Label>
+                <Input value={str("picker_giver_label")} onChange={(e) => set("picker_giver_label", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Giver placeholder</Label>
+                <Input value={str("picker_giver_placeholder")} onChange={(e) => set("picker_giver_placeholder", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Recipient label</Label>
+                <Input value={str("picker_recipient_label")} onChange={(e) => set("picker_recipient_label", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Recipient placeholder</Label>
+                <Input value={str("picker_recipient_placeholder")} onChange={(e) => set("picker_recipient_placeholder", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>Selected prefix</Label>
+                <Input value={str("picker_selected_label")} onChange={(e) => set("picker_selected_label", e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label>WhatsApp button text</Label>
+                <Input value={str("picker_button_text")} onChange={(e) => set("picker_button_text", e.target.value)} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Note under the button</Label>
+              <Textarea value={str("picker_note")} onChange={(e) => set("picker_note", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Missing-name error</Label>
+              <Input value={str("picker_error_giver")} onChange={(e) => set("picker_error_giver", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-5">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              How gift cards work
+            </h3>
+            <div className="space-y-2">
+              <Label>Section heading</Label>
+              <Input value={str("steps_heading")} onChange={(e) => set("steps_heading", e.target.value)} />
+            </div>
+            {steps.map((step, i) => (
+              <div key={i} className="space-y-2 rounded-lg border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    Step {i + 1}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const next = [...steps];
+                      next.splice(i, 1);
+                      set("steps", next);
+                    }}
+                    aria-label={`Remove step ${i + 1}`}
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
+                <Input
+                  value={step.title}
+                  onChange={(e) => {
+                    const next = [...steps];
+                    next[i] = { ...next[i], title: e.target.value };
+                    set("steps", next);
+                  }}
+                  placeholder="Step title"
+                />
+                <Textarea
+                  value={step.description}
+                  onChange={(e) => {
+                    const next = [...steps];
+                    next[i] = { ...next[i], description: e.target.value };
+                    set("steps", next);
+                  }}
+                  placeholder="Step description"
+                />
+              </div>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => set("steps", [...steps, { title: "", description: "" }])}
+            >
+              <Plus className="mr-2 size-4" /> Add step
+            </Button>
+          </div>
+
+          <div className="space-y-4 border-t pt-5">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Payment section
+            </h3>
+            <div className="space-y-2">
+              <Label>Heading</Label>
+              <Input value={str("payment_heading")} onChange={(e) => set("payment_heading", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <Textarea value={str("payment_description")} onChange={(e) => set("payment_description", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Note below the payment cards</Label>
+              <Input value={str("payment_note")} onChange={(e) => set("payment_note", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-4 border-t pt-5">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Travel and usage
+            </h3>
+            <div className="space-y-2">
+              <Label>Travel heading</Label>
+              <Input value={str("travel_heading")} onChange={(e) => set("travel_heading", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Travel highlighted text</Label>
+              <Textarea value={str("travel_primary")} onChange={(e) => set("travel_primary", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Travel secondary text</Label>
+              <Textarea value={str("travel_secondary")} onChange={(e) => set("travel_secondary", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Usage card title</Label>
+              <Input value={str("usage_title")} onChange={(e) => set("usage_title", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Usage card text</Label>
+              <Textarea value={str("usage_text")} onChange={(e) => set("usage_text", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Certificate validity note</Label>
+              <Textarea
+                value={str("certificate_note")}
+                onChange={(e) => set("certificate_note", e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     case "privacy_policy":
     case "terms":
       return (
@@ -652,7 +851,6 @@ function SectionEditor({
 }
 
 export default function AdminSiteContentPage() {
-  const [sectionsData, setSectionsData] = useState<SiteContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [openSection, setOpenSection] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, Record<string, unknown>>>({});
@@ -663,8 +861,12 @@ export default function AdminSiteContentPage() {
     fetch("/api/admin/site-content")
       .then((res) => res.json())
       .then((data: SiteContent[]) => {
-        setSectionsData(data);
-        const initial: Record<string, Record<string, unknown>> = {};
+        const initial: Record<string, Record<string, unknown>> = {
+          gift_cards: resolveGiftCardPageContent(null) as unknown as Record<
+            string,
+            unknown
+          >,
+        };
         for (const s of data) {
           initial[s.section_key] = s.content as Record<string, unknown>;
         }
@@ -716,7 +918,7 @@ export default function AdminSiteContentPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {["all", "homepage", "treatments", "legal"].map((cat) => (
+        {["all", "homepage", "treatments", "gift-cards", "legal"].map((cat) => (
           <Button
             key={cat}
             variant={activeCategory === cat ? "default" : "outline"}
@@ -731,7 +933,12 @@ export default function AdminSiteContentPage() {
       <div className="space-y-3">
         {filteredSections.map((sec) => {
           const isOpen = openSection === sec.key;
-          const content = editValues[sec.key] ?? {};
+          const content =
+            sec.key === "gift_cards"
+              ? (resolveGiftCardPageContent(
+                  editValues[sec.key]
+                ) as unknown as Record<string, unknown>)
+              : editValues[sec.key] ?? {};
 
           return (
             <div key={sec.key} className="rounded-xl border bg-card">

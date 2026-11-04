@@ -1,3 +1,5 @@
+import { GIFT_CARD_PAGE_DEFAULTS } from "@/lib/gift-cards";
+
 export const HERO = {
   title: "Professional Massage. Delivered to You.",
   subtitle: "Gz'zone - a zone without boundaries",
@@ -54,6 +56,7 @@ export type SiteContentKey =
   | "hours_section"
   | "service_areas_section"
   | "gallery_section"
+  | "gift_cards"
   | "privacy_policy"
   | "terms";
 
@@ -212,6 +215,7 @@ export const SITE_CONTENT_SEED: Record<SiteContentKey, Record<string, unknown>> 
   gallery_section: {
     heading: "Experience Gallery",
   },
+  gift_cards: GIFT_CARD_PAGE_DEFAULTS as unknown as Record<string, unknown>,
   key_benefits: {
     heading: "Key Benefits",
     items: [

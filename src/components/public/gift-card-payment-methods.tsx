@@ -1,13 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { CreditCard, ExternalLink, MessageCircle } from "lucide-react";
+import {
+  Banknote,
+  ExternalLink,
+  Landmark,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { buildWhatsAppMessageUrl } from "@/lib/whatsapp";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
 import type { GiftCardPaymentMethod } from "@/lib/gift-cards";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const methodIcons = {
+  cash: Banknote,
+  wise: Send,
+  "bank-transfer": Landmark,
+};
 
 export function GiftCardPaymentMethods({
   methods,
@@ -39,83 +51,102 @@ export function GiftCardPaymentMethods({
   };
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {methods.map((method) => (
-        <div key={method.id} className="flex flex-col rounded-xl border bg-card p-5">
-          <div className="flex items-center gap-2">
-            <CreditCard className="size-4 text-primary" />
-            <h3 className="font-semibold">{method.label}</h3>
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {methods.map((method) => {
+        const Icon = methodIcons[method.id];
+
+        return (
+          <div
+            key={method.id}
+            className="flex h-full flex-col rounded-2xl border bg-card p-5 shadow-sm"
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="size-5" />
+              </span>
+              <h3 className="text-lg font-semibold">{method.label}</h3>
+            </div>
+
+            <p className="mt-3 text-sm text-muted-foreground">
+              {method.description}
+            </p>
+
+            {method.qrCodeSrc ? (
+              <div className="mt-4 flex items-start gap-4">
+                <Image
+                  src={method.qrCodeSrc}
+                  alt={method.qrCodeCaption ?? `${method.label} QR code`}
+                  width={112}
+                  height={112}
+                  className="size-24 shrink-0 rounded-lg border bg-white object-contain p-1"
+                />
+                <div className="min-w-0 space-y-2">
+                  {method.details && (
+                    <p className="whitespace-pre-line break-words rounded-md bg-muted/60 px-3 py-2 font-mono text-xs">
+                      {method.details}
+                    </p>
+                  )}
+                  {method.qrCodeCaption && (
+                    <p className="text-xs font-medium text-muted-foreground">
+                      {method.qrCodeCaption}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : method.details ? (
+              <p className="mt-4 whitespace-pre-line break-words rounded-lg bg-muted/60 px-3 py-2.5 font-mono text-xs leading-relaxed">
+                {method.details}
+              </p>
+            ) : null}
+
+            <div className="mt-auto pt-5">
+              {method.id === "cash" ? (
+                <p className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-muted/60 px-3 py-2 text-center text-sm font-semibold text-muted-foreground">
+                  <Banknote className="size-4" />
+                  {method.badge || "Pay on site"}
+                </p>
+              ) : method.href ? (
+                <a
+                  href={method.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "inline-flex w-full items-center justify-center gap-2"
+                  )}
+                >
+                  Pay with {method.label}
+                  <ExternalLink className="size-4" />
+                </a>
+              ) : method.details ? (
+                <button
+                  type="button"
+                  onClick={() => sendReceipt(method)}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "inline-flex w-full items-center justify-center gap-2"
+                  )}
+                >
+                  <MessageCircle className="size-4" />
+                  Send receipt on WhatsApp
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => requestDetails(method)}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "inline-flex w-full items-center justify-center gap-2"
+                  )}
+                >
+                  <MessageCircle className="size-4" />
+                  Request details on WhatsApp
+                </button>
+              )}
+            </div>
           </div>
-
-          <p className="mt-1.5 text-sm text-muted-foreground">{method.description}</p>
-
-          {method.details && (
-            <p className="mt-3 whitespace-pre-line break-words rounded-md bg-muted/60 px-3 py-2 font-mono text-xs">
-              {method.details}
-            </p>
-          )}
-
-          {method.qrCodeSrc && (
-            <figure className="mt-4 flex items-center gap-3">
-              <Image
-                src={method.qrCodeSrc}
-                alt="QR code for Wise"
-                width={112}
-                height={112}
-                className="size-28 rounded-lg border bg-white object-contain p-1"
-              />
-              {method.qrCodeCaption && (
-                <figcaption className="text-xs font-medium text-muted-foreground">
-                  {method.qrCodeCaption}
-                </figcaption>
-              )}
-            </figure>
-          )}
-
-          {method.id === "cash" ? (
-            <p className="mt-4 rounded-md bg-muted/60 px-3 py-2 text-center text-xs font-semibold text-muted-foreground">
-              Pay on site
-            </p>
-          ) : method.href ? (
-            <a
-              href={method.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "sm" }),
-                "mt-4 inline-flex w-full items-center justify-center gap-2"
-              )}
-            >
-              Pay with {method.label}
-              <ExternalLink className="size-4" />
-            </a>
-          ) : method.details ? (
-            <button
-              type="button"
-              onClick={() => sendReceipt(method)}
-              className={cn(
-                buttonVariants({ variant: "outline", size: "sm" }),
-                "mt-4 inline-flex w-full items-center justify-center gap-2"
-              )}
-            >
-              <MessageCircle className="size-4" />
-              Send receipt on WhatsApp
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => requestDetails(method)}
-              className={cn(
-                buttonVariants({ variant: "outline", size: "sm" }),
-                "mt-4 inline-flex w-full items-center justify-center gap-2"
-              )}
-            >
-              <MessageCircle className="size-4" />
-              Request details on WhatsApp
-            </button>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -12,8 +12,18 @@ import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { GiftCardPicker } from "@/components/public/gift-card-picker";
 import { GiftCardPaymentMethods } from "@/components/public/gift-card-payment-methods";
-import { getAllDurations, getTreatments } from "@/lib/supabase/queries";
-import { getGiftCardPaymentMethods, resolveGiftCardOptions } from "@/lib/gift-cards";
+import {
+  getAllDurations,
+  getAllSiteContent,
+  getTreatments,
+} from "@/lib/supabase/queries";
+import {
+  buildDefaultGiftCardSettings,
+  GIFT_CARD_SETTINGS_KEY,
+  resolveGiftCardOptions,
+  resolveGiftCardPageContent,
+  resolveGiftCardSettings,
+} from "@/lib/gift-cards";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -31,37 +41,23 @@ export const metadata: Metadata = {
   },
 };
 
-const steps = [
-  {
-    icon: Gift,
-    title: "Choose your gift",
-    description: "Pick the massage, facial or reflexology session you would like to gift.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Send on WhatsApp",
-    description: "Your gift details are pre-filled — just add your name and send.",
-  },
-  {
-    icon: CreditCard,
-    title: "Pay securely",
-    description: "Complete payment by cash, Wise transfer or bank transfer.",
-  },
-  {
-    icon: FileCheck2,
-    title: "Receive the certificate",
-    description:
-      "We send a personalised PDF certificate with a unique gift card code, the giver's name, the recipient's name and the session.",
-  },
-];
+const stepIcons = [Gift, MessageCircle, CreditCard, FileCheck2];
 
 export default async function GiftCardsPage() {
-  const [treatments, durations] = await Promise.all([
+  const [treatments, durations, siteContent] = await Promise.all([
     getTreatments(),
     getAllDurations(),
+    getAllSiteContent(),
   ]);
-  const options = resolveGiftCardOptions(treatments, durations);
-  const paymentMethods = getGiftCardPaymentMethods();
+
+  const page = resolveGiftCardPageContent(siteContent.gift_cards);
+  const defaults = buildDefaultGiftCardSettings(treatments, durations);
+  const settings = resolveGiftCardSettings(
+    siteContent[GIFT_CARD_SETTINGS_KEY],
+    defaults
+  );
+  const options = resolveGiftCardOptions(treatments, durations, settings.options);
+  const paymentMethods = settings.payment_methods;
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -97,21 +93,19 @@ export default async function GiftCardsPage() {
                 Home
               </Link>
               <span>/</span>
-              <span className="font-medium text-foreground">Gift Cards</span>
+              <span className="font-medium text-foreground">{page.eyebrow}</span>
             </nav>
 
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
               <Gift className="size-4" />
-              Gift Cards
+              {page.eyebrow}
             </span>
 
             <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
-              Gift Someone a Massage Session
+              {page.heading}
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-              Choose a session, send your gift in a few taps, and we will issue a
-              personalised gift certificate. The recipient can book at the studio
-              or at home.
+              {page.intro}
             </p>
           </div>
         </section>
@@ -119,28 +113,27 @@ export default async function GiftCardsPage() {
         <section className="py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-8 text-center">
-              <h2 className="text-2xl font-bold tracking-tight">Choose a gift</h2>
-              <p className="mt-2 text-muted-foreground">
-                All options include professional equipment and everything needed
-                for the session.
-              </p>
+              <h2 className="text-2xl font-bold tracking-tight">
+                {page.picker_heading}
+              </h2>
+              <p className="mt-2 text-muted-foreground">{page.picker_description}</p>
             </div>
 
-            <GiftCardPicker options={options} />
+            <GiftCardPicker options={options} content={page} />
           </div>
         </section>
 
         <section className="bg-muted/30 py-16">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <h2 className="mb-10 text-center text-3xl font-bold tracking-tight">
-              How Gift Cards Work
+              {page.steps_heading}
             </h2>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((step, index) => {
-                const Icon = step.icon;
+              {page.steps.map((step, index) => {
+                const Icon = stepIcons[index % stepIcons.length];
                 return (
-                  <div key={step.title} className="text-center">
+                  <div key={`${step.title}-${index}`} className="text-center">
                     <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-primary/10">
                       <Icon className="size-6 text-primary" />
                     </div>
@@ -159,58 +152,52 @@ export default async function GiftCardsPage() {
         </section>
 
         <section id="payment" className="py-16">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-8 text-center">
-              <h2 className="text-3xl font-bold tracking-tight">How to Pay</h2>
-              <p className="mt-2 text-muted-foreground">
-                After you send your gift request on WhatsApp, complete the payment
-                using any method below. Send us the confirmation and we will issue
-                the certificate.
+              <h2 className="text-3xl font-bold tracking-tight">
+                {page.payment_heading}
+              </h2>
+              <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">
+                {page.payment_description}
               </p>
             </div>
 
             <GiftCardPaymentMethods methods={paymentMethods} />
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              A gift card code is generated only after payment is confirmed.
+              {page.payment_note}
             </p>
           </div>
         </section>
 
         <section className="border-t bg-muted/30 py-16">
-          <div className="mx-auto grid max-w-4xl gap-8 px-4 sm:px-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-5xl gap-8 px-4 sm:px-6 md:grid-cols-2">
             <div>
               <div className="flex items-center gap-2">
                 <MapPin className="size-5 text-primary" />
                 <h2 className="text-2xl font-bold tracking-tight">
-                  Home Visits & Travel
+                  {page.travel_heading}
                 </h2>
               </div>
-              <p className="mt-4 font-medium">
-                Free home visits within a 10-kilometer radius of Porto.
-              </p>
-              <p className="mt-2 text-muted-foreground">
-                For distances beyond 10 km, additional transportation fees apply.
-                Send the recipient&apos;s address on WhatsApp and we will confirm
-                the fee before the appointment is booked.
-              </p>
+              <p className="mt-4 font-medium">{page.travel_primary}</p>
+              <p className="mt-2 text-muted-foreground">{page.travel_secondary}</p>
             </div>
 
             <div className="rounded-xl border bg-background p-6">
               <div className="flex items-center gap-2">
                 <Home className="size-5 text-primary" />
-                <h3 className="text-lg font-semibold">Studio or at home</h3>
+                <h3 className="text-lg font-semibold">{page.usage_title}</h3>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">
-                The recipient can schedule their session at the studio or at their
-                home. They simply contact us with their gift card code and preferred
-                date and time.
-              </p>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Gift certificates are valid for the session shown on the
-                certificate and cannot be exchanged for cash.
-              </p>
+              <p className="mt-3 text-sm text-muted-foreground">{page.usage_text}</p>
             </div>
+
+            {page.certificate_note && (
+              <div className="md:col-span-2">
+                <p className="rounded-xl border bg-background px-5 py-4 text-center text-sm text-muted-foreground">
+                  {page.certificate_note}
+                </p>
+              </div>
+            )}
           </div>
         </section>
       </main>

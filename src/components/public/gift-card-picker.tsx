@@ -7,10 +7,16 @@ import { Label } from "@/components/ui/label";
 import { buildGiftCardWhatsAppUrl } from "@/lib/whatsapp";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
-import type { GiftCardOption } from "@/lib/gift-cards";
+import type { GiftCardOption, GiftCardPageContent } from "@/lib/gift-cards";
 import { cn } from "@/lib/utils";
 
-export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
+export function GiftCardPicker({
+  options,
+  content,
+}: {
+  options: GiftCardOption[];
+  content: GiftCardPageContent;
+}) {
   const [selectedId, setSelectedId] = useState(options[0]?.id ?? "");
   const [giverName, setGiverName] = useState("");
   const [recipientName, setRecipientName] = useState("");
@@ -23,7 +29,7 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
     if (!selected) return;
 
     if (!giverName.trim()) {
-      setError("Please enter your name so we know who is sending the gift.");
+      setError(content.picker_error_giver);
       return;
     }
 
@@ -54,6 +60,11 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
       >
         {options.map((option) => {
           const isSelected = option.id === selected?.id;
+          const treatmentNames = option.treatmentNames ?? [];
+          const treatmentSummary =
+            treatmentNames.length > 2
+              ? `${treatmentNames.slice(0, 2).join(", ")} +${treatmentNames.length - 2} more`
+              : treatmentNames.join(", ");
 
           return (
             <button
@@ -83,6 +94,20 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
               <span className="mt-2 text-sm text-muted-foreground">
                 {option.description}
               </span>
+              {(option.durationLabel || treatmentSummary) && (
+                <span className="mt-2 flex flex-wrap gap-1.5 text-xs">
+                  {option.durationLabel && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 font-medium">
+                      {option.durationLabel}
+                    </span>
+                  )}
+                  {treatmentSummary && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground">
+                      {treatmentSummary}
+                    </span>
+                  )}
+                </span>
+              )}
               <span className="mt-auto pt-4 text-2xl font-bold">€{option.price}</span>
             </button>
           );
@@ -92,12 +117,14 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
       <div className="mt-8 rounded-xl border bg-muted/20 p-6">
         <div className="flex items-center gap-2">
           <Gift className="size-5 text-primary" />
-          <h2 className="text-lg font-semibold">Personalise your gift</h2>
+          <h2 className="text-lg font-semibold">
+            {content.picker_personalise_heading}
+          </h2>
         </div>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <div>
-            <Label htmlFor="giver-name">Your name</Label>
+            <Label htmlFor="giver-name">{content.picker_giver_label}</Label>
             <Input
               id="giver-name"
               value={giverName}
@@ -105,19 +132,19 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
                 setGiverName(event.target.value);
                 if (error) setError("");
               }}
-              placeholder="Who is giving the gift"
+              placeholder={content.picker_giver_placeholder}
               className="mt-1.5"
               aria-invalid={Boolean(error)}
             />
           </div>
 
           <div>
-            <Label htmlFor="recipient-name">Recipient&apos;s name (optional)</Label>
+            <Label htmlFor="recipient-name">{content.picker_recipient_label}</Label>
             <Input
               id="recipient-name"
               value={recipientName}
               onChange={(event) => setRecipientName(event.target.value)}
-              placeholder="Who is receiving the gift"
+              placeholder={content.picker_recipient_placeholder}
               className="mt-1.5"
             />
           </div>
@@ -125,7 +152,8 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
 
         {selected && (
           <p className="mt-5 text-sm text-muted-foreground">
-            Selected: <span className="font-medium text-foreground">{selected.title}</span>{" "}
+            {content.picker_selected_label}{" "}
+            <span className="font-medium text-foreground">{selected.title}</span>{" "}
             — €{selected.price}
           </p>
         )}
@@ -142,12 +170,11 @@ export function GiftCardPicker({ options }: { options: GiftCardOption[] }) {
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#157347] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[#13633B] sm:w-auto"
         >
           <MessageCircle className="size-5" />
-          Gift Now on WhatsApp
+          {content.picker_button_text}
         </button>
 
         <p className="mt-3 text-xs text-muted-foreground">
-          Your gift details will be pre-filled in WhatsApp. We confirm payment,
-          then send a personalised PDF gift certificate with a unique code.
+          {content.picker_note}
         </p>
       </div>
     </div>

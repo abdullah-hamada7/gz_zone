@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { MapPin, MessageCircle, ArrowRight, Gift } from "lucide-react";
 
 import { buttonVariants, Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/public/cta-button";
@@ -127,7 +127,7 @@ export function Hero({
                 "Enjoy a professional massage in the comfort of your home, hotel, or apartment in Porto. I bring the massage table and everything needed for your treatment directly to you."}
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 lg:items-start w-full sm:w-auto">
+            <div className="mt-8 flex w-full flex-col flex-wrap items-center justify-center gap-3 sm:w-auto sm:flex-row lg:justify-start lg:items-start">
               <WhatsAppButton
                 size="lg"
                 source="hero_main_cta"
@@ -190,6 +190,17 @@ export function Hero({
                   </div>
                 </DialogContent>
               </Dialog>
+
+              <Link
+                href="/gift-cards"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "min-h-[48px] w-full justify-center gap-2 px-8 py-6 text-base sm:w-auto"
+                )}
+              >
+                <Gift className="size-5" />
+                Gift Cards
+              </Link>
             </div>
 
             <p className="mt-6 flex items-center justify-center gap-1.5 text-sm text-muted-foreground lg:justify-start">
