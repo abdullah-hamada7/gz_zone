@@ -24,6 +24,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/gift-certificates",
+        destination: "/gift-cards",
+        permanent: true,
+      },
+      {
+        source: "/admin/gift-options",
+        destination: "/admin/gift-cards",
+        permanent: true,
+      },
+      {
         source: "/treatments/cupping-therapy",
         destination: "/treatments/dry-cupping",
         permanent: true,
@@ -191,4 +201,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
