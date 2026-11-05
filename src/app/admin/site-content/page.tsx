@@ -10,7 +10,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Save, Plus, Trash2, GripVertical } from "lucide-react";
 import type { SiteContent } from "@/types";
-import { resolveGiftCardPageContent } from "@/lib/gift-cards";
+import { resolveGiftCardPageContent } from "@/lib/gift-certificates";
 
 interface SectionConfig {
   key: string;

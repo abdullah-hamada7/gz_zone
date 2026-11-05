@@ -30,7 +30,7 @@ const navItems = [
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },
   { label: "Gift Options", href: "/admin/gift-options", icon: Wallet },
-  { label: "Gift Certificates", href: "/admin/gift-cards", icon: Gift },
+  { label: "Gift Certificates", href: "/admin/gift-certificates", icon: Gift },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
   { label: "Certifications", href: "/admin/certifications", icon: Award },
   { label: "Platform Ratings", href: "/admin/platform-ratings", icon: BarChart3 },
