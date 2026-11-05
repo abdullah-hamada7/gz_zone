@@ -21,18 +21,20 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  async redirects() {
+  async rewrites() {
     return [
       {
         source: "/gift-certificates",
         destination: "/gift-cards",
-        permanent: true,
       },
       {
         source: "/admin/gift-options",
         destination: "/admin/gift-cards",
-        permanent: true,
       },
+    ];
+  },
+  async redirects() {
+    return [
       {
         source: "/treatments/cupping-therapy",
         destination: "/treatments/dry-cupping",
