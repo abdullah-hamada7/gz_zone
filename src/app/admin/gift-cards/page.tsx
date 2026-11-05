@@ -5,12 +5,12 @@ import {
   buildDefaultGiftCardSettings,
   GIFT_CARD_SETTINGS_KEY,
   resolveGiftCardSettings,
-} from "@/lib/gift-cards";
+} from "@/lib/gift-certificates";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Gift Cards",
+  title: "Gift Certificates",
   robots: { index: false, follow: false },
 };
 

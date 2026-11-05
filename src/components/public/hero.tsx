@@ -192,7 +192,7 @@ export function Hero({
               </Dialog>
 
               <Link
-                href="/gift-cards"
+                href="/gift-certificates"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
                   "min-h-[48px] w-full justify-center gap-2 px-8 py-6 text-base sm:w-auto"

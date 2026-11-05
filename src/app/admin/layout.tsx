@@ -29,7 +29,7 @@ const navItems = [
   { label: "Analytics & Conversions", href: "/admin/analytics", icon: MousePointerClick },
   { label: "Treatments", href: "/admin/treatments", icon: Sparkles },
   { label: "Durations", href: "/admin/durations", icon: Clock },
-  { label: "Gift Cards", href: "/admin/gift-cards", icon: Wallet },
+  { label: "Gift Options", href: "/admin/gift-options", icon: Wallet },
   { label: "Gift Certificates", href: "/admin/gift-certificates", icon: Gift },
   { label: "FAQs", href: "/admin/faqs", icon: HelpCircle },
   { label: "Certifications", href: "/admin/certifications", icon: Award },

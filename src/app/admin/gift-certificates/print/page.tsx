@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { GiftCertificate } from "@/components/admin/gift-certificate";
 import { PrintCertificateButton } from "@/components/admin/print-certificate-button";
 import { getAllDurations, getTreatments } from "@/lib/supabase/queries";
-import { resolveCertificateOptions } from "@/lib/gift-cards";
+import { resolveCertificateOptions } from "@/lib/gift-certificates";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

@@ -66,9 +66,9 @@ export function buildGiftCardWhatsAppUrl(params: {
 }): string {
   const { phone, optionTitle, whatsappLabel, price, giverName, recipientName } = params;
   const lines = [
-    `Hello, I would like to purchase a gift card for a ${whatsappLabel} for someone special. My name is ${giverName.trim()}.`,
+    `Hello, I would like to purchase a gift certificate for a ${whatsappLabel} for someone special. My name is ${giverName.trim()}.`,
     "",
-    `Gift card: ${optionTitle} (€${price})`,
+    `Gift certificate: ${optionTitle} (€${price})`,
   ];
 
   if (recipientName && recipientName.trim()) {
