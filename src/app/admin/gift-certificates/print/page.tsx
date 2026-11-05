@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { GiftCertificate } from "@/components/admin/gift-certificate";
 import { PrintCertificateButton } from "@/components/admin/print-certificate-button";
 import { getAllDurations, getTreatments } from "@/lib/supabase/queries";
-import { resolveCertificateOptions } from "@/lib/gift-certificates";
+import { resolveCertificateOptions } from "@/lib/gift-cards";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -60,7 +60,7 @@ export default async function GiftCertificatePrintPage({
       <div className="certificate-shell mx-auto flex w-fit flex-col items-center gap-5 px-4 py-8 print:gap-0 print:p-0">
         <div className="flex w-full flex-wrap items-center justify-between gap-3 print:hidden">
           <Link
-            href="/admin/gift-certificates"
+            href="/admin/gift-cards"
             className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
             <ArrowLeft className="size-4" />

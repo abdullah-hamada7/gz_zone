@@ -4,7 +4,7 @@ export function revalidatePublicPages(slug?: string) {
   try {
     revalidatePath("/");
     revalidatePath("/treatments");
-    revalidatePath("/gift-certificates");
+    revalidatePath("/gift-cards");
     revalidatePath("/treatments/[slug]", "page");
     if (slug) {
       revalidatePath(`/treatments/${slug}`);

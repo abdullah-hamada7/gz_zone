@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { GiftCardOption } from "@/lib/gift-certificates";
+import type { GiftCardOption } from "@/lib/gift-cards";
 import styles from "./gift-certificate.module.css";
 
 export interface GiftCertificateProps {

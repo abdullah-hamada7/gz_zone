@@ -1,4 +1,4 @@
-import { GIFT_CARD_PAGE_DEFAULTS } from "@/lib/gift-certificates";
+import { GIFT_CARD_PAGE_DEFAULTS } from "@/lib/gift-cards";
 
 export const HERO = {
   title: "Professional Massage. Delivered to You.",

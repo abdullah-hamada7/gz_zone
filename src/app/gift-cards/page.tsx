@@ -23,7 +23,7 @@ import {
   resolveGiftCardOptions,
   resolveGiftCardPageContent,
   resolveGiftCardSettings,
-} from "@/lib/gift-certificates";
+} from "@/lib/gift-cards";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -32,12 +32,12 @@ export const metadata: Metadata = {
   title: "Gift Certificates — Gift Someone a Massage Session",
   description:
     "Gift a 60, 90 or 120-minute massage, facial or reflexology session in Porto. Choose your gift, send it via WhatsApp and receive a personalised PDF gift certificate.",
-  alternates: { canonical: "https://gzzone.vercel.app/gift-certificates" },
+  alternates: { canonical: "https://gzzone.vercel.app/gift-cards" },
   openGraph: {
     title: "Gift Certificates | GZ'ZONE Massage Porto",
     description:
       "Gift someone a massage session in Porto. Choose a 60, 90 or 120-minute massage, facial or reflexology gift card.",
-    url: "https://gzzone.vercel.app/gift-certificates",
+    url: "https://gzzone.vercel.app/gift-cards",
   },
 };
 
@@ -73,7 +73,7 @@ export default async function GiftCardsPage() {
         "@type": "ListItem",
         position: 2,
         name: "Gift Certificates",
-        item: "https://gzzone.vercel.app/gift-certificates",
+        item: "https://gzzone.vercel.app/gift-cards",
       },
     ],
   };

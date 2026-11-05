@@ -5,7 +5,7 @@ import {
   buildDefaultGiftCardSettings,
   GIFT_CARD_SETTINGS_KEY,
   resolveGiftCardSettings,
-} from "@/lib/gift-certificates";
+} from "@/lib/gift-cards";
 
 export const dynamic = "force-dynamic";
 
