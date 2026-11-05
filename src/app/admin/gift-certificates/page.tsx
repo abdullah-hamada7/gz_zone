@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { randomUUID } from "node:crypto";
 import { GiftCertificateDesigner } from "@/components/admin/gift-certificate-designer";
 import { getAllDurations, getTreatments } from "@/lib/supabase/queries";
-import { resolveCertificateOptions } from "@/lib/gift-cards";
+import { resolveCertificateOptions } from "@/lib/gift-certificates";
 
 export const dynamic = "force-dynamic";
 

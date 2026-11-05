@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GiftCertificate } from "@/components/admin/gift-certificate";
-import type { CertificateOption } from "@/lib/gift-cards";
+import type { CertificateOption } from "@/lib/gift-certificates";
 
 function generateGiftCode() {
   const raw = crypto.randomUUID().replace(/-/g, "").slice(0, 8).toUpperCase();

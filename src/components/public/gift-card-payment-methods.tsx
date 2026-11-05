@@ -12,7 +12,7 @@ import {
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { buildWhatsAppMessageUrl } from "@/lib/whatsapp";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
-import type { GiftCardPaymentMethod } from "@/lib/gift-cards";
+import type { GiftCardPaymentMethod } from "@/lib/gift-certificates";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

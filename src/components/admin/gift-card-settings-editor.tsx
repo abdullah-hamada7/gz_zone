@@ -22,7 +22,7 @@ import {
   type GiftCardOptionConfig,
   type GiftCardPaymentMethod,
   type GiftCardSettings,
-} from "@/lib/gift-cards";
+} from "@/lib/gift-certificates";
 import { cn } from "@/lib/utils";
 
 type TreatmentChoice = {
@@ -177,7 +177,7 @@ export function GiftCardSettingsEditor({
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
-            href="/gift-cards"
+            href="/gift-certificates"
             target="_blank"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >

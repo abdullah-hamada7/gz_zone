@@ -10,7 +10,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "sonner";
 import { ChevronDown, ChevronRight, Save, Plus, Trash2, GripVertical } from "lucide-react";
 import type { SiteContent } from "@/types";
-import { resolveGiftCardPageContent } from "@/lib/gift-cards";
+import { resolveGiftCardPageContent } from "@/lib/gift-certificates";
 
 interface SectionConfig {
   key: string;
@@ -640,7 +640,7 @@ function SectionEditor({
           <div className="rounded-lg border bg-muted/30 p-4 text-sm">
             Gift names, prices, included treatments and payment card details are
             managed separately in{" "}
-            <Link href="/admin/gift-cards" className="font-medium text-primary underline">
+            <Link href="/admin/gift-options" className="font-medium text-primary underline">
               Gift Certificates settings
             </Link>
             . This section controls the text around them.

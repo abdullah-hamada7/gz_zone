@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { buildGiftCardWhatsAppUrl } from "@/lib/whatsapp";
 import { DEFAULT_WHATSAPP } from "@/lib/constants";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
-import type { GiftCardOption, GiftCardPageContent } from "@/lib/gift-cards";
+import type { GiftCardOption, GiftCardPageContent } from "@/lib/gift-certificates";
 import { cn } from "@/lib/utils";
 
 export function GiftCardPicker({
