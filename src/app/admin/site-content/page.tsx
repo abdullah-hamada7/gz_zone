@@ -29,7 +29,7 @@ const sections: SectionConfig[] = [
   { key: "reputation_section", label: "Reputation Section", description: "Platform ratings heading", category: "homepage" },
   { key: "faq_section", label: "FAQ Section", description: "FAQ section heading", category: "homepage" },
   { key: "footer", label: "Footer", description: "Footer content and links", category: "homepage" },
-  { key: "gift_cards", label: "Gift Cards Page", description: "All text on the gift cards page", category: "gift-cards" },
+  { key: "gift_cards", label: "Gift Certificates Page", description: "All text on the Gift Certificates page", category: "gift-cards" },
   { key: "hours_section", label: "Business Hours", description: "Opening hours on treatment pages", category: "treatments" },
   { key: "privacy_policy", label: "Privacy Policy", description: "Privacy policy page content", category: "legal" },
   { key: "terms", label: "Terms of Service", description: "Terms of service page content", category: "legal" },
@@ -641,7 +641,7 @@ function SectionEditor({
             Gift names, prices, included treatments and payment card details are
             managed separately in{" "}
             <Link href="/admin/gift-cards" className="font-medium text-primary underline">
-              Gift Cards settings
+              Gift Certificates settings
             </Link>
             . This section controls the text around them.
           </div>
@@ -720,7 +720,7 @@ function SectionEditor({
 
           <div className="space-y-4 border-t pt-5">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              How gift cards work
+              How Gift Certificates work
             </h3>
             <div className="space-y-2">
               <Label>Section heading</Label>

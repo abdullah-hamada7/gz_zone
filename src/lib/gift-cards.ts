@@ -146,7 +146,7 @@ export interface GiftCardPageContent {
 }
 
 export const GIFT_CARD_PAGE_DEFAULTS: GiftCardPageContent = {
-  eyebrow: "Gift Cards",
+  eyebrow: "Gift Certificates",
   heading: "Gift Someone a Massage Session",
   intro:
     "Choose a session, send your gift in a few taps, and we will issue a personalised gift certificate. The recipient can book at home.",
@@ -163,7 +163,7 @@ export const GIFT_CARD_PAGE_DEFAULTS: GiftCardPageContent = {
   picker_note:
     "Your gift details will be pre-filled in WhatsApp. We confirm payment, then send a personalised PDF gift certificate with a unique code.",
   picker_error_giver: "Please enter your name so we know who is sending the gift.",
-  steps_heading: "How Gift Cards Work",
+  steps_heading: "How Gift Certificates Work",
   steps: [
     {
       title: "Choose your gift",

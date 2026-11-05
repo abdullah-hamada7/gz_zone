@@ -156,7 +156,7 @@ export function GiftCardSettingsEditor({
         return;
       }
 
-      toast.success("Gift cards updated");
+      toast.success("Gift Certificates updated");
       router.refresh();
     } catch {
       toast.error("Failed to save gift card settings");
@@ -169,7 +169,7 @@ export function GiftCardSettingsEditor({
     <div className="space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Gift Cards</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Gift Certificates</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Manage the gifts shown on the public page, their prices, included
             treatments and the payment cards.
